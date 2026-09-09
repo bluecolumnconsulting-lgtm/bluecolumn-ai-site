@@ -1,0 +1,71 @@
+{
+  "routes": [
+    { "min": 80, "name": "priority_outreach", "action": "immediate_contact" },
+    { "min": 50, "name": "nurture", "action": "add_to_sequence" },
+    { "min": 0, "name": "archive", "action": "store_only" }
+  ],
+  "weights": {
+    "consumer_intent": {
+      "pain_high": 25,
+      "pain_medium": 12,
+      "signals_value": 15,
+      "tank_size_bonus": 10,
+      "recent_post_bonus": 8,
+      "has_replies": 5,
+      "base_score": 25
+    },
+    "b2b_partner": {
+      "has_website": 20,
+      "has_contact_url": 15,
+      "has_phone": 10,
+      "retailer_signals": 15,
+      "service_signals": 12,
+      "brand_signals": 10,
+      "has_rating": 5,
+      "high_rating_bonus": 8,
+      "base_score": 15
+    },
+    "investor": {
+      "thesis_tags_match": 20,
+      "portfolio_match": 25,
+      "has_contact_url": 15,
+      "stage_match": 10,
+      "recent_investment": 10,
+      "base_score": 20
+    }
+  },
+  "outreach_templates": {
+    "consumer_intent": {
+      "priority_outreach": "Hi {name}, I noticed your post about {pain_point}. OttoMedic's automatic water level control might solve this - want me to send a quick video demo?",
+      "nurture": "Hey {name}, saw you're dealing with {pain_point}. We've got some tips that might help - interested?"
+    },
+    "b2b_partner": {
+      "priority_outreach": "Hi {company_name}, OttoMedic protein skimmers are gaining traction with reef keepers. Interested in exploring a retail/service partnership?",
+      "nurture": "Hello {company_name}, we're expanding our dealer network. Would love to discuss how OttoMedic could complement your product lineup."
+    },
+    "investor": {
+      "priority_outreach": "Hi {partner_name}, OttoMedic is disrupting the $2B aquarium equipment market with automatic protein skimmer tech. Your thesis in {thesis_match} aligns well - open to a quick intro?",
+      "nurture": "Hello {firm_name}, OttoMedic's traction in the reef equipment space might fit your portfolio. Happy to share our deck."
+    }
+  },
+  "cta_suggestions": {
+    "consumer_intent": [
+      "Upload tank video to Marina chat",
+      "Schedule demo call",
+      "Send product comparison guide",
+      "Offer free skimmer assessment"
+    ],
+    "b2b_partner": [
+      "Send dealer information packet",
+      "Schedule partnership call",
+      "Invite to next trade show booth",
+      "Send wholesale pricing"
+    ],
+    "investor": [
+      "Send pitch deck",
+      "Schedule intro call",
+      "Share traction metrics",
+      "Invite to product demo"
+    ]
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "industry": "reef",
+  "disableOldIndustry": true,
+  "oldIndustryPatterns": ["fence", "gate", "wall", "permit", "maricopa", "redfin", "arcadia"],
+  "domains": {
+    "rateLimitMs": 2500,
+    "maxConcurrency": 2
+  },
+  "targets": [
+    {
+      "id": "reef_forum_intent",
+      "lead_type": "consumer_intent",
+      "adapter": "GenericForumAdapter",
+      "enabled": true,
+      "tier": "free",
+      "interval_minutes": 360,
+      "seedUrls": [
+        "https://www.reef2reef.com/search/?q={QUERY}&o=date",
+        "https://www.nano-reef.com/search/?q={QUERY}",
+        "https://www.reefcentral.com/forums/search.php?searchid={QUERY}"
+      ],
+      "queries": [
+        "skimmer overflowing",
+        "foam height keeps changing",
+        "protein skimmer won't stay dialed",
+        "wet skim dry skim adjustment",
+        "bioload spike skimmer",
+        "skimmer micro bubbles",
+        "vacation mode skimmer",
+        "tuning protein skimmer",
+        "skimmer temp swing",
+        "automatic water level"
+      ],
+      "extract": {
+        "fields": ["title", "url", "date", "excerpt", "author", "replies"]
+      }
+    },
+    {
+      "id": "reef_reddit_intent",
+      "lead_type": "consumer_intent",
+      "adapter": "RedditAdapter",
+      "enabled": true,
+      "tier": "free",
+      "interval_minutes": 240,
+      "subreddits": ["ReefTank", "Aquariums", "SaltwaterAquarium", "reeftank", "Reefs"],
+      "queries": [
+        "protein skimmer",
+        "skimmer overflow",
+        "foam height",
+        "wet skim",
+        "bioload",
+        "automatic water level",
+        "ATO skimmer"
+      ],
+      "extract": {
+        "fields": ["title", "url", "date", "excerpt", "author", "subreddit"]
+      }
+    },
+    {
+      "id": "trade_show_exhibitors",
+      "lead_type": "b2b_partner",
+      "adapter": "GenericDirectoryAdapter",
+      "enabled": true,
+      "tier": "low_cost",
+      "interval_minutes": 1440,
+      "seedUrls": [
+        "https://macnaconference.org/exhibitors",
+        "https://reefapalooza.com/exhibitors",
+        "https://aquaticexperience.org/exhibitors"
+      ],
+      "paging": { "start": 1, "end": 10 },
+      "extract": {
+        "fields": ["company_name", "website", "contact_url", "location", "category", "booth_number"]
+      }
+    },
+    {
+      "id": "reef_clubs",
+      "lead_type": "b2b_partner",
+      "adapter": "GenericDirectoryAdapter",
+      "enabled": true,
+      "tier": "free",
+      "interval_minutes": 10080,
+      "seedUrls": [
+        "https://www.reef2reef.com/forums/local-reef-clubs.255/"
+      ],
+      "extract": {
+        "fields": ["company_name", "website", "contact_url", "location", "member_count"]
+      }
+    },
+    {
+      "id": "aquarium_retailers",
+      "lead_type": "b2b_partner",
+      "adapter": "GenericDirectoryAdapter",
+      "enabled": true,
+      "tier": "low_cost",
+      "interval_minutes": 2880,
+      "seedUrls": [
+        "https://www.yelp.com/search?find_desc=aquarium+store&find_loc={LOCATION}",
+        "https://www.google.com/maps/search/saltwater+aquarium+store+{LOCATION}"
+      ],
+      "locations": ["Los Angeles, CA", "Miami, FL", "Houston, TX", "San Diego, CA", "Phoenix, AZ"],
+      "extract": {
+        "fields": ["company_name", "website", "contact_url", "location", "phone", "rating", "reviews_count"]
+      }
+    },
+    {
+      "id": "investor_portfolios",
+      "lead_type": "investor",
+      "adapter": "GenericPortfolioAdapter",
+      "enabled": true,
+      "tier": "low_cost",
+      "interval_minutes": 10080,
+      "seedUrls": [
+        "https://www.crunchbase.com/search/organizations/field/organizations/categories/pet-tech",
+        "https://www.crunchbase.com/search/organizations/field/organizations/categories/aquaculture"
+      ],
+      "extract": {
+        "fields": ["firm_name", "partner_names", "thesis_excerpt", "contact_url", "portfolio_companies", "investment_stage"]
+      }
+    },
+    {
+      "id": "aquaculture_investors",
+      "lead_type": "investor",
+      "adapter": "GenericPortfolioAdapter",
+      "enabled": true,
+      "tier": "low_cost",
+      "interval_minutes": 10080,
+      "seedUrls": [
+        "https://aquaculturealliance.org/members",
+        "https://www.bluetechweek.com/sponsors"
+      ],
+      "extract": {
+        "fields": ["firm_name", "thesis_excerpt", "contact_url", "focus_areas"]
+      }
+    }
+  ]
+}

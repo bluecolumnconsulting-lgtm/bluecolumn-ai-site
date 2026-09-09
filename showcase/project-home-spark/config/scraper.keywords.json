@@ -1,0 +1,64 @@
+{
+  "consumer_intent": {
+    "pain_high": [
+      "overflow", "flood", "won't dial", "keeps changing", "inconsistent foam",
+      "micro bubbles", "overskim", "underskim", "emergency", "crashed",
+      "dead fish", "tank wipe", "vacation disaster", "power outage"
+    ],
+    "pain_medium": [
+      "tuning", "foam height", "wet skim", "dry skim", "temp swing", "bioload",
+      "adjustment", "breaking in", "loud noise", "vibration", "collection cup",
+      "neck cleaning", "pump replacement", "air intake"
+    ],
+    "signals_value": [
+      "SPS", "heavy feeding", "peninsula", "600g", "400g", "300g", "200g",
+      "$", "livestock worth", "rare coral", "acropora", "montipora",
+      "custom tank", "reef build", "upgrade", "automatic", "controller"
+    ],
+    "tank_size_multipliers": {
+      "50g": 1.0,
+      "100g": 1.2,
+      "150g": 1.4,
+      "200g": 1.6,
+      "300g": 1.8,
+      "400g": 2.0,
+      "500g": 2.2,
+      "600g": 2.5
+    }
+  },
+  "b2b_partner": {
+    "retailer_signals": [
+      "store", "shop", "dealer", "retail", "aquarium shop", "LFS",
+      "local fish store", "marine store", "reef store", "coral shop"
+    ],
+    "service_signals": [
+      "maintenance", "install", "service", "tank cleaning", "aquarium service",
+      "reef maintenance", "custom build", "installation"
+    ],
+    "brand_signals": [
+      "manufacturer", "equipment", "skimmer", "filtration", "protein skimmer",
+      "reef equipment", "aquarium supplies", "marine equipment"
+    ],
+    "partner_type_tags": {
+      "retailer": ["store", "shop", "retail", "dealer", "LFS"],
+      "service_provider": ["maintenance", "service", "install", "cleaning"],
+      "manufacturer": ["manufacturer", "OEM", "equipment maker"],
+      "distributor": ["distributor", "wholesale", "distribution"],
+      "club": ["club", "society", "group", "association"]
+    }
+  },
+  "investor": {
+    "thesis_tags": [
+      "hardware", "consumer", "specialty", "pet", "water", "industrial",
+      "filtration", "aquaculture", "marine", "sustainability", "cleantech",
+      "IoT", "automation", "aquatech", "blue economy"
+    ],
+    "stage_tags": [
+      "seed", "series a", "series b", "growth", "venture", "angel"
+    ],
+    "portfolio_match_keywords": [
+      "aquarium", "pet tech", "water quality", "fish", "coral", "marine",
+      "aquaculture", "filtration", "automation", "IoT", "sensors"
+    ]
+  }
+}
