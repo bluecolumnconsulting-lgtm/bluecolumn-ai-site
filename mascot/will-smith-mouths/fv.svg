@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 474" width="500" height="474">
+  <defs>
+    <radialGradient id="mouthBg5" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3a1c14"/>
+      <stop offset="100%" stop-color="#5a3830"/>
+    </radialGradient>
+    <linearGradient id="upLip5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a07060"/>
+      <stop offset="100%" stop-color="#6c4440"/>
+    </linearGradient>
+    <linearGradient id="lowLip5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c5450"/>
+      <stop offset="100%" stop-color="#a07060"/>
+    </linearGradient>
+  </defs>
+  <!-- "F" / "V" - upper teeth on lower lip -->
+  <ellipse cx="250" cy="335" rx="70" ry="12" fill="url(#mouthBg5)"/>
+  <!-- Upper teeth biting lower lip -->
+  <rect x="185" y="328" width="130" height="10" rx="2" fill="#ede0d6" stroke="#d0c0b0" stroke-width="0.5"/>
+  <!-- Teeth lines -->
+  <line x1="220" y1="328" x2="220" y2="338" stroke="#d0c0b0" stroke-width="0.6"/>
+  <line x1="235" y1="328" x2="235" y2="338" stroke="#d0c0b0" stroke-width="0.6"/>
+  <line x1="250" y1="328" x2="250" y2="338" stroke="#d0c0b0" stroke-width="0.6"/>
+  <line x1="265" y1="328" x2="265" y2="338" stroke="#d0c0b0" stroke-width="0.6"/>
+  <line x1="280" y1="328" x2="280" y2="338" stroke="#d0c0b0" stroke-width="0.6"/>
+  <!-- Upper lip - slightly lifted -->
+  <path d="M175 330 Q200 324 220 328 Q250 326 280 328 Q300 324 325 330 Q300 327 280 329 Q250 328 220 329 Q200 327 175 330Z" 
+        fill="url(#upLip5)" stroke="#8a6058" stroke-width="0.5"/>
+  <!-- Lower lip rolled in -->
+  <ellipse cx="250" cy="342" rx="72" ry="6" fill="url(#lowLip5)" stroke="#7c5450" stroke-width="0.5"/>
+</svg>

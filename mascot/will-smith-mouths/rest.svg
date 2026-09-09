@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 474" width="500" height="474">
+  <defs>
+    <linearGradient id="lipGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6c4440"/>
+      <stop offset="50%" stop-color="#7c5450"/>
+      <stop offset="100%" stop-color="#6c4440"/>
+    </linearGradient>
+  </defs>
+  <!-- Neutral closed mouth - slight natural smile -->
+  <path d="M165 325 Q170 316 195 318 Q220 316 240 317 Q250 316 260 317 Q280 316 305 318 Q330 316 335 325 Q330 322 305 324 Q280 322 260 323 Q250 322 240 323 Q220 322 195 324 Q170 322 165 325Z" 
+        fill="url(#lipGrad)" stroke="#6c4440" stroke-width="0.8"/>
+  <!-- Subtle lip line -->
+  <path d="M170 321 Q210 318 250 319 Q290 318 330 321" fill="none" stroke="#5a3430" stroke-width="0.5" opacity="0.5"/>
+</svg>

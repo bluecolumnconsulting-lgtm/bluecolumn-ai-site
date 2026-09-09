@@ -1,0 +1,47 @@
+{
+  "profiles": {
+    "fencebot": {
+      "name": "FenceBot",
+      "type": "overlay",
+      "baseCharacter": "/mascot/base-character.svg",
+      "mouthsDir": "/mascot/mouths/",
+      "mouthStates": {
+        "rest": "rest.svg",
+        "ai": "ai.svg",
+        "e": "e.svg",
+        "o": "o.svg",
+        "u": "u.svg",
+        "fv": "fv.svg",
+        "ch": "ch.svg",
+        "th": "th.svg"
+      },
+      "mouthPosition": { "x": 0, "y": 0 },
+      "mouthSize": { "width": 240, "height": 120 }
+    },
+    "will-smith": {
+      "name": "Will Smith",
+      "type": "overlay",
+      "baseCharacter": "/mascot/will-smith-base.png",
+      "mouthsDir": "/mascot/will-smith-mouths/",
+      "mouthStates": {
+        "rest": "rest.svg",
+        "ai": "ai.svg",
+        "e": "e.svg",
+        "o": "o.svg",
+        "u": "u.svg",
+        "fv": "fv.svg",
+        "ch": "ch.svg",
+        "th": "th.svg"
+      },
+      "mouthPosition": { "x": 0, "y": 0 },
+      "mouthSize": { "width": 500, "height": 200 },
+      "mouthOverlay": {
+        "top": 295,
+        "left": 155,
+        "width": 190,
+        "height": 70
+      }
+    }
+  },
+  "defaultProfile": "fencebot"
+}

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 474" width="500" height="474">
+  <defs>
+    <radialGradient id="mouthBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3a1c14"/>
+      <stop offset="60%" stop-color="#4a2820"/>
+      <stop offset="100%" stop-color="#5a3830"/>
+    </radialGradient>
+    <linearGradient id="upperLipGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a07060"/>
+      <stop offset="50%" stop-color="#c09080"/>
+      <stop offset="100%" stop-color="#6c443c"/>
+    </linearGradient>
+    <linearGradient id="lowerLipGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c5450"/>
+      <stop offset="50%" stop-color="#9c7470"/>
+      <stop offset="100%" stop-color="#a07060"/>
+    </linearGradient>
+  </defs>
+  <!-- Mouth interior - wide open "ah" -->
+  <ellipse cx="250" cy="318" rx="88" ry="38" fill="url(#mouthBg)"/>
+  <!-- Tongue hint -->
+  <ellipse cx="255" cy="330" rx="50" ry="18" fill="#b06050" opacity="0.6"/>
+  <!-- Upper teeth -->
+  <rect x="175" y="300" width="150" height="14" rx="3" fill="#ede0d6" stroke="#d0c0b0" stroke-width="0.5"/>
+  <!-- Teeth separators -->
+  <line x1="225" y1="300" x2="225" y2="314" stroke="#d0c0b0" stroke-width="0.8"/>
+  <line x1="238" y1="300" x2="238" y2="314" stroke="#d0c0b0" stroke-width="0.8"/>
+  <line x1="250" y1="300" x2="250" y2="314" stroke="#d0c0b0" stroke-width="0.8"/>
+  <line x1="262" y1="300" x2="262" y2="314" stroke="#d0c0b0" stroke-width="0.8"/>
+  <line x1="275" y1="300" x2="275" y2="314" stroke="#d0c0b0" stroke-width="0.8"/>
+  <!-- Upper lip -->
+  <path d="M155 310 Q175 290 220 296 Q250 292 280 296 Q325 290 345 310 Q325 305 280 308 Q250 306 220 308 Q175 305 155 310Z" fill="url(#upperLipGrad)" stroke="#8a6058" stroke-width="0.5"/>
+  <!-- Lower lip -->
+  <ellipse cx="250" cy="348" rx="85" ry="12" fill="url(#lowerLipGrad)" stroke="#7c5450" stroke-width="0.5"/>
+  <!-- Smile crease left -->
+  <path d="M155 315 Q140 325 135 335" fill="none" stroke="#c08070" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  <!-- Smile crease right -->
+  <path d="M345 315 Q360 325 365 335" fill="none" stroke="#c08070" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+</svg>

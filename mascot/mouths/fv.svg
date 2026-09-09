@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300">
+  <!-- Mouth overlay: "fv" viseme (fricative: f, v) -->
+  <rect x="108" y="108" width="24" height="10" rx="2" fill="#0f172a"/>
+  <line x1="110" y1="110" x2="130" y2="110" stroke="#fff" stroke-width="1" opacity="0.3"/>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 474" width="500" height="474">
+  <defs>
+    <radialGradient id="mouthBg3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3a1c14"/>
+      <stop offset="100%" stop-color="#5a3830"/>
+    </radialGradient>
+    <linearGradient id="upLip3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c09080"/>
+      <stop offset="100%" stop-color="#7c5450"/>
+    </linearGradient>
+    <linearGradient id="lowLip3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c5450"/>
+      <stop offset="100%" stop-color="#c09080"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded "oh" mouth -->
+  <ellipse cx="250" cy="328" rx="45" ry="30" fill="url(#mouthBg3)"/>
+  <!-- Upper teeth -->
+  <ellipse cx="250" cy="320" rx="35" ry="8" fill="#ede0d6" stroke="#d0c0b0" stroke-width="0.5"/>
+  <!-- Upper lip - rounded -->
+  <path d="M190 305 Q220 296 250 298 Q280 296 310 305 Q295 300 280 302 Q265 300 250 301 Q235 300 220 302 Q205 300 190 305Z" 
+        fill="url(#upLip3)" stroke="#8a6058" stroke-width="0.5"/>
+  <!-- Lower lip - rounded -->
+  <ellipse cx="250" cy="352" rx="40" ry="8" fill="url(#lowLip3)" stroke="#7c5450" stroke-width="0.5"/>
+  <!-- Circle pucker lines -->
+  <ellipse cx="250" cy="328" rx="55" ry="32" fill="none" stroke="#c09080" stroke-width="0.8" opacity="0.3"/>
+</svg>

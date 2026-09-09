@@ -1,0 +1,113 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "BlueColumn API",
+    "description": "Persistent memory infrastructure for AI agents.",
+    "version": "1.0.0",
+    "contact": { "email": "hello@bluecolumn.ai" }
+  },
+  "servers": [
+    { "url": "https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1", "description": "Production" }
+  ],
+  "security": [{ "ApiKeyAuth": [] }],
+  "paths": {
+    "/agent-remember": {
+      "post": {
+        "summary": "Ingest content into agent memory",
+        "description": "Store text, documents, or audio in agent memory. Audio is transcribed via Whisper.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["content"],
+                "properties": {
+                  "content": { "type": "string", "description": "Text content or base64 audio" },
+                  "type": { "type": "string", "enum": ["text", "audio", "document"], "default": "text" },
+                  "metadata": { "type": "object", "additionalProperties": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Memory stored",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "status": { "type": "string" },
+                    "tokens_used": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Invalid API key" },
+          "429": { "description": "Rate limit exceeded" }
+        }
+      }
+    },
+    "/agent-recall": {
+      "post": {
+        "summary": "Recall memories with plain English query",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["query"],
+                "properties": {
+                  "query": { "type": "string", "description": "Plain English question" },
+                  "limit": { "type": "integer", "default": 5 },
+                  "filter": { "type": "object", "additionalProperties": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Matching memories with citations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "content": { "type": "string" },
+                          "score": { "type": "number" },
+                          "citation": { "type": "object" },
+                          "metadata": { "type": "object" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Invalid API key" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "API key sent as: Authorization: Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}

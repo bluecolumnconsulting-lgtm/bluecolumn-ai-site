@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300">
+  <!-- Mouth overlay: "th" viseme (bright fricative: th, s, z) -->
+  <rect x="109" y="108" width="22" height="6" rx="1" fill="#0f172a"/>
+  <line x1="111" y1="110" x2="129" y2="110" stroke="#fff" stroke-width="1.5" opacity="0.4"/>
+  <line x1="113" y1="112" x2="127" y2="112" stroke="#fff" stroke-width="1" opacity="0.2"/>
+</svg>

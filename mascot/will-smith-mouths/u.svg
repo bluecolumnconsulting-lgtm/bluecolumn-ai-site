@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 474" width="500" height="474">
+  <defs>
+    <radialGradient id="mouthBg4" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2a1008"/>
+      <stop offset="100%" stop-color="#4a2820"/>
+    </radialGradient>
+    <linearGradient id="upLip4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b08070"/>
+      <stop offset="100%" stop-color="#7c5450"/>
+    </linearGradient>
+    <linearGradient id="lowLip4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c5450"/>
+      <stop offset="100%" stop-color="#b08070"/>
+    </linearGradient>
+  </defs>
+  <!-- Tight puckered "oo" mouth -->
+  <ellipse cx="250" cy="325" rx="28" ry="20" fill="url(#mouthBg4)"/>
+  <!-- Upper lip - tight pucker -->
+  <path d="M215 315 Q230 308 250 310 Q270 308 285 315 Q275 312 260 313 Q250 312 240 313 Q225 312 215 315Z" 
+        fill="url(#upLip4)" stroke="#8a6058" stroke-width="0.5"/>
+  <!-- Lower lip - tight pucker -->
+  <path d="M215 335 Q230 340 250 338 Q270 340 285 335 Q275 338 260 337 Q250 338 240 337 Q225 338 215 335Z" 
+        fill="url(#lowLip4)" stroke="#7c5450" stroke-width="0.5"/>
+  <!-- Pucker creases -->
+  <path d="M215 325 Q205 320 200 318" fill="none" stroke="#c09080" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  <path d="M285 325 Q295 320 300 318" fill="none" stroke="#c09080" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+</svg>

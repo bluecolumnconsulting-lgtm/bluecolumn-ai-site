@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panhandle Watersports — Jet Ski Rentals on Panama City Beach | Shell Island Rides</title>
+<meta name="description" content="The largest jet ski operator on Panama City Beach — 50+ latest-model Yamaha VX skis at 10 beach booths. Unguided rides near Shell Island. Dolphins included.">
+<!-- DEMO SITE — built by BlueColumn AI as a sales demo for Panhandle Watersports. Not affiliated with panhandlewatersports.com. -->
+<style>
+:root{
+  --deep:#05445e; --sea:#189ad3; --turq:#56cfe1; --sun:#ffb703; --coral:#fb5607;
+  --sand:#fff9ef; --ink:#0b2537; --muted:#587487; --line:#d9edf2;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--sand);line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h2.sec{font-size:2rem;margin-bottom:.4em}
+p.sub{color:var(--muted);margin-bottom:2.2rem;max-width:660px}
+
+.topbar{background:var(--deep);color:#cfeaf4;font-size:.85rem;padding:8px 0}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.topbar b{color:#fff}
+.topbar a{color:var(--sun);font-weight:700;text-decoration:none}
+nav.main{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+nav.main .wrap{display:flex;justify-content:space-between;align-items:center;padding:12px 20px}
+.logo{font-weight:800;font-size:1.2rem;display:flex;align-items:center;gap:8px}
+.logo img{width:34px;height:34px;border-radius:50%;object-fit:cover}
+nav.main ul{display:flex;gap:16px;list-style:none}
+nav.main a.navlink{text-decoration:none;color:var(--ink);font-weight:600;font-size:.95rem}
+.cta{display:inline-block;background:var(--sun);color:#241a00;padding:11px 24px;border-radius:8px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-size:.95rem}
+.cta:hover{filter:brightness(1.05)}
+.cta.ghost{background:transparent;color:#fff;border:2px solid #fff}
+
+header.hero{background:linear-gradient(165deg,var(--deep) 0%,var(--sea) 60%,var(--turq) 100%);color:#fff;padding:64px 0 78px;position:relative;overflow:hidden}
+header.hero::before{content:"";position:absolute;bottom:-2px;left:-10%;width:120%;max-width:140%;height:60px;background:var(--sand);border-radius:50% 50% 0 0/100% 100% 0 0}
+header.hero .wrap{position:relative;z-index:1;display:flex;gap:36px;align-items:center}
+.hero-main{flex:1}
+.hero-chips{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:5px 14px;font-size:.8rem;font-weight:600}
+header.hero h1{font-size:clamp(1.8rem,5vw,2.7rem);line-height:1.12;font-weight:800;max-width:720px}
+header.hero h1 em{color:var(--sun);font-style:normal}
+header.hero p.lead{margin:18px 0 30px;font-size:clamp(.97rem,2.2vw,1.12rem);color:#d9f1f8;max-width:600px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+.hero-dolphin{width:230px;flex-shrink:0;filter:drop-shadow(0 18px 30px rgba(0,0,0,.3));}
+.hero-dolphin img{width:100%;border-radius:24px;display:block}
+@media(max-width:860px){header.hero .wrap{flex-direction:column}.hero-dolphin{display:none}}
+
+section{padding:56px 0}
+section.alt{background:#fff}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+@media(max-width:860px){.grid4,.grid3,.grid2{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px}
+.card h3{margin-bottom:8px;font-size:1.1rem}
+.card p{color:var(--muted);font-size:.93rem}
+.card ul{margin:10px 0 0 18px;color:var(--muted);font-size:.9rem}
+.card ul li{margin-bottom:4px}
+.badge{display:inline-block;background:var(--sun);color:#241a00;font-size:.72rem;font-weight:800;border-radius:999px;padding:3px 10px;margin-bottom:10px}
+.ico{font-size:1.7rem;margin-bottom:10px;display:block}
+
+.strip{background:linear-gradient(135deg,#033647,#05445e);color:#fff;border-radius:14px;padding:34px;text-align:center}
+.strip b{color:var(--sun)}
+.strip .big{font-size:1.5rem;font-weight:800;margin-bottom:6px}
+
+.step{display:flex;gap:16px;align-items:flex-start}
+.step .n{background:var(--coral);color:#fff;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+
+details{background:#fff;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;padding:16px 20px}
+details summary{font-weight:700;cursor:pointer}
+details p{color:var(--muted);margin-top:8px;font-size:.93rem}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.form-grid{grid-template-columns:1fr}}
+label{font-weight:600;font-size:.88rem;display:block;margin-bottom:5px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font-size:.95rem;font-family:inherit;background:#fff}
+.full{grid-column:1/-1}
+
+footer{background:#03293a;color:#9dc3d2;padding:56px 0 28px;font-size:.92rem}
+footer h4{color:#fff;margin-bottom:12px}
+footer ul{list-style:none}
+footer li{margin-bottom:6px}
+footer a{color:#cfeaf4;text-decoration:none}
+.foot-bottom{border-top:1px solid #0c3b52;margin-top:36px;padding-top:20px;text-align:center;font-size:.82rem}
+.demo-note{background:#fff3d6;border:1px solid #f0dca4;color:#7a5a1e;font-size:.8rem;text-align:center;padding:8px}
+
+/* Dolphin audio bot */
+#bot-fab{position:fixed;bottom:22px;right:22px;z-index:100;background:#fff;border:none;border-radius:999px;padding:6px 18px 6px 6px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 6px 22px rgba(0,0,0,.3);display:flex;align-items:center;gap:10px;color:var(--ink)}
+#bot-fab img{width:46px;height:46px;border-radius:50%;object-fit:cover;border:3px solid var(--sun)}
+#bot-panel{position:fixed;bottom:84px;right:22px;width:350px;max-width:calc(100vw - 32px);background:#fff;border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.34);z-index:101;display:none;flex-direction:column;overflow:hidden}
+#bot-panel.open{display:flex}
+.bot-head{background:linear-gradient(135deg,var(--deep),var(--turq));color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.bot-head img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--sun)}
+.bot-head small{display:block;opacity:.85;font-weight:400}
+#bot-log{padding:14px;height:300px;overflow-y:auto;background:#f1fafc;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:85%;padding:9px 13px;border-radius:12px;font-size:.9rem;white-space:pre-line}
+.msg.bot{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:3px}
+.msg.user{background:var(--sea);color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+.bot-opts{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start}
+.bot-opts button{background:#fff;border:1.5px solid var(--turq);color:var(--deep);border-radius:999px;padding:5px 12px;font-size:.82rem;font-weight:700;cursor:pointer}
+.bot-opts button.on{background:var(--turq);color:#fff}
+.bot-input{display:flex;border-top:1px solid var(--line)}
+.bot-input input{border:none;border-radius:0;flex:1}
+.bot-input button{background:var(--sea);color:#fff;border:none;padding:0 18px;font-weight:700;cursor:pointer}
+#bot-mute{background:none;border:none;cursor:pointer;font-size:1.05rem;color:#fff;margin-left:auto}
+.talking{animation:bob .5s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-6px) rotate(2deg)}}
+
+@media(max-width:700px){
+  nav.main ul{display:none}
+  .topbar .wrap{flex-direction:column;gap:4px;font-size:.78rem;text-align:center}
+  .hero-ctas a.cta{flex:1;min-width:140px;text-align:center}
+  #bot-fab{bottom:calc(14px + env(safe-area-inset-bottom));right:14px;padding:10px 14px;font-size:.88rem}
+  #bot-panel{bottom:calc(70px + env(safe-area-inset-bottom));max-height:72vh}
+  #bot-log{height:min(280px,48vh)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div><b>Largest jet ski operator on the beach</b> · 50+ skis · 10 booths</div>
+    <div>Open Daily · <a href="tel:8502969123">(850) 296-9123</a></div>
+  </div>
+</div>
+
+<nav class="main">
+  <div class="wrap">
+    <div class="logo"><img src="dolphin.jpg" alt="Panhandle Watersports dolphin">PANHANDLE <span style="color:var(--sea)">WATERSPORTS</span></div>
+    <ul>
+      <li><a class="navlink" href="#ride">The Ride</a></li>
+      <li><a class="navlink" href="#island">Shell Island</a></li>
+      <li><a class="navlink" href="#book">Find Us</a></li>
+    </ul>
+    <a class="cta" href="#book">Ride Today</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-main">
+      <div class="hero-chips">
+        <span class="chip">🏄 Unguided Rides</span>
+        <span class="chip">🛥️ 50+ New Yamaha VX Skis</span>
+        <span class="chip">📍 10 Beach Booths</span>
+        <span class="chip">🛟 Life Jackets Included</span>
+      </div>
+      <h1>Right Behind Your Condo.<br><em>Dolphins Down The Shore.</em></h1>
+      <p class="lead">Hop on the latest Yamaha VX skis right on the sand at Panama City Beach. Half-hour blasts or full-hour Shell Island runs — no experience needed, no trailer, no drama.</p>
+      <div class="hero-ctas">
+        <a class="cta" href="#book">Grab A Ski</a>
+        <a class="cta ghost" href="tel:8502969123">Call (850) 296-9123</a>
+      </div>
+    </div>
+    <div class="hero-dolphin"><img src="dolphin.jpg" alt="Skippy the Panhandle Watersports dolphin"></div>
+  </div>
+</header>
+
+<section id="ride">
+  <div class="wrap">
+    <h2 class="sec">The Ride</h2>
+    <p class="sub">Unguided means your rules. Point it at the horizon, or hug the shoreline and cruise — every rental comes with safety gear and a quick briefing.</p>
+    <div class="grid3">
+      <div class="card"><span class="badge">30 MIN</span><h3>The Taste</h3><p>Half an hour of full-throttle fun — perfect between pool time and dinner.</p><ul><li>1 or 2 riders</li><li>Right on the beach</li><li>No experience needed</li></ul></div>
+      <div class="card"><span class="badge">MOST FUN PER MINUTE</span><h3>The Full Hour</h3><p>The classic: run the shoreline, find the dolphins, chase the horizon.</p><ul><li>1 or 2 riders</li><li>Shell Island run in reach</li><li>Wildlife sightings common</li></ul></div>
+      <div class="card"><span class="badge">LICENSE ON-SITE</span><h3>No License? No Problem</h3><p>Boating certificates issued right at the booths — good for a full year.</p><ul><li>Online course in ~20 min</li><li>Or get licensed at any booth</li><li>Born before 1988? Just ride</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <div class="big">50+ skis. 10 booths. Zero waiting on the sand.</div>
+    The largest jet ski fleet on Panama City Beach, refreshed with the latest-model <b>Yamaha VX series</b> every season — up to two riders per ski, stationed right on the beach behind the condos.
+  </div>
+</div>
+
+<section class="alt" id="island">
+  <div class="wrap">
+    <h2 class="sec">Shell Island Country</h2>
+    <p class="sub">Crystal-clear water, sandbars, and the locals everyone comes to see.</p>
+    <div class="grid4">
+      <div class="card"><span class="ico">🐬</span><h3>Dolphins</h3><p>Bottlenose pods cruise the channel daily. Ride slow along the shore and they come say what's up.</p></div>
+      <div class="card"><span class="ico">🐢</span><h3>Sea Turtles</h3><p>Keep an eye out — sightings happen on quiet stretches of the run.</p></div>
+      <div class="card"><span class="ico">🏝️</span><h3>Hidden Coves</h3><p>Sandy shores and coves you'll never find from the condo balcony.</p></div>
+      <div class="card"><span class="ico">☀️</span><h3>Perfect Weather</h3><p>PCB serves up rideable water nearly year-round. Bring sunscreen, not plans.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2 class="sec">Sand To Spray In Three Steps</h2>
+    <p class="sub">No trailer, no dock, no drama.</p>
+    <div class="grid3">
+      <div class="step"><div class="n">1</div><div><h3>Walk To The Booth</h3><p style="color:var(--muted);font-size:.93rem">We're right on the beach behind the condos — 312 Bay Shore Drive booth plus 10 locations up and down the sand.</p></div></div>
+      <div class="step"><div class="n">2</div><div><h3>Quick Briefing</h3><p style="color:var(--muted);font-size:.93rem">Life jackets on, safety rundown done in minutes. First-timers welcome — genuinely.</p></div></div>
+      <div class="step"><div class="n">3</div><div><h3>Blast Off</h3><p style="color:var(--muted);font-size:.93rem">Half hour or full hour. The Gulf is yours. Dolphins are downstream.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="book">
+  <div class="wrap">
+    <div class="grid2">
+      <div>
+        <h2 class="sec">Get On The Water</h2>
+        <p class="sub">Walk-ups welcome when skis are on the sand — or lock your slot ahead. Ask <b>Skippy</b>, our dolphin, bottom-right. He talks.</p>
+        <div class="card" style="margin-top:18px">
+          <h3>📍 Find Us</h3>
+          <p><b>Phone:</b> (850) 296-9123<br><b>Main Booth:</b> 312 Bay Shore Drive rentals booth, Panama City Beach, FL 32407<br><b>Locations:</b> 10 booths along the beach — right behind your condo<br><b>Requirements:</b> Boating cert if born on/after Jan 1, 1988 (issued on-site, good for a year)</p>
+        </div>
+      </div>
+      <form class="card" id="lead-form">
+        <h3 style="margin-bottom:16px">Hold My Ski</h3>
+        <div class="form-grid">
+          <div><label for="f-name">Name *</label><input id="f-name" required placeholder="Your name"></div>
+          <div><label for="f-phone">Phone *</label><input id="f-phone" type="tel" required placeholder="(850) 555-0123"></div>
+          <div><label for="f-len">Ride Length</label><select id="f-len"><option>30 minutes</option><option>1 hour</option><option>Not sure</option></select></div>
+          <div><label for="f-riders">Riders</label><select id="f-riders"><option>1</option><option>2</option><option>Whole crew</option></select></div>
+          <div><label for="f-date">Day</label><input id="f-date" type="date"></div>
+          <div><label for="f-time">Time</label><select id="f-time"><option>Morning</option><option>Midday</option><option>Afternoon</option><option>Flexible</option></select></div>
+          <div class="full"><label for="f-notes">Anything else?</label><textarea id="f-notes" rows="2" placeholder="First-timers, which condo you're near…"></textarea></div>
+          <div class="full"><button class="cta" type="submit" style="width:100%">Hold My Ski</button></div>
+        </div>
+        <p id="form-ok" style="display:none;color:#0a7a4e;font-weight:700;margin-top:12px">✓ You're penciled in — the booth confirms by text. (Demo: captured locally.)</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="demo-note">DEMO WEBSITE — Built by BlueColumn AI (bluecolumn.ai) to show Panhandle Watersports what a modern site with a talking AI dolphin could look like. Not affiliated with Panhandle Watersports.</div>
+
+<footer>
+  <div class="wrap">
+    <div class="grid4">
+      <div><h4>Panhandle Watersports</h4><p>The largest jet ski rental company on Panama City Beach. 50+ latest-model Yamaha VX skis, 10 beach booths.</p></div>
+      <div><h4>Rides</h4><ul><li>30-minute rentals</li><li>1-hour Shell Island runs</li><li>Unguided · 1–2 riders</li></ul></div>
+      <div><h4>Contact</h4><ul><li><a href="tel:8502969123">(850) 296-9123</a></li><li>312 Bay Shore Drive booth</li><li>Panama City Beach, FL 32407</li></ul></div>
+      <div><h4>Ready?</h4><p>The beach is calling.</p><a class="cta" href="#book">Ride Today</a></div>
+    </div>
+    <div class="foot-bottom">© 2026 Panhandle Watersports · Panama City Beach, FL</div>
+  </div>
+</footer>
+
+<!-- Skippy the dolphin — AUDIO BOT -->
+<button id="bot-fab" onclick="toggleBot()"><img src="dolphin.jpg" alt="Skippy"> Talk to Skippy</button>
+<div id="bot-panel" role="dialog" aria-label="Skippy chat">
+  <div class="bot-head"><img src="dolphin.jpg" alt="Skippy" id="bot-avatar"><div><b>Skippy 🐬</b><small>Talks · knows the beach · books rides</small></div><button id="bot-mute" onclick="toggleMute()" title="Voice on/off">🔊</button></div>
+  <div id="bot-log"></div>
+  <div class="bot-input">
+    <input id="bot-in" placeholder="Ask about dolphins, pricing…" aria-label="Message Skippy">
+    <button onclick="botSend()">Send</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   SKIPPY — DUPLICATABLE AUDIO BOT PROTOTYPE (BlueColumn AI)
+   To clone for another business:
+   1. Edit CONFIG below (name, phone, lines, intents).
+   2. Re-render the audio/*.mp3 pack from the CONFIG lines
+      (ElevenLabs batch script — key stays server-side).
+   3. Deploy. Done.
+   ═══════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  botName: "Skippy",
+  business: "Panhandle Watersports",
+  phone: "(850) 296-9123",
+  phoneRaw: "8502969123",
+  audioOn: true
+};
+/* Each intent: keywords, on-screen text, pre-rendered audio file */
+const INTENTS = [
+  {a:"price", k:["price","cost","how much","rate","half","hour","long"], t:"Rides run 30 minutes or a full hour — 1 or 2 riders, life jackets included. Half hour for the taste, the hour for the full Shell Island run. Grab the booth at 312 Bay Shore Drive or tap a booking below."},
+  {a:"license", k:["license","certificate","born","1988","permit","certifi"], t:"Quick Florida thing: born in 1988 or later? You need a boater certificate. Do the ~20-minute course online, or we issue your license right at the booth — and it's good for a whole year."},
+  {a:"dolphins", k:["dolphin","turtle","wildlife","shell island","animal","see"], t:"Oh, you're asking the right dolphin. The water near Shell Island is crystal clear and the dolphins cruise through all day — sea turtles too. Ride the shoreline slow and they'll come say what's up."},
+  {a:"location", k:["where","location","located","address","booth","condo","find you","directions"], t:"We're right on the beach behind the condos — main booth at 312 Bay Shore Drive, plus 10 booths up and down the sand with 50+ of the latest Yamaha VX skis. Wherever you're staying, there's one close by."},
+  {a:"book", k:["book","reserve","rent","hold","today","slot","sign up"], t:"Easy — half hour or full hour, 1 or 2 riders. Tell me your day below and I'll pencil you in; the booth confirms by text. Or call the crew at (850) 296-9123."},
+  {a:"thanks", k:["thank","thanks","cool","awesome","great","nice"], t:"Anytime, beach legend. See you on the water."},
+  {a:"greet", k:["hello","hi","hey","yo","sup","ahoy"], t:"Hey hey! Skippy here. Ask me about pricing, dolphins, Shell Island, licenses — or say book me and I'll hold your ski."}
+];
+const FALLBACK = {a:"fallback", t:"Good one. I know pricing, Shell Island, dolphins, licenses, and getting you booked. Try me on one of those — or call the crew at (850) 296-9123."};
+
+/* Audio engine: pre-rendered MP3 per intent; browser voice as fallback */
+let muted=false, currentAudio=null;
+const log=document.getElementById('bot-log'), botIn=document.getElementById('bot-in'), avatar=document.getElementById('bot-avatar');
+function playAudio(name){
+  if(muted)return;
+  try{
+    if(currentAudio){currentAudio.pause();}
+    currentAudio=new Audio('audio/'+name+'.mp3');
+    avatar.classList.add('talking');
+    currentAudio.onended=()=>avatar.classList.remove('talking');
+    currentAudio.play().catch(()=>avatar.classList.remove('talking'));
+  }catch(e){avatar.classList.remove('talking');}
+}
+function toggleMute(){muted=!muted;document.getElementById('bot-mute').textContent=muted?'🔇':'🔊';if(muted&&currentAudio)currentAudio.pause();}
+function el(t,cls){const d=document.createElement('div');d.className=cls;d.textContent=t;log.appendChild(d);log.scrollTop=log.scrollHeight;return d;}
+function opts(arr){const w=document.createElement('div');w.className='bot-opts';arr.forEach(a=>{const b=document.createElement('button');b.textContent=a;b.onclick=()=>botSend(a);w.appendChild(b)});log.appendChild(w);log.scrollTop=log.scrollHeight;}
+function toggleBot(){
+  const p=document.getElementById('bot-panel');p.classList.toggle('open');
+  if(log.children.length===0){const g=INTENTS.find(i=>i.a==='greet');el(g.t,'msg bot');playAudio('greet');opts(["Pricing","Dolphins 🐬","Do I need a license?","Where are you?"])}
+}
+function botSend(txt){
+  txt=(txt||botIn.value).trim();if(!txt)return;
+  el(txt,'msg user');botIn.value='';
+  const low=txt.toLowerCase();
+  const hit=INTENTS.find(i=>i.k.some(k=>low.includes(k)));
+  const r=hit||FALLBACK;
+  setTimeout(()=>{el(r.t,'msg bot');playAudio(r.a);
+    if(r.a==='book'){opts(["30 minutes","1 hour","Call (850) 296-9123"]);}
+  },380);
+}
+/* Lead form — demo captures locally; production wires to CRM/booking backend */
+const F=id=>document.getElementById(id);
+document.getElementById('lead-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  const lead={name:F('f-name').value,phone:F('f-phone').value,len:F('f-len').value,riders:F('f-riders').value,date:F('f-date').value,time:F('f-time').value,notes:F('f-notes').value,at:new Date().toISOString()};
+  const leads=JSON.parse(localStorage.getItem('pws_leads')||'[]');leads.push(lead);
+  localStorage.setItem('pws_leads',JSON.stringify(leads));
+  F('form-ok').style.display='block';e.target.reset();
+});
+botIn.addEventListener('keydown',e=>{if(e.key==='Enter')botSend();});
+</script>
+</body>
+</html>

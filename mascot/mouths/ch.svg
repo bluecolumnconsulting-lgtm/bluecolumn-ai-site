@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300">
+  <!-- Mouth overlay: "ch" viseme (sharp transient: ch, j, sh) -->
+  <rect x="110" y="109" width="20" height="8" rx="1" fill="#0f172a"/>
+  <circle cx="120" cy="113" r="2" fill="#0f172a"/>
+</svg>

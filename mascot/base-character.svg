@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300">
+  <defs>
+    <linearGradient id="botBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="botAccent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Shadow -->
+  <ellipse cx="120" cy="288" rx="60" ry="8" fill="rgba(0,0,0,0.15)"/>
+
+  <!-- Body -->
+  <rect x="85" y="145" width="70" height="100" rx="12" fill="url(#botBody)"/>
+
+  <!-- Chest accent panel -->
+  <rect x="100" y="160" width="40" height="30" rx="6" fill="rgba(255,255,255,0.12)"/>
+  <circle cx="120" cy="175" r="4" fill="rgba(255,255,255,0.3)"/>
+
+  <!-- Belt -->
+  <rect x="85" y="218" width="70" height="10" rx="3" fill="#1e293b"/>
+  <rect x="115" y="216" width="10" height="14" rx="2" fill="#f59e0b"/>
+
+  <!-- Left arm -->
+  <rect x="60" y="155" width="25" height="10" rx="5" fill="url(#botAccent)"/>
+  <rect x="55" y="160" width="15" height="50" rx="6" fill="url(#botAccent)"/>
+
+  <!-- Right arm -->
+  <rect x="155" y="155" width="25" height="10" rx="5" fill="url(#botAccent)"/>
+  <rect x="170" y="160" width="15" height="50" rx="6" fill="url(#botAccent)"/>
+
+  <!-- Left hand -->
+  <circle cx="62" cy="215" r="7" fill="rgba(255,255,255,0.15)"/>
+
+  <!-- Right hand -->
+  <circle cx="178" cy="215" r="7" fill="rgba(255,255,255,0.15)"/>
+
+  <!-- Neck -->
+  <rect x="112" y="132" width="16" height="15" rx="4" fill="#60a5fa"/>
+
+  <!-- Head -->
+  <ellipse cx="120" cy="95" rx="42" ry="45" fill="url(#botBody)"/>
+
+  <!-- Head accent band -->
+  <rect x="80" y="75" width="80" height="6" rx="3" fill="rgba(255,255,255,0.1)"/>
+
+  <!-- Antenna -->
+  <line x1="120" y1="50" x2="120" y2="35" stroke="#60a5fa" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="120" cy="32" r="4" fill="#60a5fa">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Eyes -->
+  <ellipse cx="105" cy="90" rx="8" ry="7" fill="#0f172a"/>
+  <ellipse cx="135" cy="90" rx="8" ry="7" fill="#0f172a"/>
+  <ellipse cx="107" cy="88" rx="3" ry="3" fill="#fff"/>
+  <ellipse cx="137" cy="88" rx="3" ry="3" fill="#fff"/>
+
+  <!-- Eyebrows -->
+  <path d="M96 82 Q105 77 114 82" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M126 82 Q135 77 144 82" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+  <!-- Cheeks -->
+  <ellipse cx="90" cy="102" rx="6" ry="3" fill="rgba(255,255,255,0.08)"/>
+  <ellipse cx="150" cy="102" rx="6" ry="3" fill="rgba(255,255,255,0.08)"/>
+
+  <!-- Mouth area (placeholder - overlays will cover this) -->
+  <rect x="98" y="105" width="44" height="20" rx="4" fill="#0f172a" opacity="0.3"/>
+</svg>

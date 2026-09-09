@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 474" width="500" height="474">
+  <defs>
+    <radialGradient id="mouthBg2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2a1008"/>
+      <stop offset="100%" stop-color="#4a2820"/>
+    </radialGradient>
+    <linearGradient id="upLip2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a07060"/>
+      <stop offset="100%" stop-color="#6c4440"/>
+    </linearGradient>
+    <linearGradient id="lowLip2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c5450"/>
+      <stop offset="100%" stop-color="#a07060"/>
+    </linearGradient>
+  </defs>
+  <!-- Narrow open "ee" mouth -->
+  <rect x="180" y="314" width="140" height="20" rx="6" fill="url(#mouthBg2)"/>
+  <!-- Upper teeth hint -->
+  <rect x="185" y="314" width="130" height="8" rx="1" fill="#ede0d6" opacity="0.7"/>
+  <!-- Upper lip - pulled back for "ee" -->
+  <path d="M160 315 Q180 308 220 312 Q250 310 280 312 Q320 308 340 315 Q320 312 280 314 Q250 313 220 314 Q180 312 160 315Z" 
+        fill="url(#upLip2)" stroke="#8a6058" stroke-width="0.5"/>
+  <!-- Lower lip - stretched -->
+  <rect x="165" y="334" width="170" height="8" rx="4" fill="url(#lowLip2)" stroke="#7c5450" stroke-width="0.5"/>
+  <!-- Nasolabial folds -->
+  <path d="M160 320 Q148 330 142 340" fill="none" stroke="#c08070" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  <path d="M340 320 Q352 330 358 340" fill="none" stroke="#c08070" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+</svg>

@@ -1,0 +1,19 @@
+# BlueColumn AI
+
+> BlueColumn is a persistent memory API for AI agents. Two endpoints, three lines of code, audio and document ingestion, plain English recall with citations.
+
+## Documentation
+- [Quickstart](https://bluecolumn.ai/docs/quickstart)
+- [API Reference](https://bluecolumn.ai/docs/api)
+- [Pricing](https://bluecolumn.ai/pricing)
+
+## Pricing
+- Free tier: 100 Memory Writes + 100 Memory Reads + 30 Audio Minutes per month
+- Pay-As-You-Go: $5, $10, $25 packs ($0.02/Write, $0.05/Read, $0.50/Audio Minute)
+- Developer: $49/month
+- Builder: $199/month
+
+## Optional
+- [Compare to Mem0](https://bluecolumn.ai/compare/mem0)
+- [Compare to Zep](https://bluecolumn.ai/compare/zep)
+- [Compare to Cloudflare Agent Memory](https://bluecolumn.ai/compare/cloudflare)
