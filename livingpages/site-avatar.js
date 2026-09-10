@@ -15,7 +15,7 @@
 
   /* Simli demo credentials (demo tier key, public demo widget) */
   var SIMLI_API_KEY = '5e2ucmvyrlmkapwg4hzyf';
-  var SIMLI_FACE_ID = '174c812d-94f0-4b28-a44b-9a1f693079fd';
+  var SIMLI_FACE_ID = 'tmp9i8bbq7c';
 
   var INTENTS = [
     {
