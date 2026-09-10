@@ -144,14 +144,14 @@
     if (muted) { setTimeout(botFinished, 400); return; }
     /* VIDEO MODE: stream the reply into the Simli avatar */
     if (videoMode.on && simliReady()) {
-      speakThroughSimli('audio/' + name + '.mp3');
+      speakThroughSimli('widget/audio/' + name + '.mp3');
       return;
     }
     /* AUDIO MODE: local playback + squish mouth */
     try {
       stopMouth();
       if (currentAudio) { currentAudio.pause(); }
-      currentAudio = new Audio('audio/' + name + '.mp3');
+      currentAudio = new Audio('widget/audio/' + name + '.mp3');
       avatar.classList.add('bc-talking');
       currentAudio.onended = botFinished;
       currentAudio.play().then(startMouth).catch(function () { botFinished(); });
