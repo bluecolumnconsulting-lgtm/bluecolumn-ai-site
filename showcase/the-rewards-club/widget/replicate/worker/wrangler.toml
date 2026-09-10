@@ -1,0 +1,23 @@
+# BC Replicate Proxy — wrangler.toml SKETCH (not deployed; needs Joe's go)
+# Deploy steps once approved:
+#   1. cd widget/replicate/worker
+#   2. npx wrangler secret put REPLICATE_API_TOKEN   # paste token, never commit it
+#   3. npx wrangler deploy
+# Cloudflare account (TOOLS.md): 6432d90627a768f5d79a2e53c4697b99
+
+name = "bc-replicate-proxy"
+main = "replicate-proxy.js"
+compatibility_date = "2026-09-01"
+account_id = "6432d90627a768f5d79a2e53c4697b99"
+
+# Optional KV namespace for the clip cache (phase 2):
+# 1. npx wrangler kv:namespace create CLIPS
+# 2. Uncomment and paste the returned id:
+# [[kv_namespaces]]
+# binding = "CLIPS"
+# id = "<kv-namespace-id>"
+
+# Optional: restrict to the GH Pages origin instead of '*'
+# (also update CORS_HEADERS['Access-Control-Allow-Origin'] in replicate-proxy.js)
+# [vars]
+# ALLOWED_ORIGIN = "https://<user>.github.io"

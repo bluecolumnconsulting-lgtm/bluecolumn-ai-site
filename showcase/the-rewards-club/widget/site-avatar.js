@@ -210,12 +210,14 @@
      Calls botFinished() once the avatar should be done speaking. */
   async function speakThroughSimli(url) {
     try {
+      if (window.BCReplicateBridge && window.BCReplicateBridge.speakAudioUrl(url)) { return; }
       var ab = await fetch(url).then(function (r) { return r.arrayBuffer(); });
       await simliStream(ab);
     } catch (e) { botFinished(); }
   }
 
   function speakTextThroughSimli(text) {
+    if (window.BCReplicateBridge && window.BCReplicateBridge.speakText(text)) { return; }
     ttsFetch(text).then(function (blob) { return blob.arrayBuffer(); }).then(function (ab) { return simliStream(ab); }).catch(function () { botFinished(); });
   }
 
