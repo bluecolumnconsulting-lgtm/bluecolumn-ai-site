@@ -15,12 +15,16 @@
 
   /* Simli demo credentials (demo tier key, public demo widget) */
   var SIMLI_API_KEY = '5e2ucmvyrlmkapwg4hzyf';
-  var SIMLI_FACE_ID = '174c812d-94f0-4b28-a44b-9a1f693079fd';
+  var SIMLI_FACE_ID = 'c65af549-9105-442a-92a3-dc6c89e34149';
 
   /* --- Live brain + dynamic voice (v2): same stack as Marina --- */
   var BRAIN_URL = 'https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/recall';
   var BRAIN_KEY = 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy';
-  var TTS_URL = 'https://api.elevenlabs.io/v1/text-to-speech/iLVmqjzCGGvqtMCk6vVQ?output_format=mp3_44100_128';
+  /* Voice: one-line swap when Joe sends the new ElevenLabs voice —
+     reads BCReplicateConfig.voiceId (set in index.html) so both the
+     Simli path and the Replicate bridge use the same voice. */
+  var TTS_VOICE = (window.BCReplicateConfig && window.BCReplicateConfig.voiceId) || 'iLVmqjzCGGvqtMCk6vVQ';
+  var TTS_URL = 'https://api.elevenlabs.io/v1/text-to-speech/' + TTS_VOICE + '?output_format=mp3_44100_128';
   var TTS_KEY = 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843';
 
   var INTENTS = [
