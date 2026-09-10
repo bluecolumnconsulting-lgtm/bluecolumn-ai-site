@@ -17,6 +17,12 @@
   var SIMLI_API_KEY = '5e2ucmvyrlmkapwg4hzyf';
   var SIMLI_FACE_ID = '174c812d-94f0-4b28-a44b-9a1f693079fd';
 
+  /* --- Live brain + dynamic voice (v2): same stack as Marina --- */
+  var BRAIN_URL = 'https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/recall';
+  var BRAIN_KEY = 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy';
+  var TTS_URL = 'https://api.elevenlabs.io/v1/text-to-speech/iLVmqjzCGGvqtMCk6vVQ?output_format=mp3_44100_128';
+  var TTS_KEY = 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843';
+
   var INTENTS = [
     {
       a: 'what',
@@ -94,14 +100,12 @@
     if (!currentAudio) { return; }
     try {
       audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-      if (!analyser) {
-        var src = audioCtx.createMediaElementSource(currentAudio);
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 256;
-        src.connect(analyser);
-        analyser.connect(audioCtx.destination);
-        mouthData = new Uint8Array(analyser.frequencyBinCount);
-      }
+      var src = audioCtx.createMediaElementSource(currentAudio);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      src.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      mouthData = new Uint8Array(analyser.frequencyBinCount);
     } catch (e) { /* analyser unavailable: CSS rhythm still applies */ }
     var tick = function () {
       if (!currentAudio || currentAudio.paused) { stopMouth(); return; }
@@ -207,6 +211,19 @@
   async function speakThroughSimli(url) {
     try {
       var ab = await fetch(url).then(function (r) { return r.arrayBuffer(); });
+      await simliStream(ab);
+    } catch (e) { botFinished(); }
+  }
+
+  function speakTextThroughSimli(text) {
+    ttsFetch(text).then(function (blob) { return blob.arrayBuffer(); }).then(function (ab) { return simliStream(ab); }).catch(function () { botFinished(); });
+  }
+
+  var simliFeed = null; /* one voice at a time: newest speech cancels the active feed */
+  async function simliStream(ab) {
+    try {
+      if (simliFeed) { clearInterval(simliFeed.iv); simliFeed = null; }
+      try { if (currentAudio) { currentAudio.pause(); } } catch (eA) {}
       var decodeCtx = new (window.AudioContext || window.webkitAudioContext)();
       var decoded = await decodeCtx.decodeAudioData(ab);
       if (decodeCtx.close) { decodeCtx.close(); }
@@ -226,15 +243,19 @@
       }
       var bytes = new Uint8Array(pcm.buffer);
       var CHUNK = 6000, pos = 0;
+      var feed = { iv: null };
+      simliFeed = feed;
       var iv = setInterval(function () {
-        if (!simliReady()) { clearInterval(iv); botFinished(); return; }
-        if (pos >= bytes.length) { clearInterval(iv); return; }
+        if (simliFeed !== feed) { clearInterval(iv); return; } /* superseded by newer speech */
+        if (!simliReady()) { clearInterval(iv); if (simliFeed === feed) { simliFeed = null; } botFinished(); return; }
+        if (pos >= bytes.length) { clearInterval(iv); if (simliFeed === feed) { simliFeed = null; } return; }
         var end = Math.min(pos + CHUNK, bytes.length);
-        try { simliClient.sendAudioData(bytes.slice(pos, end)); } catch (e) { clearInterval(iv); botFinished(); }
+        try { simliClient.sendAudioData(bytes.slice(pos, end)); } catch (e) { clearInterval(iv); if (simliFeed === feed) { simliFeed = null; } botFinished(); }
         pos = end;
       }, 175);
+      feed.iv = iv;
       /* schedule the end-of-speech hook from real audio duration */
-      setTimeout(function () { if (speaking) { botFinished(); } }, durMs + 900);
+      setTimeout(function () { if (speaking && simliFeed === feed) { botFinished(); } }, durMs + 900);
     } catch (e) { botFinished(); }
   }
 
@@ -418,19 +439,64 @@
     input.value = '';
     squishPulse();
     setThinking(true);
-    var r = matchIntent(txt) || FALLBACK;
-    setTimeout(function () {
+    var t = el('Your concierge is thinking\u2026', 'bc-msg bc-bot bc-typing');
+    askBrain(txt).then(function (r) {
+      if (t.parentNode) { t.parentNode.removeChild(t); }
       setThinking(false);
       el(r.t, 'bc-msg bc-bot');
       speaking = true;
-      playAudio(r.a);
-      if (r.a === 'invite' || r.a === 'membership') {
+      playReply(r);
+      if (!r.canned || r.a === 'invite' || r.a === 'membership') {
         opts([
           { label: 'Request your invitation' },
           { label: 'What is Venture Club?' }
         ]);
       }
-    }, 620);
+    });
+  }
+
+  /* LIVE BRAIN: BlueColumn recall answers any Venture Club question in
+     real time. Canned intents remain the offline fallback only. */
+  function askBrain(text) {
+    var canned = matchIntent(text) || FALLBACK;
+    return fetch(BRAIN_URL, {
+      method: 'POST',
+      headers: { 'Authorization': '***' + BRAIN_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q: 'Venture Club rewards community customer question: ' + text })
+    }).then(function (res) { return res.json(); }).then(function (d) {
+      var a = (d && d.answer ? String(d.answer) : '').trim();
+      if (!a || /not in available context/i.test(a) || a.length < 8) { return { t: canned.t, a: canned.a, canned: true }; }
+      return { t: a, canned: false };
+    }).catch(function () { return { t: canned.t, a: canned.a, canned: true }; });
+  }
+
+  /* Reply audio: real TTS for dynamic answers (squish mouth in audio
+     mode, streamed into the Simli avatar in video mode). Canned MP3 is
+     the last-resort fallback and NEVER overlaps the avatar voice. */
+  function playReply(r) {
+    if (muted) { setTimeout(botFinished, 400); return; }
+    if (videoMode.on && simliReady()) { speakTextThroughSimli(r.t); return; }
+    ttsFetch(r.t).then(function (blob) {
+      try {
+        stopMouth();
+        if (currentAudio) { currentAudio.pause(); }
+        currentAudio = new Audio(URL.createObjectURL(blob));
+        avatar.classList.add('bc-talking');
+        currentAudio.onended = botFinished;
+        currentAudio.play().then(startMouth).catch(function () { botFinished(); });
+      } catch (e2) { botFinished(); }
+    }).catch(function () {
+      if (videoMode.on && simliReady()) { botFinished(); return; }
+      playAudio(r.canned ? r.a : 'greet');
+    });
+  }
+
+  function ttsFetch(text) {
+    return fetch(TTS_URL, {
+      method: 'POST',
+      headers: { 'xi-api-key': TTS_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text, model_id: 'eleven_flash_v2_5' })
+    }).then(function (res) { if (!res.ok) { throw new Error('tts ' + res.status); } return res.blob(); });
   }
 
   function openPanel() {

@@ -244,3 +244,6 @@
   50% { opacity: .7; transform: scale(1.15); }
 }
 
+
+/* v2: typing indicator */
+.bc-typing { opacity: .6; font-style: italic; }
