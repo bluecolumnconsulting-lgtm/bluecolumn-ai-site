@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reserve Your OttoMedic — Request an Assessment</title>
+<meta name="description" content="Request your OttoMedic assessment. Tell us about your reef system and we'll confirm fit, fittings, and water level requirements for your build.">
+<style>
+  :root {
+    --bg: #0b1220;
+    --surface: #121a2b;
+    --border: rgba(148, 197, 255, .14);
+    --text: #e8eefc;
+    --muted: #9fb0cc;
+    --brand: #38bdf8;
+    --brand2: #8b5cf6;
+    --ok: #34d399;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background:
+      radial-gradient(900px 500px at 85% -10%, rgba(56,189,248,.14), transparent 60%),
+      radial-gradient(700px 420px at 10% 110%, rgba(139,92,246,.12), transparent 60%),
+      var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    line-height: 1.55;
+  }
+  .nav { max-width: 760px; margin: 0 auto; padding: 18px 20px 0; }
+  .nav a { color: var(--muted); text-decoration: none; font-size: 14px; }
+  .nav a:hover { color: var(--text); }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 28px 20px 70px; }
+  .chip {
+    display: inline-block; font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--brand); border: 1px solid rgba(56,189,248,.35); border-radius: 999px;
+    padding: 5px 14px; margin-bottom: 18px; background: rgba(56,189,248,.06);
+  }
+  h1 {
+    font-size: clamp(28px, 5vw, 40px); line-height: 1.15; margin-bottom: 12px;
+    background: linear-gradient(90deg, #7dd3fc, #a78bfa);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { color: var(--muted); font-size: 16px; margin-bottom: 28px; }
+  form { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 26px 22px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 16px 0 6px; }
+  label:first-of-type { margin-top: 0; }
+  input, select, textarea {
+    width: 100%; background: #0d1526; border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); padding: 12px 13px; font-size: 15px; font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: rgba(56,189,248,.55); }
+  textarea { min-height: 90px; resize: vertical; }
+  button {
+    width: 100%; margin-top: 22px; border: none; cursor: pointer;
+    background: linear-gradient(90deg, var(--brand), var(--brand2));
+    color: #071018; font-weight: 700; font-size: 16px; padding: 14px; border-radius: 12px;
+  }
+  button:hover { filter: brightness(1.08); }
+  button:disabled { opacity: .6; cursor: wait; }
+  .fine { font-size: 12.5px; color: var(--muted); margin-top: 12px; text-align: center; }
+  #done {
+    display: none; background: var(--surface); border: 1px solid rgba(52,211,153,.35);
+    border-radius: 18px; padding: 34px 26px; text-align: center;
+  }
+  #done h2 { color: var(--ok); margin-bottom: 10px; font-size: 22px; }
+  #done p { color: var(--muted); font-size: 15px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <nav class="nav"><a href="/showcase/project-home-spark/">&larr; Back to OttoMedic</a></nav>
+  <div class="wrap">
+    <div id="form-view">
+      <span class="chip">Reef Specialist Assessment</span>
+      <h1>Reserve Your OttoMedic</h1>
+      <p class="sub">Tell us about your system. We'll confirm OttoMedic can handle your bioload and walk you through the exact fittings and water level requirements for your build.</p>
+      <form id="om-form">
+        <label for="f-name">Name</label>
+        <input id="f-name" name="name" required autocomplete="name" placeholder="Your name">
+
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+
+        <div class="row">
+          <div>
+            <label for="f-tank">Tank size</label>
+            <select id="f-tank" name="tank_size" required>
+              <option value="" disabled selected>Select…</option>
+              <option>Under 100 gallons</option>
+              <option>100–200 gallons</option>
+              <option>200–400 gallons</option>
+              <option>400+ gallons</option>
+            </select>
+          </div>
+          <div>
+            <label for="f-skimmer">Current skimmer</label>
+            <input id="f-skimmer" name="current_skimmer" placeholder="e.g. Vertex Alpha 200">
+          </div>
+        </div>
+
+        <label for="f-notes">Stocking &amp; feeding (optional)</label>
+        <textarea id="f-notes" name="notes" placeholder="Heavy SPS feeding, fish list, anything we should know…"></textarea>
+
+        <button type="submit" id="om-submit">Request My Assessment</button>
+        <p class="fine">No spam. A reef specialist replies with fit, fittings, and water level requirements for your build.</p>
+      </form>
+    </div>
+    <div id="done">
+      <h2>&#10003; Request received</h2>
+      <p>Your assessment request is in. A reef specialist will reply with confirmation that OttoMedic can handle your bioload — plus exact fittings and water level requirements for your build.</p>
+      <p style="margin-top:18px"><a href="/showcase/project-home-spark/" style="color:var(--brand)">&larr; Back to OttoMedic</a></p>
+    </div>
+  </div>
+  <script>
+    var form = document.getElementById('om-form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = document.getElementById('om-submit');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      var data = {
+        name: document.getElementById('f-name').value.trim(),
+        email: document.getElementById('f-email').value.trim(),
+        tank: document.getElementById('f-tank').value,
+        skimmer: document.getElementById('f-skimmer').value.trim() || 'not specified',
+        notes: document.getElementById('f-notes').value.trim() || 'none',
+        page: 'OttoMedic reserve request'
+      };
+      fetch('https://formsubmit.co/ajax/bluecolumnconsulting@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function (r) {
+        if (!r.ok) { throw new Error('send failed'); }
+        document.getElementById('form-view').style.display = 'none';
+        document.getElementById('done').style.display = 'block';
+      }).catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Try again';
+      });
+    });
+  </script>
+</body>
+</html>

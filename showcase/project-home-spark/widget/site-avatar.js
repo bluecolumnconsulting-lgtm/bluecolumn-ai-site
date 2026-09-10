@@ -431,8 +431,8 @@
       playAudio(r.a);
       if (r.a === 'prevents' || r.a === 'setup') {
         opts([
-          { label: 'How does it work?' },
-          { label: 'Tell me about bioload handling' }
+          { label: 'Reserve yours — free assessment', href: '/showcase/project-home-spark/request/' },
+          { label: 'How does it work?' }
         ]);
       }
     }, 620);
