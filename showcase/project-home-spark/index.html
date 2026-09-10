@@ -28,5 +28,36 @@
 
   <body>
     <div id="root"></div>
-  </body>
+    <!-- OttoMedic - reef specialist demo widget -->
+  <link rel="stylesheet" href="./widget/widget.css">
+  <button id="bc-fab" aria-expanded="false" aria-controls="bc-panel">
+    <img src="widget/bluecolumn-avatar.png" alt="The Blue Column" id="bc-avatar" />
+    OttoMedic Reef Specialist
+  </button>
+  <div id="bc-panel" role="dialog" aria-label="OttoMedic reef specialist assistant">
+    <div class="bc-head">
+      <img src="widget/bluecolumn-avatar.png" alt="" aria-hidden="true" />
+      <div class="bc-head-t">
+        <b>The Blue Column</b>
+        <small>Demo - BlueColumn AI assistant</small>
+      </div>
+      <button id="bc-video" title="Talking video avatar" aria-label="Toggle video avatar">&#127909;</button>
+      <button id="bc-mute" title="Voice on" aria-label="Toggle voice">&#128266;</button>
+      <button id="bc-close" title="Close" aria-label="Close chat">&#10005;</button>
+    </div>
+    <div id="bc-video-wrap" aria-hidden="true">
+      <span id="bc-video-live"><i></i>LIVE</span>
+      <video id="bc-video-el" autoplay playsinline muted></video>
+      <audio id="bc-simli-audio" autoplay></audio>
+    </div>
+    <div id="bc-log" aria-live="polite"></div>
+    <div class="bc-input">
+      <input id="bc-in" placeholder="Ask about Living Pages..." aria-label="Message the Blue Column" />
+      <button id="bc-mic" title="Talk hands-free" aria-label="Talk hands-free">&#127908;</button>
+      <button id="bc-send">Send</button>
+    </div>
+  </div>
+  <script src="./widget/vendor/simli-client.js"></script>
+  <script src="./widget/site-avatar.js"></script>
+</body>
 </html>
