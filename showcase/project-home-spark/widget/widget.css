@@ -399,3 +399,18 @@
 
 /* typing indicator */
 .bc-typing { opacity: .6; font-style: italic; }
+
+
+/* ---------- v12: video stage — full frame, NEVER crops the face ---------- */
+#bc-panel.bc-video-mode #bc-video-el {
+  object-fit: contain;
+  object-position: center top;
+  height: min(68vh, 640px);
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-el { object-fit: contain; object-position: center top; height: min(62vh, 560px); width: auto; max-width: 100%; }
+}

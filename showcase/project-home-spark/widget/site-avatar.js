@@ -208,6 +208,24 @@
      VIDEO AVATAR (Simli WebRTC)
      ============================================================ */
   var videoMode = { on: false };
+
+  /* v12: size the video stage to the stream's REAL aspect ratio so the
+     full frame always fits — face never cropped, no letterboxing. */
+  function fitVideoStage() {
+    try {
+      var w = videoEl.videoWidth, h = videoEl.videoHeight;
+      if (!w || !h) { return; }
+      var ar = w / h;
+      var maxH = Math.min(window.innerHeight * 0.7, 660);
+      var maxW = (videoWrap && videoWrap.clientWidth) || 520;
+      var dw = Math.min(maxW, maxH * ar);
+      var dh = dw / ar;
+      videoEl.style.width = Math.round(dw) + 'px';
+      videoEl.style.height = Math.round(dh) + 'px';
+    } catch (e) { /* keep CSS defaults */ }
+  }
+  videoEl.addEventListener('loadedmetadata', fitVideoStage);
+  window.addEventListener('resize', function () { if (videoMode.on) { fitVideoStage(); } });
   var videoStarting = false;   /* true while Simli connects — local MP3 output suppressed so the two agents never talk over each other */
   var simliClient = null;
 
