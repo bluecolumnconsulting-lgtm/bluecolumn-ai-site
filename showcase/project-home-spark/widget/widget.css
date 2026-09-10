@@ -283,3 +283,16 @@
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: .85; transform: scale(1.06); }
 }
+
+/* ---------- Marina v4: bigger, more centered ---------- */
+#bc-fab { right: 44px; bottom: 26px; }
+#bc-avatar {
+  width: 112px;
+  height: 112px;
+  border-width: 4px;
+  object-position: center 22%;
+}
+@media (max-width: 700px) {
+  #bc-fab { right: 26px; bottom: 22px; }
+  #bc-avatar { width: 96px; height: 96px; }
+}
