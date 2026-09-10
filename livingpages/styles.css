@@ -620,3 +620,26 @@ img { max-width: 100%; display: block; }
   #bc-panel { bottom: calc(66px + env(safe-area-inset-bottom)); right: 14px; width: calc(100vw - 28px); max-height: 68vh; }
   #bc-log { height: min(240px, 44vh); }
 }
+
+/* ---------- Video avatar mode (Simli) ---------- */
+#bc-video { font-size: 15px; }
+#bc-video-wrap { display: none; }
+#bc-panel.bc-video-mode #bc-video-wrap {
+  display: block;
+  position: relative;
+  background: #0f0f14;
+  border-bottom: 1px solid var(--border-color);
+}
+#bc-panel.bc-video-mode #bc-video-el {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 240px;
+  object-fit: cover;
+  display: block;
+}
+#bc-panel.bc-video-mode #bc-log { height: 190px; }
+#bc-panel.bc-video-mode .bc-head img { display: none; }
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-el { max-height: 200px; }
+  #bc-panel.bc-video-mode #bc-log { height: 150px; }
+}

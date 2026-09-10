@@ -401,8 +401,13 @@
         <b>The Blue Column</b>
         <small>Demo - BlueColumn AI assistant</small>
       </div>
+      <button id="bc-video" title="Talking video avatar" aria-label="Toggle video avatar">&#127909;</button>
       <button id="bc-mute" title="Voice on" aria-label="Toggle voice">&#128266;</button>
       <button id="bc-close" title="Close" aria-label="Close chat">&#10005;</button>
+    </div>
+    <div id="bc-video-wrap" aria-hidden="true">
+      <video id="bc-video-el" autoplay playsinline muted></video>
+      <audio id="bc-simli-audio" autoplay></audio>
     </div>
     <div id="bc-log" aria-live="polite"></div>
     <div class="bc-input">
@@ -411,6 +416,7 @@
     </div>
   </div>
 
+  <script src="/livingpages/vendor/simli-client.js"></script>
   <script src="/livingpages/site-avatar.js"></script>
   <script src="/livingpages/script.js"></script>
 </body>
