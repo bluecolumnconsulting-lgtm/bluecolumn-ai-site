@@ -48,7 +48,23 @@
     }
   }
   </script>
-  <script type="module" crossorigin src="/assets/index-BmiVaa3Z.js"></script>
+  <script>
+  /* Smart 404 v2 v2: route known aliases to the right page instead of dead-ending */
+  (function () {
+    var p = decodeURIComponent(window.location.pathname).toLowerCase().replace(/\/+$/, '');
+    var routes = [
+      [/venture[-_]?club|adventure[-_]?club|rewards[-_]?club|the-rewards-club|^\/(club|venture|rewards)$/, '/showcase/the-rewards-club/'],
+      [/otto[-_]?medic|ottmedic|home[-_]?spark|reef|skimmer|^\/(reef|reefclub)$/, '/showcase/project-home-spark/'],
+      [/living[-_]?pages?|smart[-_]?landing|smart[-_]?page|^\/(pages|livingpages)$/, '/livingpages/'],
+      [/fence[-_]?craft|fencecraft|fence/, '/showcase/fence-craft-hub/'],
+      [/^\/(request|reserve|assessment)$/, '/showcase/project-home-spark/request/']
+    ];
+    for (var i = 0; i < routes.length; i++) {
+      if (routes[i][0].test(p)) { window.location.replace(routes[i][1]); return; }
+    }
+  })();
+</script>
+<script type="module" crossorigin src="/assets/index-BmiVaa3Z.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-Bh5QsehE.css">
 </head>
 
