@@ -627,19 +627,52 @@ img { max-width: 100%; display: block; }
 #bc-panel.bc-video-mode #bc-video-wrap {
   display: block;
   position: relative;
-  background: #0f0f14;
-  border-bottom: 1px solid var(--border-color);
+  background: #171922;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(15,17,28,.45);
+  max-width: 620px;
+  margin: 10px auto;
 }
 #bc-panel.bc-video-mode #bc-video-el {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  max-height: 240px;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
+  object-position: center 30%;
   display: block;
+}
+#bc-video-live {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(10,12,18,.72);
+  color: #e8ecf5;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+#bc-video-live i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: bc-live-pulse 1.4s ease-in-out infinite;
+}
+@keyframes bc-live-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,.55); }
+  50% { opacity: .65; box-shadow: 0 0 0 5px rgba(34,197,94,0); }
 }
 #bc-panel.bc-video-mode #bc-log { height: 190px; }
 #bc-panel.bc-video-mode .bc-head img { display: none; }
 @media (max-width: 700px) {
-  #bc-panel.bc-video-mode #bc-video-el { max-height: 200px; }
+  #bc-panel.bc-video-mode #bc-video-el { height: clamp(220px, 48vw, 280px); aspect-ratio: auto; }
+  #bc-panel.bc-video-mode #bc-video-wrap { margin: 8px; }
   #bc-panel.bc-video-mode #bc-log { height: 150px; }
 }
