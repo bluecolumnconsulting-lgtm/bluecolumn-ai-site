@@ -231,8 +231,11 @@
     ttsFetch(text).then(function (blob) { return blob.arrayBuffer(); }).then(function (ab) { return simliStream(ab); }).catch(function () { botFinished(); });
   }
 
+  var simliFeed = null; /* v14: one voice at a time — newest speech cancels the active feed */
   async function simliStream(ab) {
     try {
+      if (simliFeed) { clearInterval(simliFeed.iv); simliFeed = null; }
+      try { if (currentAudio) { currentAudio.pause(); } } catch (eA) {}
       var decodeCtx = new (window.AudioContext || window.webkitAudioContext)();
       var decoded = await decodeCtx.decodeAudioData(ab);
       if (decodeCtx.close) { decodeCtx.close(); }
@@ -252,15 +255,19 @@
       }
       var bytes = new Uint8Array(pcm.buffer);
       var CHUNK = 6000, pos = 0;
+      var feed = { iv: null };
+      simliFeed = feed;
       var iv = setInterval(function () {
-        if (!simliReady()) { clearInterval(iv); botFinished(); return; }
-        if (pos >= bytes.length) { clearInterval(iv); return; }
+        if (simliFeed !== feed) { clearInterval(iv); return; } /* superseded by newer speech */
+        if (!simliReady()) { clearInterval(iv); if (simliFeed === feed) { simliFeed = null; } botFinished(); return; }
+        if (pos >= bytes.length) { clearInterval(iv); if (simliFeed === feed) { simliFeed = null; } return; }
         var end = Math.min(pos + CHUNK, bytes.length);
-        try { simliClient.sendAudioData(bytes.slice(pos, end)); } catch (e) { clearInterval(iv); botFinished(); }
+        try { simliClient.sendAudioData(bytes.slice(pos, end)); } catch (e) { clearInterval(iv); if (simliFeed === feed) { simliFeed = null; } botFinished(); }
         pos = end;
       }, 175);
+      feed.iv = iv;
       /* schedule the end-of-speech hook from real audio duration */
-      setTimeout(function () { if (speaking) { botFinished(); } }, durMs + 900);
+      setTimeout(function () { if (speaking && simliFeed === feed) { botFinished(); } }, durMs + 900);
     } catch (e) { botFinished(); }
   }
 
@@ -297,6 +304,7 @@
       await simliClient.start();
     } catch (e1) {
       try { if (simliClient && simliClient.stop) { simliClient.stop(); } } catch (e) {}
+      try { if (simliClient && simliClient.close) { simliClient.close(); } } catch (e) {} /* v14: kill leaked transport */
       simliClient = makeClient('p2p');
       await simliClient.start();
     }
@@ -496,7 +504,10 @@
         currentAudio.onended = botFinished;
         currentAudio.play().then(startMouth).catch(function () { botFinished(); });
       } catch (e2) { botFinished(); }
-    }).catch(function () { playAudio(r.canned ? r.a : 'greet'); });
+    }).catch(function () {
+      if (videoMode.on && simliReady()) { botFinished(); return; } /* v14: never overlap the avatar voice */
+      playAudio(r.canned ? r.a : 'greet');
+    });
   }
 
   function ttsFetch(text) {
