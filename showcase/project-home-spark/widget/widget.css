@@ -380,3 +380,22 @@
   #bc-panel.bc-video-mode #bc-video-el { height: min(56vh, 520px); }
   #bc-panel.bc-video-mode #bc-log { height: 92px; }
 }
+
+/* ---------- v11: video stage fits the stream — portrait, waist-up ---------- */
+#bc-panel.bc-video-mode #bc-video-wrap { max-width: 520px; margin: 10px auto; }
+#bc-panel.bc-video-mode #bc-video-el {
+  height: min(64vh, 620px);
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;
+  margin: 0 auto;
+  display: block;
+}
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-el { height: min(58vh, 540px); aspect-ratio: 3 / 4; width: auto; object-fit: cover; }
+}
+
+/* typing indicator */
+.bc-typing { opacity: .6; font-style: italic; }

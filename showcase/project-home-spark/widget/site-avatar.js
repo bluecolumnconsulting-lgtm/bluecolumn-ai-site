@@ -17,6 +17,12 @@
   var SIMLI_API_KEY = '5e2ucmvyrlmkapwg4hzyf';
   var SIMLI_FACE_ID = '5fc23ea5-8175-4a82-aaaf-cdd8c88543dc';
 
+  /* --- Real-time brain + voice (v11): no more set recordings --- */
+  var BRAIN_URL = 'https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/recall';
+  var BRAIN_KEY = 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy';
+  var TTS_URL = 'https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL?output_format=mp3_44100_128';
+  var TTS_KEY = 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843';
+
   var INTENTS = [
     {
       a: 'what',
@@ -215,6 +221,16 @@
   async function speakThroughSimli(url) {
     try {
       var ab = await fetch(url).then(function (r) { return r.arrayBuffer(); });
+      await simliStream(ab);
+    } catch (e) { botFinished(); }
+  }
+
+  function speakTextThroughSimli(text) {
+    ttsFetch(text).then(function (blob) { return blob.arrayBuffer(); }).then(function (ab) { return simliStream(ab); }).catch(function () { botFinished(); });
+  }
+
+  async function simliStream(ab) {
+    try {
       var decodeCtx = new (window.AudioContext || window.webkitAudioContext)();
       var decoded = await decodeCtx.decodeAudioData(ab);
       if (decodeCtx.close) { decodeCtx.close(); }
@@ -431,19 +447,62 @@
     input.value = '';
     squishPulse();
     setThinking(true);
-    var r = matchIntent(txt) || FALLBACK;
-    setTimeout(function () {
+    var t = el('Marina is thinking…', 'bc-msg bc-bot bc-typing');
+    askBrain(txt).then(function (r) {
+      if (t.parentNode) { t.parentNode.removeChild(t); }
       setThinking(false);
       el(r.t, 'bc-msg bc-bot');
       speaking = true;
-      playAudio(r.a);
-      if (r.a === 'prevents' || r.a === 'setup') {
+      playReply(r);
+      if (!r.canned) {
+        opts([{ label: 'Reserve yours — free assessment', href: '/showcase/project-home-spark/request/' }]);
+      } else if (r.a === 'prevents' || r.a === 'setup') {
         opts([
           { label: 'Reserve yours — free assessment', href: '/showcase/project-home-spark/request/' },
           { label: 'How does it work?' }
         ]);
       }
-    }, 620);
+    });
+  }
+
+  /* LIVE BRAIN: BlueColumn recall answers any question about the
+     product in real time. Canned intents remain the offline fallback. */
+  function askBrain(text) {
+    var canned = matchIntent(text) || FALLBACK;
+    return fetch(BRAIN_URL, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + BRAIN_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q: 'OttoMedic reef skimmer customer question: ' + text })
+    }).then(function (res) { return res.json(); }).then(function (d) {
+      var a = (d && d.answer ? String(d.answer) : '').trim();
+      if (!a || /not in available context/i.test(a) || a.length < 8) { return { t: canned.t, a: canned.a, canned: true }; }
+      return { t: a, canned: false };
+    }).catch(function () { return { t: canned.t, a: canned.a, canned: true }; });
+  }
+
+  /* Reply audio: real TTS in audio mode (squish mouth), streamed into
+     the Simli avatar in video mode; canned MP3 as last-resort fallback. */
+  function playReply(r) {
+    if (muted || videoStarting) { setTimeout(botFinished, 400); return; }
+    if (videoMode.on && simliReady()) { speakTextThroughSimli(r.t); return; }
+    ttsFetch(r.t).then(function (blob) {
+      try {
+        stopMouth();
+        if (currentAudio) { currentAudio.pause(); }
+        currentAudio = new Audio(URL.createObjectURL(blob));
+        avatar.classList.add('bc-talking');
+        currentAudio.onended = botFinished;
+        currentAudio.play().then(startMouth).catch(function () { botFinished(); });
+      } catch (e2) { botFinished(); }
+    }).catch(function () { playAudio(r.canned ? r.a : 'greet'); });
+  }
+
+  function ttsFetch(text) {
+    return fetch(TTS_URL, {
+      method: 'POST',
+      headers: { 'xi-api-key': TTS_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text, model_id: 'eleven_flash_v2_5' })
+    }).then(function (res) { if (!res.ok) { throw new Error('tts ' + res.status); } return res.blob(); });
   }
 
   function openPanel() {
