@@ -20,56 +20,46 @@
   var INTENTS = [
     {
       a: 'what',
-      k: ['what is', 'living page', 'livingpage', 'how does it work', 'what does it do', 'explain'],
-      t: 'A Living Page is a website that talks with visitors instead of making them fill out forms. It answers questions, qualifies leads, and books appointments automatically — 24/7. This page you are on right now is a demo of exactly that.'
+      k: ['what is', 'venture club', 'what\u2019s', 'whats', 'about', 'tell me', 'how does it work', 'community', 'club'],
+      t: 'Venture Club is an invite-only rewards community for elite members. You contribute, every dollar becomes a point, and you unlock exclusive rewards, weekly commissions, and VIP experiences reserved for the inner circle.'
     },
     {
-      a: 'signup',
-      k: ['sign up', 'signup', 'sign-up', 'get started', 'register', 'create account', 'my account', 'build my', 'get one'],
-      t: 'Signing up is simple: every BlueColumn account includes a Living Page. Click Create your free account, register with your email, and your Living Page goes live with it. No card required.'
+      a: 'points',
+      k: ['point', 'dollar', 'rewards bank', 'redeem', 'convert', 'earn'],
+      t: 'The math is simple. Every dollar you contribute equals one point in your rewards bank. Watch your points grow, then redeem them for luxury experiences, travel, merchandise, and member-only perks.'
     },
     {
-      a: 'cost',
-      k: ['price', 'cost', 'how much', 'pricing', 'rate', 'plan', 'essential', 'lead engine', 'fee', 'expensive'],
-      t: 'Every BlueColumn account includes a Living Page — free to start, no card required. Prefer we build and manage everything for you? AlwaysOn Essential is 497 setup plus 97 a month, done for you.'
+      a: 'commissions',
+      k: ['commission', 'weekly', 'passive', 'income', 'five percent', '5%', 'money'],
+      t: 'Premium members earn five percent weekly commissions on their contributions. Real passive income, week after week, while your points keep building.'
     },
     {
-      a: 'setup',
-      k: ['fast', 'set up', 'how long', 'timeline', 'launch', 'live', 'weeks', 'days', 'onboard'],
-      t: 'About 30 days end to end. Onboarding in week one, training in weeks two and three, then live with monitoring in week four. We handle the build, the run, and the management the whole way.'
+      a: 'invite',
+      k: ['invite', 'invitation', 'join', 'request', 'member', 'refer', 'friend'],
+      t: 'Venture Club is invite-only. Request your invitation from this page to start your journey. Already a member? Invite fellow members and earn bonus points. Grow together, win together.'
     },
     {
-      a: 'examples',
-      k: ['example', 'show me', 'demo', 'portfolio', 'see one', 'proof', 'who', 'built'],
-      t: 'See the Proof of Work section on this page: The Rewards Club, Project Home Spark, and Fence Craft Hub are live now, plus niche demos like Panhandle Watersports.'
-    },
-    {
-      a: 'channels',
-      k: ['channel', 'text', 'email', 'phone', 'sms', 'follow up', 'follow-up', 'call'],
-      t: 'Your Living Page talks with customers on your website, then follows up by text, email, or phone. One brain, every channel — and it remembers every conversation.'
-    },
-    {
-      a: 'bluecolumn',
-      k: ['bluecolumn', 'blue column', 'memory', 'remember', 'smarter', 'intelligence'],
-      t: 'BlueColumn is the memory layer underneath every Living Page. It remembers every conversation, so your page gets smarter every single day.'
+      a: 'membership',
+      k: ['membership', 'tier', 'plan', 'standard', 'elite', 'premium', 'level', 'cost', 'price'],
+      t: 'There are two paths. Standard gives you entry to the rewards platform with a one-to-one dollar to point conversion. Elite unlocks the full membership experience. Pick the one that aligns with your ambitions.'
     },
     {
       a: 'greet',
-      k: ['hello', 'hi', 'hey', 'yo', 'sup', 'who are you', 'your name'],
-      t: 'Hi. I am the Blue Column, the live demo assistant on this page. Ask me what a Living Page is, how signing up works, what it costs, or what channels it covers.'
+      k: ['hello', 'hi', 'hey', 'yo', 'who are you', 'your name'],
+      t: 'Welcome to Venture Club. I am the club\u2019s virtual concierge. Ask me what Venture Club is, how points work, what weekly commissions are, or how to request your invitation.'
     }
   ];
 
   var FALLBACK = {
     a: 'fallback',
-    t: 'I can explain what a Living Page is, how signup works, pricing, setup time, channels, and where to see examples. Try one of those — or hit Create your free account below.'
+    t: 'I can explain what Venture Club is, how points work, weekly commissions, membership options, and how to request your invitation. Just ask.'
   };
 
   var SUGGESTIONS = [
-    'What is a Living Page?',
-    'How do I sign up?',
-    'What does it cost?',
-    'Show me examples'
+    'What is Venture Club?',
+    'How do points work?',
+    'What are weekly commissions?',
+    'How do I get invited?'
   ];
 
   /* -- Elements ----------------------------------------------- */
@@ -383,7 +373,7 @@
     micBtn.classList.toggle('bc-mic-on', on);
     micBtn.textContent = on ? '\u{1F3A4}' : '\u{1F3A4}';
     micBtn.title = on ? 'Listening — tap to stop' : 'Talk hands-free';
-    input.placeholder = on ? 'Listening... just talk' : 'Ask about Living Pages...';
+    input.placeholder = on ? 'Listening... just talk' : 'Ask about Venture Club...';
   }
 
   function toggleMic() {
@@ -404,7 +394,7 @@
     } else {
       try { recog && recog.stop(); } catch (e) {}
       setMicUI(false);
-      input.placeholder = 'Ask about Living Pages...';
+      input.placeholder = 'Ask about Venture Club...';
     }
   }
   var supported = supportedSR();
@@ -434,10 +424,10 @@
       el(r.t, 'bc-msg bc-bot');
       speaking = true;
       playAudio(r.a);
-      if (r.a === 'cost' || r.a === 'signup') {
+      if (r.a === 'invite' || r.a === 'membership') {
         opts([
-          { label: 'Create your free account', href: '/signup' },
-          { label: 'How does signup work?' }
+          { label: 'Request your invitation' },
+          { label: 'What is Venture Club?' }
         ]);
       }
     }, 620);
