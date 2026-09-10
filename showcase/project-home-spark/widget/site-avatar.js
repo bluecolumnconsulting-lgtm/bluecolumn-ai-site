@@ -543,6 +543,9 @@
   if (modeAudioBtn) { modeAudioBtn.addEventListener('click', startAudioAgent); }
   if (modeVideoBtn) { modeVideoBtn.addEventListener('click', startVideoAgent); }
   if (modeChatBtn) { modeChatBtn.addEventListener('click', switchToChat); }
+
+  /* Test/deep-link hook: ?open=1 opens the panel on load (chat mode only) */
+  if (location.search.indexOf('open=1') !== -1) { openPanel(); }
   if (micBtn) { micBtn.addEventListener('click', toggleMic); }
   document.getElementById('bc-send').addEventListener('click', function () { send(); });
   input.addEventListener('keydown', function (e) {
