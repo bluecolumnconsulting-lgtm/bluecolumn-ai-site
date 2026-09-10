@@ -185,10 +185,18 @@
 }
 #bc-panel.bc-video-mode #bc-video-el {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  object-position: center 30%;
+  height: min(66vh, 720px);
+  aspect-ratio: auto;
+  object-fit: contain !important;
+  object-position: center top !important;
   display: block;
+  background: #171922;
+}
+/* Lee full-frame guarantee: nothing in the video stage may ever crop */
+#bc-video-wrap video, #bc-video-wrap canvas {
+  object-fit: contain !important;
+  object-position: center top !important;
+  max-width: 100% !important;
 }
 #bc-video-live {
   position: absolute;
@@ -220,7 +228,7 @@
 #bc-panel.bc-video-mode #bc-log { height: 190px; }
 #bc-panel.bc-video-mode .bc-head img { display: none; }
 @media (max-width: 700px) {
-  #bc-panel.bc-video-mode #bc-video-el { height: clamp(220px, 48vw, 280px); aspect-ratio: auto; }
+  #bc-panel.bc-video-mode #bc-video-el { height: clamp(260px, 52vw, 340px); aspect-ratio: auto; }
   #bc-panel.bc-video-mode #bc-video-wrap { margin: 8px; }
   #bc-panel.bc-video-mode #bc-log { height: 150px; }
 }
