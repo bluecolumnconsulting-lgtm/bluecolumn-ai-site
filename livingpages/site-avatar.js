@@ -262,15 +262,37 @@
     });
     if (!res.ok) { throw new Error('Simli token ' + res.status); }
     var data = await res.json();
-    simliClient = new SimliLib.SimliClient(
-      data.session_token,
-      videoEl,
-      simliAudio,
-      null,
-      SimliLib.LogLevel ? SimliLib.LogLevel.WARN : undefined,
-      'livekit'
-    );
-    await simliClient.start();
+    /* Real ICE servers when the SDK can fetch them (helps mobile NAT) */
+    var ice = null;
+    try { ice = await SimliLib.generateIceServers(SIMLI_API_KEY); } catch (e) {}
+    function makeClient(transport) {
+      return new SimliLib.SimliClient(
+        data.session_token,
+        videoEl,
+        simliAudio,
+        ice,
+        SimliLib.LogLevel ? SimliLib.LogLevel.WARN : undefined,
+        transport
+      );
+    }
+    /* Try livekit first, fall back to p2p transport */
+    try {
+      simliClient = makeClient('livekit');
+      await simliClient.start();
+    } catch (e1) {
+      try { if (simliClient && simliClient.stop) { simliClient.stop(); } } catch (e) {}
+      simliClient = makeClient('p2p');
+      await simliClient.start();
+    }
+    /* iOS/Safari: autoplay needs an explicit play() inside the gesture chain */
+    try { await videoEl.play(); } catch (e) {}
+    try { await simliAudio.play(); } catch (e) {}
+  }
+
+  /* In-app browsers (Facebook/Instagram/etc.) often block WebRTC */
+  function inAppBrowser() {
+    var ua = navigator.userAgent || '';
+    return /FBAN|FBAV|FB_IAB|Instagram|Line\/|Snapchat|TikTok/i.test(ua);
   }
 
   async function toggleVideo() {
@@ -285,6 +307,16 @@
       return;
     }
     videoBtn.textContent = '\u2026';
+    if (inAppBrowser()) {
+      videoBtn.textContent = '\u{1F3A5}';
+      el('This in-app browser blocks live video. Open this page in Safari (or Chrome) and the talking avatar will work.', 'bc-msg bc-bot');
+      return;
+    }
+    if (!window.RTCPeerConnection) {
+      videoBtn.textContent = '\u{1F3A5}';
+      el('This browser does not support live video (WebRTC). Voice mode still works — or open the page in Safari.', 'bc-msg bc-bot');
+      return;
+    }
     try {
       await startSimli();
       videoMode.on = true;
@@ -294,7 +326,8 @@
       el('Video avatar is live now — watch me talk. Tap the mic and just talk to me.', 'bc-msg bc-bot');
     } catch (e) {
       videoBtn.textContent = '\u{1F3A5}';
-      el('Video avatar could not connect just now — voice mode still works.', 'bc-msg bc-bot');
+      var why = (e && (e.message || e.reason || e)) ? String(e.message || e.reason || e) : 'unknown';
+      el('Video could not connect (' + why + '). Voice mode still works. If you keep seeing this, open the page in Safari.', 'bc-msg bc-bot');
     }
   }
 
@@ -355,7 +388,11 @@
 
   function toggleMic() {
     if (!supported) {
-      el('Voice input needs Chrome, Edge, or Safari 14.5+. Typing works everywhere.', 'bc-msg bc-bot');
+      if (inAppBrowser()) {
+        el('Voice input is blocked in this in-app browser — open the page in Safari and the mic will work.', 'bc-msg bc-bot');
+      } else {
+        el('Voice input needs Chrome, Edge, or Safari 14.5+. Typing works everywhere.', 'bc-msg bc-bot');
+      }
       return;
     }
     micWanted = !micWanted;
