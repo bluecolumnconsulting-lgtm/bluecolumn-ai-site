@@ -1,416 +1,58 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BlueColumn Living Pages™ — AlwaysOn. Your website works while you're on the job.</title>
-  <meta name="description" content="AlwaysOn Living Pages by BlueColumn: conversational AI websites for contractors. Answering questions, qualifying leads, and booking appointments 24/7. Arcadia Fence booked 40% more jobs in month one. Live in ~30 days." />
-  <meta property="og:title" content="BlueColumn Living Pages™ — AlwaysOn" />
-  <meta property="og:description" content="Contractors lose jobs to voicemail. You won't. Your website works while you're on the job — Arcadia Fence booked 40% more jobs in month one." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="logo.png" />
-  <meta name="theme-color" content="#ffffff" />
-  <link rel="icon" type="image/svg+xml" href="logo.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlueColumn — Persistent Memory for AI Agents</title>
+    <meta name="description" content="Give your AI agent persistent memory. Send any audio, document, or voice memo. Query everything in plain English. One API key.">
+    <meta name="author" content="BlueColumn AI" />
+    <link rel="canonical" href="https://bluecolumn.ai" />
+
+    
+    
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@bluecolumnai" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=Syne:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <meta property="og:title" content="BlueColumn — Persistent Memory for AI Agents">
+  <meta name="twitter:title" content="BlueColumn — Persistent Memory for AI Agents">
+  <meta property="og:description" content="Give your AI agent persistent memory. Send any audio, document, or voice memo. Query everything in plain English. One API key.">
+  <meta name="twitter:description" content="Give your AI agent persistent memory. Send any audio, document, or voice memo. Query everything in plain English. One API key.">
+  <meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e131c2cc-9376-4ce3-a317-e9a5992db651/id-preview-eaeff0f5--d65ba073-199a-4036-90dd-9d6cb4a36274.lovable.app-1775491696115.png">
+  <meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e131c2cc-9376-4ce3-a317-e9a5992db651/id-preview-eaeff0f5--d65ba073-199a-4036-90dd-9d6cb4a36274.lovable.app-1775491696115.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "BlueColumn AI",
+    "applicationCategory": "DeveloperApplication",
+    "description": "Persistent memory API for AI agents. Two endpoints, audio ingestion, plain English recall with citations.",
+    "url": "https://bluecolumn.ai",
+    "operatingSystem": "Any (REST API)",
+    "offers": [
+      { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "100 Memory Writes + 100 Memory Reads + 30 Audio Minutes per month" },
+      { "@type": "Offer", "name": "Developer", "price": "49", "priceCurrency": "USD", "billingIncrement": "month" },
+      { "@type": "Offer", "name": "Builder", "price": "199", "priceCurrency": "USD", "billingIncrement": "month" }
+    ],
+    "publisher": {
+      "@type": "Organization",
+      "name": "BlueColumn AI",
+      "email": "hello@bluecolumn.ai",
+      "url": "https://bluecolumn.ai"
+    }
+  }
+  </script>
+  <script type="module" crossorigin src="/assets/index-BmiVaa3Z.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-Bh5QsehE.css">
 </head>
-<body>
-  <!-- NAV -->
-  <header class="nav" id="nav">
-    <div class="container nav-inner">
-      <a href="#top" class="brand">
-        <img src="logo.svg" alt="BlueColumn" class="brand-logo" />
-        <span class="brand-name">BlueColumn</span>
-        <span class="brand-badge">Living Pages™</span>
-      </a>
-      <nav class="nav-links" id="navLinks">
-        <a href="#why">Why</a>
-        <a href="#features">Features</a>
-        <a href="#how">How it works</a>
-        <a href="#who">Who it's for</a>
-        <a href="#pricing">Pricing</a>
-      </nav>
-      <a href="funnel/" class="btn btn-primary nav-cta">Build your Living Page</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
 
-  <!-- HERO -->
-  <section class="hero" id="top">
-    <div class="hero-glow" aria-hidden="true"></div>
-    <div class="container hero-inner">
-      <div class="hero-copy">
-        <p class="eyebrow mono">AlwaysOn Living Websites — Powered by BlueColumn</p>
-        <h1 class="hero-title">
-          <span class="serif">BlueColumn</span>
-          <span class="hero-title-accent">Living Pages</span>
-          <span class="tm">™</span>
-        </h1>
-        <p class="hero-tagline serif">
-          Contractors lose jobs to voicemail.<br />
-          You won't.
-        </p>
-        <p class="hero-sub">
-          Your website stops asking visitors to “fill out this form” — and starts talking
-          with them. Answering questions, qualifying leads, and booking appointments
-          automatically, while you're on the job. 24/7.
-        </p>
-        <div class="hero-cta">
-          <a href="funnel/" class="btn btn-primary btn-lg">Build your Living Page</a>
-          <a href="#how" class="btn btn-ghost btn-lg">See how it works</a>
-        </div>
-        <p class="hero-note mono">Your website works while you're on the job · Live in ~30 days · Train it on your business</p>
-      </div>
-
-      <!-- CHAT DEMO -->
-      <div class="chat-demo" aria-label="Living Page conversation demo">
-        <div class="chat-demo-head">
-          <span class="chat-demo-dot"></span><span class="chat-demo-dot"></span><span class="chat-demo-dot"></span>
-          <span class="chat-demo-title mono">livingpage — bluecolumn.ai/your-business</span>
-        </div>
-        <div class="chat-demo-body">
-          <div class="msg msg-in">
-            <p>Hi! I'm looking for a roofing estimate for a ~1,800 sq ft home in Phoenix. Is that something you do?</p>
-          </div>
-          <div class="msg msg-out">
-            <p>Absolutely — we handle residential roofs across the Valley. 👍 A full replacement typically runs $12k–$18k depending on materials. Want a free estimate?</p>
-          </div>
-          <div class="msg msg-in">
-            <p>Yes please! Also, do you offer financing?</p>
-          </div>
-          <div class="msg msg-out">
-            <p>We do — 0% APR for 12 months, and we work with 3 lenders. I just grabbed the next open slot. Can I get your name and address to book it?</p>
-          </div>
-          <div class="msg msg-in msg-last">
-            <p>Sarah M. — 4521 N 7th St.</p>
-          </div>
-          <div class="msg msg-out msg-out-cta">
-            <p>✅ Booked for Thursday 9:00 AM. I've also texted you a confirmation and sent the pricing sheet to your email. See you then!</p>
-          </div>
-        </div>
-        <div class="chat-demo-foot mono">A conversation — not a form.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- INSERTION POINT 1: ARCADIA FENCE SOCIAL PROOF (per Landing_Page_Additions_Summary) -->
-  <section class="section proof" id="proof">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">Proof</p>
-        <h2 class="section-title">Arcadia Fence &amp; Gate.<br /><span class="serif">40% more booked jobs in 30 days.</span></h2>
-      </div>
-      <div class="proof-grid">
-        <div class="proof-metrics">
-          <div class="proof-metric">
-            <span class="proof-num serif">+40%</span>
-            <span class="proof-label mono">more appointments booked</span>
-          </div>
-          <div class="proof-metric">
-            <span class="proof-num serif">24/7</span>
-            <span class="proof-label mono">lead capture &amp; booking</span>
-          </div>
-          <div class="proof-metric">
-            <span class="proof-num serif">30&nbsp;days</span>
-            <span class="proof-label mono">from setup to results</span>
-          </div>
-        </div>
-        <div class="proof-body">
-          <blockquote class="proof-quote serif">
-            “Our Living Page answers questions and books estimates while we're out on jobs.
-            It paid for itself in the first month.”
-          </blockquote>
-          <p class="proof-attrib mono">— Arcadia Fence &amp; Gate · Phoenix, AZ · ROC 337481</p>
-          <a href="#how" class="btn btn-primary">See How It Works</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- LOGO STRIP -->
-
-  <!-- LOGO STRIP -->
-  <section class="strip">
-    <div class="container">
-      <p class="strip-label mono">Proven with contractors — Arcadia Fence &amp; Gate booked <strong>40% more jobs in month one</strong></p>
-      <div class="strip-items mono">
-        <span>Roofing</span><span>HVAC</span><span>Plumbing</span><span>Electrical</span>
-        <span>Landscaping</span><span>Fence</span><span>Dentists</span><span>Attorneys</span>
-        <span>Real Estate</span><span>Auto</span><span>Insurance</span><span>Home Services</span>
-      </div>
-      <p class="strip-label mono" style="margin-top:1.5rem">Everything handled for you</p>
-      <div class="strip-items mono">
-        <span>AI answers questions</span><span>Booking calendar</span><span>Leads &amp; info</span>
-        <span>Text</span><span>Email</span><span>Voice</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROOF OF WORK: LIVING PAGES SHOWCASE -->
-  <section class="section why" id="showcase">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">Proof of work</p>
-        <h2 class="section-title">Living Pages we've already built.<br /><span class="serif">Click through. Kick the tires.</span></h2>
-      </div>
-      <div class="why-grid">
-        <div class="why-card">
-          <p class="why-card-label mono">Membership platform</p>
-          <h3>The Rewards Club</h3>
-          <p>Invite-only rewards platform with tiered membership, points banking, and a conversational front end.</p>
-          <p><a class="btn btn-ghost" href="showcase/the-rewards-club/">Open the live site</a></p>
-        </div>
-        <div class="why-card why-card-new">
-          <p class="why-card-label mono">Full business OS</p>
-          <h3>Project Home Spark</h3>
-          <p>Estimates, document extraction, a concierge AI widget, dashboards, and a animated mascot — a complete operating system for a home-services business.</p>
-          <p><a class="btn btn-primary" href="showcase/project-home-spark/">Open the live page</a></p>
-        </div>
-        <div class="why-card">
-          <p class="why-card-label mono">Trades platform</p>
-          <h3>Fence Craft Hub</h3>
-          <p>Concierge chat, estimate pipeline, scraper-backed lead tools, and an animated mascot — the full Arcadia-class stack.</p>
-          <p><a class="btn btn-ghost" href="showcase/fence-craft-hub/">Open the live page</a></p>
-        </div>
-      </div>
-      <p class="cta-note mono" style="margin-top:1.5rem">Also live: demo-vulcan-fence, demo-star-jetski, and demo-panhandle-watersports — niche demos with talking bots. Every page labeled "Demo built by BlueColumn AI".</p>
-    </div>
-  </section>
-
-  <!-- WHY -->
-  <section class="section why" id="why">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">Why Living Pages</p>
-        <h2 class="section-title">Your website is your best salesperson.<br /><span class="serif">Make it actually talk.</span></h2>
-      </div>
-      <div class="why-grid">
-        <div class="why-card why-card-old">
-          <p class="why-card-label mono">The old way</p>
-          <h3>“Fill out this form”</h3>
-          <p>Visitors arrive, read, hesitate, and leave. A form asks them to do all the work — and 98% of them never come back.</p>
-        </div>
-        <div class="why-card why-card-new">
-          <p class="why-card-label mono">The Living Page way</p>
-          <h3>Every visitor becomes a conversation</h3>
-          <p>A Living Page doesn't replace your website. It transforms it into your most valuable business asset — one that speaks with customers the moment they arrive.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section class="section features" id="features">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">Features</p>
-        <h2 class="section-title">A website that works<br /><span class="serif">while you sleep.</span></h2>
-      </div>
-      <div class="features-grid">
-        <article class="feature-card">
-          <div class="feature-icon">💬</div>
-          <h3>Interactive conversations</h3>
-          <p>Every visitor becomes a conversation instead of just filling out a form. Instant, human, and on-brand.</p>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon">🕐</div>
-          <h3>24/7 customer engagement</h3>
-          <p>Speaks with customers, answers questions, qualifies leads, books appointments, and follows up automatically — day and night.</p>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon">⚡</div>
-          <h3>Instant responses</h3>
-          <p>Visitors get answers immediately, see examples of your work, receive pricing guidance, and schedule without waiting.</p>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon">📱</div>
-          <h3>Multiple channels</h3>
-          <p>Conversations continue through text, email, voice, or phone — wherever your customer wants to talk.</p>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon">📅</div>
-          <h3>Booking calendar</h3>
-          <p>Appointments booked straight into your calendar. Leads, questions, and info requests handled automatically — no admin work.</p>
-        </article>
-        <article class="feature-card">
-          <div class="feature-icon">🧠</div>
-          <h3>Every conversation is intelligence</h3>
-          <p>Each interaction feeds your business knowledge — so your page gets smarter, and your growth compounds.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW -->
-  <section class="section how" id="how">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">How it works</p>
-        <h2 class="section-title">Live in days,<br /><span class="serif">not months.</span></h2>
-      </div>
-      <div class="how-steps">
-        <div class="how-step">
-          <span class="how-num mono">01</span>
-          <h3>We build it</h3>
-          <p>We spin up your AI website — your brand, your services, your phone line and booking calendar connected. Zero technical work for you.</p>
-        </div>
-        <div class="how-step">
-          <span class="how-num mono">02</span>
-          <h3>Train it on your business</h3>
-          <p>Feed it your services, pricing, docs, photos, and expertise. It learns how you talk to customers — and talks like you.</p>
-        </div>
-        <div class="how-step">
-          <span class="how-num mono">03</span>
-          <h3>Start converting immediately</h3>
-          <p>Visitors become conversations, conversations become appointments, and appointments become revenue.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHO -->
-  <section class="section who" id="who">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">Who it's for</p>
-        <h2 class="section-title">If you talk with customers,<br /><span class="serif">this is for you.</span></h2>
-      </div>
-      <div class="who-grid mono">
-        <span>Contractors</span><span>Roofing</span><span>HVAC</span><span>Plumbing</span>
-        <span>Electrical</span><span>Landscaping</span><span>Fence companies</span><span>Medical practices</span>
-        <span>Dentists</span><span>Attorneys</span><span>Real estate</span><span>Automotive</span>
-        <span>Insurance</span><span>Home services</span><span>Agencies</span><span>…and any business that talks with customers</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING -->
-  <section class="section features" id="pricing">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">Pricing</p>
-        <h2 class="section-title">Two plans.<br /><span class="serif">We build, run, and manage everything.</span></h2>
-      </div>
-      <div class="features-grid">
-        <article class="feature-card">
-          <p class="why-card-label mono">AlwaysOn Essential</p>
-          <h3>$497 setup · $97/mo</h3>
-          <p>An AI website that answers customer questions, sends info, captures leads, and books appointments on a live calendar — 24/7. We build it, run it, and manage it for you.</p>
-        </article>
-        <article class="feature-card">
-          <p class="why-card-label mono">AlwaysOn Lead Engine</p>
-          <h3>$997 setup · $197/mo</h3>
-          <p>Everything in Essential, plus a managed lead engine: we build and maintain a qualified lead list for your trade and service area, and your AI site works it around the clock. You just show up to the appointments.</p>
-        </article>
-      </div>
-      <p class="cta-note mono" style="margin-top:1.5rem">Setups are one-time. No contracts — month to month. Talk to us: hello@bluecolumn.ai</p>
-    </div>
-  </section>
-
-  <!-- QUOTE -->
-  <section class="quote">
-    <div class="container">
-      <blockquote class="serif">
-        “Where every visitor becomes a conversation.<br />
-        Where every conversation becomes intelligence.<br />
-        Where intelligence becomes growth.”
-      </blockquote>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="section cta" id="cta">
-    <div class="container cta-inner">
-      <h2 class="cta-title serif">Build your Living Page</h2>
-      <p class="cta-sub">Launch in days. Train it on your business. Start converting more visitors immediately.</p>
-      <div class="cta-actions">
-        <a href="funnel/" class="btn btn-primary btn-lg">Get started</a>
-        <a href="#top" class="btn btn-ghost btn-lg">Back to top</a>
-      </div>
-      <p class="cta-note mono">Powered by BlueColumn memory &amp; audio intelligence</p>
-    </div>
-  </section>
-
-  <!-- INSERTION POINT 3: FAQ (per Landing_Page_Additions_Summary) -->
-  <section class="section faq" id="faq">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">FAQ</p>
-        <h2 class="section-title">Contractor questions,<br /><span class="serif">straight answers.</span></h2>
-      </div>
-      <div class="faq-list">
-        <details class="faq-item">
-          <summary>How does the AI actually work?</summary>
-          <p>Your Living Page answers customer questions directly, and if it can't answer something it routes the question to you instantly by phone, email, or SMS — with the full conversation history attached so you know exactly what they asked.</p>
-        </details>
-        <details class="faq-item">
-          <summary>What does setup look like?</summary>
-          <p>Week 1: onboarding. Weeks 2–3: we train the AI on your services, pricing, FAQs, and photos. Week 4: it goes live with monitoring. Most contractors see a 15–40% increase in booked appointments in month one.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Can customers still text, email, or call me directly?</summary>
-          <p>Yes — customers can talk to the AI, text, email, or be routed straight to your phone. All channels flow through one intelligent system, and everything is controlled from a simple dashboard. No technical skills required.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Can I customize how it looks and sounds?</summary>
-          <p>Completely. Choose the avatar (animated character, real person, or voice only), set the tone (professional, friendly, casual), and set priorities — booking, lead qualification, or customer support.</p>
-        </details>
-        <details class="faq-item">
-          <summary>What does it cost?</summary>
-          <p>AlwaysOn Essential is $497 setup + $97/mo. AlwaysOn Lead Engine is $997 setup + $197/mo and adds a managed lead list for your trade and service area. Setup is one-time, no contracts — month to month.</p>
-        </details>
-        <details class="faq-item">
-          <summary>How long until it's live?</summary>
-          <p>About 30 days end to end: onboarding in week one, training in weeks two and three, live with monitoring in week four. We handle the build, run, and management the whole way.</p>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <img src="logo.svg" alt="BlueColumn" class="brand-logo" />
-        <span class="brand-name">BlueColumn</span>
-      </div>
-      <p class="footer-tagline mono">Your AI finally remembers.</p>
-      <div class="footer-links mono">
-        <a href="https://bluecolumn.ai" target="_blank" rel="noopener">BlueColumn AI</a>
-        <a href="https://github.com/bluecolumnconsulting-lgtm" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/" rel="noopener">API</a>
-      </div>
-      <p class="footer-legal mono">© 2026 BlueColumn. Living Pages™ is a trademark of BlueColumn.</p>
-    </div>
-  </footer>
-
-  <!-- THE BLUE COLUMN - SITE AVATAR (demo assistant) -->
-  <button id="bc-fab" aria-expanded="false" aria-controls="bc-panel">
-    <img src="bluecolumn-avatar.png" alt="The Blue Column" id="bc-avatar" />
-    Ask the Blue Column
-  </button>
-  <div id="bc-panel" role="dialog" aria-label="Demo - BlueColumn AI assistant">
-    <div class="bc-head">
-      <img src="bluecolumn-avatar.png" alt="" aria-hidden="true" />
-      <div class="bc-head-t">
-        <b>The Blue Column</b>
-        <small>Demo - BlueColumn AI assistant</small>
-      </div>
-      <button id="bc-mute" title="Voice on" aria-label="Toggle voice">&#128266;</button>
-      <button id="bc-close" title="Close" aria-label="Close chat">&#10005;</button>
-    </div>
-    <div id="bc-log" aria-live="polite"></div>
-    <div class="bc-input">
-      <input id="bc-in" placeholder="Ask about Living Pages..." aria-label="Message the Blue Column" />
-      <button id="bc-send">Send</button>
-    </div>
-  </div>
-
-  <script src="site-avatar.js"></script>
-  <script src="script.js"></script>
-</body>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
