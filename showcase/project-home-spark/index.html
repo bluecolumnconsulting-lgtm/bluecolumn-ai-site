@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="./assets/index-CBXRDVSP.js?v=8"></script>
+    <script type="module" crossorigin src="./assets/index-CBXRDVSP.js?v=9"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-Cjf0Wvnc.css">
   </head>
 
@@ -30,10 +30,9 @@
     <div id="root"></div>
     <!-- OttoMedic - reef specialist demo widget -->
   <link rel="stylesheet" href="./widget/widget.css">
-  <button id="bc-fab-video" title="Video chat with Marina" aria-label="Video chat with Marina">&#127909;<span>Video Marina</span></button>
   <button id="bc-fab" aria-expanded="false" aria-controls="bc-panel">
     <img src="widget/marina.png" alt="Marina" id="bc-avatar" />
-    <span class="bc-talk-bubble">Talk to me</span>
+    <span class="bc-talk-bubble">Talk to Marina</span>
   </button>
   <div id="bc-panel" role="dialog" aria-label="Marina — OttoMedic talking specialist">
     <div class="bc-head">
@@ -45,6 +44,11 @@
       <button id="bc-video" title="Talking video avatar" aria-label="Toggle video avatar">&#127909;</button>
       <button id="bc-mute" title="Voice on" aria-label="Toggle voice">&#128266;</button>
       <button id="bc-close" title="Close" aria-label="Close chat">&#10005;</button>
+    </div>
+    <div id="bc-chooser" role="group" aria-label="Choose how to talk to Marina">
+      <button id="bc-mode-chat" class="bc-mode-on" title="Type your questions">&#128172; Chat</button>
+      <button id="bc-mode-audio" title="Talk out loud, hear her replies">&#127908; Audio</button>
+      <button id="bc-mode-video" title="See and hear the live avatar">&#127909; Video</button>
     </div>
     <div id="bc-video-wrap" aria-hidden="true">
       <span id="bc-video-live"><i></i>LIVE</span>

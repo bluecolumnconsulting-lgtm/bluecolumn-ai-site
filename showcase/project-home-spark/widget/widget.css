@@ -335,3 +335,48 @@
   #bc-panel.bc-video-mode #bc-video-wrap { margin: 6px; }
   #bc-panel.bc-video-mode #bc-log { height: 110px; }
 }
+
+/* ---------- Mode chooser (v9): Chat / Audio / Video ---------- */
+#bc-chooser {
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+}
+#bc-chooser button {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: transparent;
+  color: #dfe6f2;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+#bc-chooser button.bc-mode-on {
+  background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+  border-color: transparent;
+  color: #fff;
+}
+#bc-chooser button:disabled { opacity: .55; cursor: wait; }
+
+/* ---------- Video stage v9: a lot bigger, waist-up ---------- */
+#bc-panel.bc-video-mode { width: min(720px, 94vw); }
+#bc-panel.bc-video-mode #bc-video-el {
+  width: 100%;
+  height: min(66vh, 640px);
+  aspect-ratio: auto;
+  object-fit: contain;
+  object-position: center top;
+  background: #0b0d14;
+  max-height: none;
+}
+#bc-panel.bc-video-mode #bc-log { height: 110px; }
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode { width: calc(100vw - 16px); }
+  #bc-panel.bc-video-mode #bc-video-el { height: min(56vh, 520px); }
+  #bc-panel.bc-video-mode #bc-log { height: 92px; }
+}

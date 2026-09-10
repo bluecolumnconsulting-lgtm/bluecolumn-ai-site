@@ -386,6 +386,7 @@
     micBtn.textContent = on ? '\u{1F3A4}' : '\u{1F3A4}';
     micBtn.title = on ? 'Listening — tap to stop' : 'Talk hands-free';
     input.placeholder = on ? 'Listening... just talk' : 'Ask Marina about OttoMedic...';
+    setModeUI();
   }
 
   function toggleMic() {
@@ -448,15 +449,8 @@
   function openPanel() {
     panel.classList.add('open');
     fab.setAttribute('aria-expanded', 'true');
-    if (!started) {
-      started = true;
-      var g = INTENTS[INTENTS.length - 1]; /* greet */
-      el(g.t, 'bc-msg bc-bot');
-      speaking = true;
-      playAudio('greet');
-      opts(SUGGESTIONS);
-      if (AUTO_VIDEO && videoBtn && !videoMode.on) { toggleVideo(); }
-    }
+    showGreeting();      /* chat starts immediately; audio/video wait for the chooser */
+    setModeUI();
     input.focus();
   }
 
@@ -474,23 +468,81 @@
   muteBtn.addEventListener('click', toggleMute);
   if (videoBtn) { videoBtn.addEventListener('click', toggleVideo); }
 
-  /* VIDEO AGENT: dedicated entry point. Opens the panel straight into
-     video mode — no local MP3 greeting; Marina greets through the live
-     avatar once connected. The voice agent (#bc-fab) stays separate. */
-  function startVideoAgent() {
+  /* MODE MANAGEMENT — one conversation, three modalities (v9).
+     Chat starts immediately on open. Audio and Video only start
+     when the user picks them from the chooser. */
+  function setModeUI() {
+    var chatBtn = document.getElementById('bc-mode-chat');
+    var audioBtn = document.getElementById('bc-mode-audio');
+    var videoModeBtn = document.getElementById('bc-mode-video');
+    if (!chatBtn || !audioBtn || !videoModeBtn) { return; }
+    var audioOn = micWanted || (speaking && !videoMode.on);
+    chatBtn.classList.toggle('bc-mode-on', !videoMode.on && !audioOn && !videoStarting);
+    audioBtn.classList.toggle('bc-mode-on', !videoMode.on && audioOn && !videoStarting);
+    videoModeBtn.classList.toggle('bc-mode-on', !!videoMode.on || videoStarting);
+    audioBtn.disabled = videoStarting;
+    videoModeBtn.disabled = videoStarting;
+  }
+
+  function showGreeting() {
+    if (!started) {
+      started = true;
+      var g = INTENTS[INTENTS.length - 1]; /* greet */
+      el(g.t, 'bc-msg bc-bot');
+      opts(SUGGESTIONS);
+    }
+  }
+
+  /* AUDIO AGENT: voice replies + hands-free mic. Video is switched
+     off first if it was running, so only one agent ever speaks. */
+  function startAudioAgent() {
+    if (videoStarting) { return; }
     panel.classList.add('open');
     fab.setAttribute('aria-expanded', 'true');
-    input.focus();
-    if (videoMode.on || videoStarting) { return; }
-    if (!started) { started = true; opts(SUGGESTIONS); }
+    if (videoMode.on) { toggleVideo(); }   /* synchronous off-path */
+    showGreeting();
+    speaking = true;
+    playAudio('greet');
+    if (supportedSR() && !micWanted) { toggleMic(); }
+    setModeUI();
+  }
+
+  /* VIDEO AGENT: live avatar. Only starts from the chooser. */
+  function startVideoAgent() {
+    if (videoStarting) { return; }
+    panel.classList.add('open');
+    fab.setAttribute('aria-expanded', 'true');
+    if (videoMode.on) { setModeUI(); return; }
+    showGreeting();
+    /* hand over from the audio agent: stop its speech + mic */
+    try { if (currentAudio) { currentAudio.pause(); } } catch (ePause) {}
+    speaking = false;
+    avatar.classList.remove('bc-talking');
+    if (micWanted) { toggleMic(); }
     toggleVideo().then(function () {
       /* greet through Simli on success; falls back to local MP3 on failure */
       speaking = true;
       playAudio('greet');
+      setModeUI();
     });
+    setModeUI();
   }
-  var videoFab = document.getElementById('bc-fab-video');
-  if (videoFab) { videoFab.addEventListener('click', startVideoAgent); }
+
+  function switchToChat() {
+    if (videoMode.on) { toggleVideo(); }
+    if (micWanted) { toggleMic(); }
+    try { if (currentAudio) { currentAudio.pause(); } } catch (eChat) {}
+    speaking = false;
+    avatar.classList.remove('bc-talking');
+    setModeUI();
+  }
+
+  var modeChatBtn = document.getElementById('bc-mode-chat');
+  var modeAudioBtn = document.getElementById('bc-mode-audio');
+  var modeVideoBtn = document.getElementById('bc-mode-video');
+  if (modeAudioBtn) { modeAudioBtn.addEventListener('click', startAudioAgent); }
+  if (modeVideoBtn) { modeVideoBtn.addEventListener('click', startVideoAgent); }
+  if (modeChatBtn) { modeChatBtn.addEventListener('click', switchToChat); }
   if (micBtn) { micBtn.addEventListener('click', toggleMic); }
   document.getElementById('bc-send').addEventListener('click', function () { send(); });
   input.addEventListener('keydown', function (e) {
