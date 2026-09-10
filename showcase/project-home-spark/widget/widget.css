@@ -244,3 +244,42 @@
   50% { opacity: .7; transform: scale(1.15); }
 }
 
+
+/* ---------- Marina hovering presence ---------- */
+#bc-fab {
+  background: transparent;
+  border: none;
+  padding: 0;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: none;
+}
+#bc-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 25%;
+  border: 3px solid rgba(56, 189, 248, .75);
+  box-shadow: 0 10px 30px rgba(10, 20, 40, .45);
+  animation: marina-float 3.2s ease-in-out infinite;
+}
+@keyframes marina-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+#bc-fab .bc-talk-bubble {
+  background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+  color: #06101d;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(56, 189, 248, .4);
+  animation: marina-bubble 1.8s ease-in-out infinite;
+  white-space: nowrap;
+}
+@keyframes marina-bubble {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .85; transform: scale(1.06); }
+}

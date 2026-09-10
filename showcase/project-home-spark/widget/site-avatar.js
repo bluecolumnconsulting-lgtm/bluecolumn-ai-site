@@ -50,8 +50,8 @@
     },
     {
       a: 'greet',
-      k: ['hello', 'hi', 'hey', 'yo', 'who are you', 'your name'],
-      t: 'Welcome to OttoMedic. I am the reef specialist on this page. Ask me how OttoMedic works, why mechanical beats electronic, what it prevents, or how setup goes.'
+      k: ['hello', 'hi', 'hey', 'marina', 'who are you', 'your name'],
+      t: 'Hi, I\u2019m Marina, your OttoMedic specialist. Ask me how the skimmer works, why mechanical beats electronic, what it prevents, or how setup goes.'
     }
   ];
 
@@ -87,6 +87,7 @@
   var muted = false;
   var currentAudio = null;
   var started = false;
+  var AUTO_VIDEO = true;   /* Marina is the video bot: video starts on first open */
   var mouthRAF = null, audioCtx = null, analyser = null, mouthData = null;
   var speaking = false;      /* bot is currently talking */
   var speechEndCb = null;    /* fired when the bot finishes talking */
@@ -378,7 +379,7 @@
     micBtn.classList.toggle('bc-mic-on', on);
     micBtn.textContent = on ? '\u{1F3A4}' : '\u{1F3A4}';
     micBtn.title = on ? 'Listening — tap to stop' : 'Talk hands-free';
-    input.placeholder = on ? 'Listening... just talk' : 'Ask about OttoMedic...';
+    input.placeholder = on ? 'Listening... just talk' : 'Ask Marina about OttoMedic...';
   }
 
   function toggleMic() {
@@ -399,7 +400,7 @@
     } else {
       try { recog && recog.stop(); } catch (e) {}
       setMicUI(false);
-      input.placeholder = 'Ask about OttoMedic...';
+      input.placeholder = 'Ask Marina about OttoMedic...';
     }
   }
   var supported = supportedSR();
@@ -448,6 +449,7 @@
       speaking = true;
       playAudio('greet');
       opts(SUGGESTIONS);
+      if (AUTO_VIDEO && videoBtn && !videoMode.on) { toggleVideo(); }
     }
     input.focus();
   }
