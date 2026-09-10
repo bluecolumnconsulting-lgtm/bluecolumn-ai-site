@@ -1,19 +1,20 @@
 /* ===============================================================
-   THE BLUE COLUMN - SITE AVATAR v2 (BlueColumn AI)
+   THE BLUE COLUMN - SITE AVATAR v3 (BlueColumn AI)
    Interactive demo assistant for the Living Pages landing site.
-   Two modes:
-   - AUDIO BOT (default): text chat + pre-rendered ElevenLabs MP3s
-     in audio/ (no keys in this repo path for the audio itself).
-   - VIDEO AVATAR (toggle): real-time talking-head via Simli WebRTC.
-     MP3 replies are decoded to PCM16/16kHz in-browser and streamed
-     to the Simli session so the avatar speaks them live.
-   - The column mascot squishes in audio mode; video replaces it.
+   Three ways to talk:
+   - TYPE: text chat (always available)
+   - TALK: hands-free voice conversation (Web Speech API mic in,
+     spoken answers out, auto re-listen for back-and-forth)
+   - VIDEO: Simli real-time talking head — replies are streamed
+     as PCM16/16kHz into the WebRTC session so the avatar speaks
+     them live, lip-synced server-side.
+   Fallback chain: video -> local MP3 voice -> text only.
    =============================================================== */
 (function () {
   'use strict';
 
   /* Simli demo credentials (demo tier key, public demo widget) */
-  var SIMLI_API_KEY = '5e2ucmvyrlmkapwg4hzyf';
+  var SIMLI_API_KEY = '5e2ucm…hzyf';
   var SIMLI_FACE_ID = 'tmp9i8bbq7c';
 
   var INTENTS = [
@@ -80,6 +81,7 @@
   var muteBtn = document.getElementById('bc-mute');
   var closeBtn = document.getElementById('bc-close');
   var videoBtn = document.getElementById('bc-video');
+  var micBtn = document.getElementById('bc-mic');
   var videoWrap = document.getElementById('bc-video-wrap');
   var videoEl = document.getElementById('bc-video-el');
   var simliAudio = document.getElementById('bc-simli-audio');
@@ -91,6 +93,8 @@
   var currentAudio = null;
   var started = false;
   var mouthRAF = null, audioCtx = null, analyser = null, mouthData = null;
+  var speaking = false;      /* bot is currently talking */
+  var speechEndCb = null;    /* fired when the bot finishes talking */
 
   function stopMouth() {
     if (mouthRAF) { cancelAnimationFrame(mouthRAF); mouthRAF = null; }
@@ -126,8 +130,18 @@
     mouthRAF = requestAnimationFrame(tick);
   }
 
+  function botFinished() {
+    speaking = false;
+    avatar.classList.remove('bc-talking');
+    stopMouth();
+    var cb = speechEndCb;
+    speechEndCb = null;
+    if (cb) { cb(); }
+    if (micOn) { setTimeout(pauseListeningThenResume, 350); }
+  }
+
   function playAudio(name) {
-    if (muted) { return; }
+    if (muted) { setTimeout(botFinished, 400); return; }
     /* VIDEO MODE: stream the reply into the Simli avatar */
     if (videoMode.on && simliReady()) {
       speakThroughSimli('audio/' + name + '.mp3');
@@ -139,11 +153,10 @@
       if (currentAudio) { currentAudio.pause(); }
       currentAudio = new Audio('audio/' + name + '.mp3');
       avatar.classList.add('bc-talking');
-      currentAudio.onended = function () { stopMouth(); avatar.classList.remove('bc-talking'); };
-      currentAudio.play().then(startMouth).catch(function () { stopMouth(); avatar.classList.remove('bc-talking'); });
+      currentAudio.onended = botFinished;
+      currentAudio.play().then(startMouth).catch(function () { botFinished(); });
     } catch (e) {
-      stopMouth();
-      avatar.classList.remove('bc-talking');
+      botFinished();
     }
   }
 
@@ -199,13 +212,15 @@
   }
 
   /* Decode MP3 -> 16kHz mono PCM16, then stream to Simli in paced
-     6000-byte chunks (~187ms each, slightly under real time). */
+     6000-byte chunks (~187ms each, slightly under real time).
+     Calls botFinished() once the avatar should be done speaking. */
   async function speakThroughSimli(url) {
     try {
       var ab = await fetch(url).then(function (r) { return r.arrayBuffer(); });
       var decodeCtx = new (window.AudioContext || window.webkitAudioContext)();
       var decoded = await decodeCtx.decodeAudioData(ab);
       if (decodeCtx.close) { decodeCtx.close(); }
+      var durMs = decoded.duration * 1000;
       var len = Math.max(1, Math.ceil(decoded.duration * 16000));
       var off = new OfflineAudioContext(1, len, 16000);
       var src = off.createBufferSource();
@@ -222,13 +237,15 @@
       var bytes = new Uint8Array(pcm.buffer);
       var CHUNK = 6000, pos = 0;
       var iv = setInterval(function () {
-        if (!simliReady()) { clearInterval(iv); return; }
+        if (!simliReady()) { clearInterval(iv); botFinished(); return; }
         if (pos >= bytes.length) { clearInterval(iv); return; }
         var end = Math.min(pos + CHUNK, bytes.length);
-        try { simliClient.sendAudioData(bytes.slice(pos, end)); } catch (e) { clearInterval(iv); }
+        try { simliClient.sendAudioData(bytes.slice(pos, end)); } catch (e) { clearInterval(iv); botFinished(); }
         pos = end;
       }, 175);
-    } catch (e) { /* decode/stream failure: text reply already shown */ }
+      /* schedule the end-of-speech hook from real audio duration */
+      setTimeout(function () { if (speaking) { botFinished(); } }, durMs + 900);
+    } catch (e) { botFinished(); }
   }
 
   async function startSimli() {
@@ -274,12 +291,86 @@
       panel.classList.add('bc-video-mode');
       videoBtn.textContent = '\u{1F4A1}';
       videoBtn.title = 'Video avatar on — click to turn off';
-      el('Video avatar is live now — watch me talk. Ask me anything.', 'bc-msg bc-bot');
+      el('Video avatar is live now — watch me talk. Tap the mic and just talk to me.', 'bc-msg bc-bot');
     } catch (e) {
       videoBtn.textContent = '\u{1F3A5}';
       el('Video avatar could not connect just now — voice mode still works.', 'bc-msg bc-bot');
     }
   }
+
+  /* ============================================================
+     HANDS-FREE VOICE (Web Speech API)
+     Mic on = continuous conversation: listen -> reply spoken ->
+     listen again, until mic toggled off. Typing still works.
+     ============================================================ */
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var recog = null;
+  var micOn = false;
+  var micWanted = false;   /* user intent, survives transient errors */
+
+  function supportedSR() { return !!SR; }
+
+  function buildRecognizer() {
+    var r = new SR();
+    r.lang = 'en-US';
+    r.continuous = false;
+    r.interimResults = false;
+    r.maxAlternatives = 1;
+    r.onresult = function (ev) {
+      var t = ev.results[0][0].transcript.trim();
+      if (t) { send(t); }
+    };
+    r.onerror = function (ev) {
+      if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') {
+        micWanted = false; setMicUI(false);
+        el('Microphone access is blocked — enable it in your browser settings to talk hands-free.', 'bc-msg bc-bot');
+      }
+      /* no-speech / aborted: just let onend handle the resume */
+    };
+    r.onend = function () {
+      setMicUI(micWanted);
+      if (micWanted && !speaking) {
+        setTimeout(function () { try { recog.start(); } catch (e) {} }, 300);
+      }
+    };
+    return r;
+  }
+
+  function pauseListeningThenResume() {
+    /* called when the bot finishes talking: mic picks back up */
+    if (!micWanted) { return; }
+    setTimeout(function () {
+      if (micWanted && !speaking) {
+        try { recog && recog.start(); } catch (e) {}
+      }
+    }, 250);
+  }
+
+  function setMicUI(on) {
+    micBtn.classList.toggle('bc-mic-on', on);
+    micBtn.textContent = on ? '\u{1F3A4}' : '\u{1F3A4}';
+    micBtn.title = on ? 'Listening — tap to stop' : 'Talk hands-free';
+    input.placeholder = on ? 'Listening... just talk' : 'Ask about Living Pages...';
+  }
+
+  function toggleMic() {
+    if (!supported) {
+      el('Voice input needs Chrome, Edge, or Safari 14.5+. Typing works everywhere.', 'bc-msg bc-bot');
+      return;
+    }
+    micWanted = !micWanted;
+    micOn = micWanted;
+    if (micWanted) {
+      if (muted) { toggleMute(); }           /* voice chat implies sound on */
+      recog = recog || buildRecognizer();
+      try { recog.start(); setMicUI(true); } catch (e) { /* already started */ }
+    } else {
+      try { recog && recog.stop(); } catch (e) {}
+      setMicUI(false);
+      input.placeholder = 'Ask about Living Pages...';
+    }
+  }
+  var supported = supportedSR();
 
   /* -- Conversation flow -------------------------------------- */
   function matchIntent(text) {
@@ -304,6 +395,7 @@
     setTimeout(function () {
       setThinking(false);
       el(r.t, 'bc-msg bc-bot');
+      speaking = true;
       playAudio(r.a);
       if (r.a === 'cost' || r.a === 'signup') {
         opts([
@@ -321,6 +413,7 @@
       started = true;
       var g = INTENTS[INTENTS.length - 1]; /* greet */
       el(g.t, 'bc-msg bc-bot');
+      speaking = true;
       playAudio('greet');
       opts(SUGGESTIONS);
     }
@@ -330,6 +423,7 @@
   function closePanel() {
     panel.classList.remove('open');
     fab.setAttribute('aria-expanded', 'false');
+    if (micWanted) { toggleMic(); }   /* stop mic when panel closes */
   }
 
   /* -- Wire up ------------------------------------------------ */
@@ -339,6 +433,7 @@
   if (closeBtn) { closeBtn.addEventListener('click', closePanel); }
   muteBtn.addEventListener('click', toggleMute);
   if (videoBtn) { videoBtn.addEventListener('click', toggleVideo); }
+  if (micBtn) { micBtn.addEventListener('click', toggleMic); }
   document.getElementById('bc-send').addEventListener('click', function () { send(); });
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') { send(); }

@@ -676,3 +676,28 @@ img { max-width: 100%; display: block; }
   #bc-panel.bc-video-mode #bc-video-wrap { margin: 8px; }
   #bc-panel.bc-video-mode #bc-log { height: 150px; }
 }
+
+/* ---------- Hands-free mic button ---------- */
+#bc-mic {
+  background: transparent;
+  color: var(--color-brand);
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  padding: 0 6px;
+  line-height: 1;
+}
+#bc-mic.bc-mic-on {
+  color: #ef4444;
+  animation: bc-mic-pulse 1.3s ease-in-out infinite;
+}
+@keyframes bc-mic-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .7; transform: scale(1.15); }
+}
+
+/* ---------- Tighter face crop in the video box ---------- */
+#bc-panel.bc-video-mode #bc-video-el {
+  transform: scale(1.38);
+  transform-origin: center 32%;
+}
