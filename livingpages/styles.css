@@ -698,6 +698,12 @@ img { max-width: 100%; display: block; }
 
 /* ---------- Tighter face crop in the video box ---------- */
 #bc-panel.bc-video-mode #bc-video-el {
-  transform: scale(1.38);
-  transform-origin: center 32%;
+  transform: scale(1.8);
+  transform-origin: center 30%;
+}
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-el {
+    transform: scale(1.65);
+    transform-origin: center 28%;
+  }
 }
