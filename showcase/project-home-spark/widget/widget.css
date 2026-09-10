@@ -296,3 +296,42 @@
   #bc-fab { right: 26px; bottom: 22px; }
   #bc-avatar { width: 96px; height: 96px; }
 }
+
+/* ---------- Video agent FAB (separate entry point, v8) ---------- */
+#bc-fab-video {
+  position: fixed;
+  right: 48px;
+  bottom: 176px;
+  z-index: 999989;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.4);
+}
+#bc-fab-video:hover { transform: translateY(-1px); }
+@media (max-width: 700px) {
+  #bc-fab-video { right: 26px; bottom: 142px; padding: 10px 15px; font-size: 13px; }
+}
+
+/* ---------- Video agent stage: bigger, shows more of Marina ---------- */
+#bc-panel.bc-video-mode #bc-video-el {
+  aspect-ratio: 3 / 4;
+  object-position: center top;
+  max-height: 60vh;
+}
+#bc-panel.bc-video-mode #bc-video-wrap { max-width: 560px; }
+#bc-panel.bc-video-mode #bc-log { height: 150px; }
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-el { height: clamp(320px, 96vw, 460px); aspect-ratio: auto; }
+  #bc-panel.bc-video-mode #bc-video-wrap { margin: 6px; }
+  #bc-panel.bc-video-mode #bc-log { height: 110px; }
+}

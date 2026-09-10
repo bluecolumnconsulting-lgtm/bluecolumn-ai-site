@@ -87,7 +87,7 @@
   var muted = false;
   var currentAudio = null;
   var started = false;
-  var AUTO_VIDEO = true;   /* Marina is the video bot: video starts on first open */
+  var AUTO_VIDEO = false;  /* separation of agents: panel = voice only; #bc-fab-video = dedicated video agent */
   var mouthRAF = null, audioCtx = null, analyser = null, mouthData = null;
   var speaking = false;      /* bot is currently talking */
   var speechEndCb = null;    /* fired when the bot finishes talking */
@@ -138,6 +138,7 @@
 
   function playAudio(name) {
     if (muted) { setTimeout(botFinished, 400); return; }
+    if (videoStarting) { setTimeout(botFinished, 400); return; }
     /* VIDEO MODE: stream the reply into the Simli avatar */
     if (videoMode.on && simliReady()) {
       speakThroughSimli('widget/audio/' + name + '.mp3');
@@ -201,6 +202,7 @@
      VIDEO AVATAR (Simli WebRTC)
      ============================================================ */
   var videoMode = { on: false };
+  var videoStarting = false;   /* true while Simli connects — local MP3 output suppressed so the two agents never talk over each other */
   var simliClient = null;
 
   function simliReady() {
@@ -313,14 +315,18 @@
       el('This browser does not support live video (WebRTC). Voice mode still works — or open the page in Safari.', 'bc-msg bc-bot');
       return;
     }
+    videoStarting = true;
+    try { if (currentAudio) { currentAudio.pause(); } } catch (ePre) {}
     try {
       await startSimli();
       videoMode.on = true;
+      videoStarting = false;
       panel.classList.add('bc-video-mode');
       videoBtn.textContent = '\u{1F4A1}';
       videoBtn.title = 'Video avatar on — click to turn off';
       el('Video avatar is live now — watch me talk. Tap the mic and just talk to me.', 'bc-msg bc-bot');
     } catch (e) {
+      videoStarting = false;
       videoBtn.textContent = '\u{1F3A5}';
       var why = (e && (e.message || e.reason || e)) ? String(e.message || e.reason || e) : 'unknown';
       el('Video could not connect (' + why + '). Voice mode still works. If you keep seeing this, open the page in Safari.', 'bc-msg bc-bot');
@@ -467,6 +473,24 @@
   if (closeBtn) { closeBtn.addEventListener('click', closePanel); }
   muteBtn.addEventListener('click', toggleMute);
   if (videoBtn) { videoBtn.addEventListener('click', toggleVideo); }
+
+  /* VIDEO AGENT: dedicated entry point. Opens the panel straight into
+     video mode — no local MP3 greeting; Marina greets through the live
+     avatar once connected. The voice agent (#bc-fab) stays separate. */
+  function startVideoAgent() {
+    panel.classList.add('open');
+    fab.setAttribute('aria-expanded', 'true');
+    input.focus();
+    if (videoMode.on || videoStarting) { return; }
+    if (!started) { started = true; opts(SUGGESTIONS); }
+    toggleVideo().then(function () {
+      /* greet through Simli on success; falls back to local MP3 on failure */
+      speaking = true;
+      playAudio('greet');
+    });
+  }
+  var videoFab = document.getElementById('bc-fab-video');
+  if (videoFab) { videoFab.addEventListener('click', startVideoAgent); }
   if (micBtn) { micBtn.addEventListener('click', toggleMic); }
   document.getElementById('bc-send').addEventListener('click', function () { send(); });
   input.addEventListener('keydown', function (e) {
