@@ -531,4 +531,14 @@
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') { send(); }
   });
+
+// Lee stage: render video at native resolution — no upscale, no pixelation
+(function(){
+  var el = document.getElementById('bc-video-el');
+  if (!el) return;
+  el.addEventListener('loadedmetadata', function(){
+    var w = el.videoWidth || 0;
+    if (w > 0) { el.style.width = w + 'px'; el.style.maxWidth = '100%'; el.style.height = 'auto'; }
+  });
+})();
 })();

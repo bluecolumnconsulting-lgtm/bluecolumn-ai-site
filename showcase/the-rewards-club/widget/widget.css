@@ -18,27 +18,41 @@
   bottom: 20px;
   right: 20px;
   z-index: 90;
-  background: var(--color-bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 999px;
-  padding: 6px 18px 6px 8px;
+  background: transparent;
+  border: none;
+  border-radius: 16px;
+  padding: 0;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
+  letter-spacing: .02em;
   color: var(--color-text-primary);
   cursor: pointer;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.14);
+  box-shadow: none;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  gap: 5px;
+  transition: transform 0.2s ease;
 }
-#bc-fab:hover { box-shadow: 0 8px 28px rgba(37, 99, 235, 0.24); transform: translateY(-1px); }
+#bc-fab:hover { transform: translateY(-2px); }
+#bc-fab::after {
+  content: "Talk to me";
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-shadow: 0 1px 6px rgba(255,255,255,.85), 0 1px 3px rgba(255,255,255,.9);
+}
+#bc-fab > *:not(#bc-avatar) { display: none; }
 #bc-avatar {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-  border-radius: 10px;
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  object-position: center 22%;
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  background: transparent;
   transform-origin: 50% 100%;
   animation: bc-breathe 3.6s ease-in-out infinite;
 }
@@ -66,7 +80,7 @@
 }
 /* While talking: RAF drives transform (audio squish); keep a glow ring
    so the panel reads as a live video-style talking avatar. */
-#bc-avatar.bc-talking { animation: bc-none 0.3s linear infinite; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35); border-radius: 12px; }
+#bc-avatar.bc-talking { animation: bc-none 0.3s linear infinite; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35); border-radius: 50%; }
 @keyframes bc-none { from { filter: brightness(1); } 50% { filter: brightness(1.06); } to { filter: brightness(1); } }
 
 #bc-panel {
@@ -163,8 +177,8 @@
 }
 
 @media (max-width: 700px) {
-  #bc-fab { bottom: calc(14px + env(safe-area-inset-bottom)); right: 14px; padding: 5px 14px 5px 6px; font-size: 13px; }
-  #bc-avatar { width: 36px; height: 36px; }
+  #bc-fab { bottom: calc(14px + env(safe-area-inset-bottom)); right: 14px; }
+  #bc-avatar { width: 46px; height: 46px; }
   #bc-panel { bottom: calc(66px + env(safe-area-inset-bottom)); right: 14px; width: calc(100vw - 28px); max-height: 68vh; }
   #bc-log { height: min(240px, 44vh); }
 }
@@ -181,6 +195,7 @@
   overflow: hidden;
   box-shadow: 0 18px 40px rgba(15,17,28,.45);
   max-width: 620px;
+  width: fit-content;
   margin: 10px auto;
 }
 #bc-panel.bc-video-mode #bc-video-el {
