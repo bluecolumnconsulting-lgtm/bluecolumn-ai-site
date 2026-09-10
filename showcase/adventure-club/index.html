@@ -22,17 +22,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="./assets/index-CBXRDVSP.js?v=1"></script>
+    <script type="module" crossorigin src="./assets/index-CBXRDVSP.js?v=2"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-Cjf0Wvnc.css">
   </head>
 
   <body>
     <div id="root"></div>
     <!-- Adventure Club — animated guide avatar widget (Scout) -->
-  <link rel="stylesheet" href="./widget/widget.css?v=1">
+  <link rel="stylesheet" href="./widget/widget.css?v=2">
   <button id="bc-fab" aria-expanded="false" aria-controls="bc-panel">
     <img src="widget/mascot-closed.svg" alt="Scout" id="bc-avatar" />
-    <span class="bc-talk-bubble">Adventure Scout</span>
+    <span class="bc-talk-bubble">Talk to us</span>
   </button>
   <div id="bc-panel" role="dialog" aria-label="Scout — Adventure Club trip guide">
     <div class="bc-head">
@@ -44,9 +44,14 @@
       <button id="bc-mute" title="Voice on" aria-label="Toggle voice">&#128266;</button>
       <button id="bc-close" title="Close" aria-label="Close chat">&#10005;</button>
     </div>
+    <div id="bc-video-wrap" aria-hidden="true">
+      <span id="bc-video-live"><i></i>LIVE</span>
+      <img id="bc-stage" src="widget/mascot-closed.svg" alt="Scout talking" />
+    </div>
     <div id="bc-chooser" role="group" aria-label="Choose how to talk to Scout">
       <button id="bc-mode-chat" class="bc-mode-on" title="Type your questions">&#128172; Chat</button>
       <button id="bc-mode-audio" title="Talk out loud, hear spoken replies">&#127908; Audio</button>
+      <button id="bc-mode-video" title="See Scout talk on the big stage">&#127909; Video</button>
     </div>
     <div id="bc-log" aria-live="polite"></div>
     <div class="bc-input">
@@ -55,6 +60,6 @@
       <button id="bc-send">Send</button>
     </div>
   </div>
-  <script src="./widget/site-avatar.js?v=1"></script>
+  <script src="./widget/site-avatar.js?v=2"></script>
 </body>
 </html>

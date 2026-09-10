@@ -1,19 +1,31 @@
 /* ===============================================================
-   ADVENTURE CLUB — SITE AVATAR v1 (BlueColumn AI)
-   Animated-mascot demo assistant. No Simli / no video transport.
-   Scout, the club's cartoon guide, talks through canned ElevenLabs
-   MP3s while a Web Audio analyser drives his mouth sprite states:
-   RMS -> closed / half / open (FenceBot-style viseme simplification).
-   Two ways to talk:
-   - TYPE: text chat (always available)
-   - TALK: hands-free voice conversation (Web Speech API mic in,
-     spoken answers out, auto re-listen for back-and-forth)
-   Fallback chain: voice MP3 -> text only.
+   ADVENTURE CLUB — SITE AVATAR v2 (BlueColumn AI)
+   Scout, the club's animated guide. Marina-grade capability set:
+   - LIVE BRAIN: BlueColumn /recall answers any question in real
+     time; typing indicator; canned intents are the OFFLINE
+     fallback only ("not in available context" answers rejected).
+   - REAL TTS REPLIES: dynamic answers spoken via ElevenLabs TTS.
+     Pre-packed MP3s only for the greeting + last-resort fallback.
+   - ONE VOICE AT A TIME (v14 rule): a single active speech feed;
+     new speech instantly cancels the previous one. No overlaps,
+     no gargle, no leaked fallbacks.
+   - ANIMATED AVATAR: mouth states (closed/half/open) driven by
+     the playing audio's Web Audio analyser RMS — synced to TTS.
+   - CHOOSER FLOW: one "Talk to us" button -> panel with
+     Chat / Audio / Video modes. Chat starts instantly and
+     silently; Audio/Video only start on click; clean handoffs.
+     (Video = large animated Scout stage — no Simli anywhere.)
    =============================================================== */
 (function () {
   'use strict';
 
-  /* Brand + agent brain -------------------------------------------------- */
+  /* --- Real-time brain + voice (same endpoints as the OttoMedic template) --- */
+  var BRAIN_URL = 'https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/recall';
+  var BRAIN_KEY = 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy';
+  var TTS_URL = 'https://api.elevenlabs.io/v1/text-to-speech/pNInz6obpgDQGcFmaJgB?output_format=mp3_44100_128';
+  var TTS_KEY = 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843';
+
+  /* Animated mouth sprites */
   var MOUTH_CLOSED = 'widget/mascot-closed.svg';
   var MOUTH_HALF = 'widget/mascot-half.svg';
   var MOUTH_OPEN = 'widget/mascot-open.svg';
@@ -22,27 +34,27 @@
     {
       a: 'what',
       k: ['what is', 'what\u2019s', 'whats', 'about', 'tell me', 'club', 'membership club', 'how does it work'],
-      t: 'Adventure Club is a membership club for guided adventures — hiking, kayaking, camping trips, and weekend expeditions. One membership plans every weekend for you: routes, permits, gear lists, and certified guides.'
+      t: 'Adventure Club is a membership club for guided real-world adventures — hiking, kayaking, camping, and weekend expeditions. All the planning is handled for you: routes, permits, gear lists, meeting points, and safety briefings.'
     },
     {
       a: 'pricing',
-      k: ['price', 'pricing', 'cost', 'tier', 'plan', 'explorer', 'ridgeline', 'summit', 'how much', 'fee', 'month', 'year'],
-      t: 'Three tiers. Explorer is 899 a year with two adventures a month. Ridgeline is 1,149 with four, and weekend flexibility. Summit is 1,399 for the full expedition calendar. Every tier includes certified guides, permits, and packing lists.'
+      k: ['price', 'pricing', 'cost', 'tier', 'plan', 'explorer', 'adventurer', 'expedition', 'how much', 'fee', 'month'],
+      t: 'Three tiers. Explorer is 29 a month with monthly day trips and member meetups. Adventurer is 59 a month, adding weekend expeditions, kayaking and camping trips, gear discounts, and priority booking. Expedition is 99 a month for multi-day flagship expeditions, a quarterly guest pass, and a personal trip concierge.'
     },
     {
       a: 'trips',
-      k: ['trip', 'trips', 'adventure', 'hike', 'hiking', 'kayak', 'kayaking', 'camp', 'camping', 'expedition', 'calendar', 'where', 'weekend', 'itinerary'],
-      t: 'This month: a sunrise kayak on the lake, a beginner-friendly rim hike, an overnight basecamp under dark skies, and our flagship three-day summit expedition. Members pick their trips right from the calendar — spots are held for you.'
+      k: ['trip', 'trips', 'adventure', 'hike', 'hiking', 'kayak', 'kayaking', 'camp', 'camping', 'expedition', 'calendar', 'where', 'weekend', 'itinerary', 'beginner'],
+      t: 'We run guided hiking, kayaking, camping, and weekend expeditions — every trip graded easy, moderate, or challenging so you can pick your fit. Beginners are totally welcome. You book a spot on the trip calendar; higher tiers get priority booking.'
     },
     {
       a: 'safety',
-      k: ['safe', 'safety', 'gear', 'guide', 'guides', 'insurance', 'permit', 'beginner', 'injury', 'risk', 'equipment'],
-      t: 'Every trip is led by a certified guide, wilderness first aid trained, with permits and insurance included. Group sizes stay small, every route has a vetted plan B, and you get a packing list for every outing. You bring the boots — we handle the rest.'
+      k: ['safe', 'safety', 'gear', 'guide', 'guides', 'insurance', 'permit', 'weather', 'injury', 'risk', 'equipment', 'ratio'],
+      t: 'Every trip is led by certified guides with wilderness first aid, and our guide-to-member ratio never exceeds one to eight. You get a personal gear list, and all group gear — ropes, kayaks, safety equipment — is provided. We watch the weather and make the call 24 hours before departure, with a full refund or free rebooking.'
     },
     {
       a: 'book',
-      k: ['book', 'join', 'sign up', 'request', 'start', 'member', 'invite', 'reserve', 'get started'],
-      t: 'Ready to get out there? Tap Request Membership on this page, pick your tier, and we will call you within 24 hours to plan your first adventure. Your first trip is money-back guaranteed.'
+      k: ['book', 'join', 'sign up', 'request', 'start', 'member', 'reserve', 'get started', 'first trip'],
+      t: 'Easy: sign up online and pick your tier, get matched to adventures that fit your experience, reserve a spot on the trip calendar, then just show up — we handle gear lists, logistics, and safety briefings. Tap Request Membership on this page to start.'
     },
     {
       a: 'greet',
@@ -59,13 +71,13 @@
   var SUGGESTIONS = [
     'What is Adventure Club?',
     'What does membership cost?',
-    'What trips are coming up?',
+    'What trips do you run?',
     'How do I join?'
   ];
 
   var CTAS = [
-    { label: 'Request membership', href: 'request/' },
-    { label: 'What trips are coming up?' }
+    { label: 'Request membership', href: '/showcase/adventure-club/request/' },
+    { label: 'What trips do you run?' }
   ];
 
   /* -- Elements --------------------------------------------------------- */
@@ -73,29 +85,30 @@
   var panel = document.getElementById('bc-panel');
   var avatar = document.getElementById('bc-avatar');
   var headImg = document.getElementById('bc-head-img');
+  var stage = document.getElementById('bc-stage');
   var log = document.getElementById('bc-log');
   var input = document.getElementById('bc-in');
   var muteBtn = document.getElementById('bc-mute');
   var closeBtn = document.getElementById('bc-close');
   var micBtn = document.getElementById('bc-mic');
-  var modeChat = document.getElementById('bc-mode-chat');
-  var modeAudio = document.getElementById('bc-mode-audio');
 
   if (!fab || !panel || !log || !input) { return; }
 
   /* -- Audio engine ------------------------------------------------------ */
   var muted = false;
-  var currentAudio = null;
   var started = false;
   var mouthRAF = null, audioCtx = null, analyser = null, timeData = null;
   var speaking = false;
   var speechEndCb = null;
   var lastFlip = 0, lastState = 'closed';
+  var feedSeq = 0;
+  var voiceFeed = null;   /* v14 rule: one voice at a time — newest cancels the active feed */
 
   function setMouth(state) {
     var src = state === 'open' ? MOUTH_OPEN : state === 'half' ? MOUTH_HALF : MOUTH_CLOSED;
     if (avatar) { avatar.src = src; }
     if (headImg) { headImg.src = src; }
+    if (stage) { stage.src = state === 'open' ? MOUTH_OPEN : state === 'half' ? MOUTH_HALF : MOUTH_CLOSED; }
     lastState = state;
   }
 
@@ -104,13 +117,22 @@
     setMouth('closed');
   }
 
+  function killFeed() {
+    /* instantly cancel the active speech feed (new speech wins) */
+    if (voiceFeed) {
+      try { voiceFeed.audio.onended = null; } catch (e) {}
+      try { voiceFeed.audio.pause(); } catch (e) {}
+      voiceFeed = null;
+    }
+    stopMouth();
+  }
+
   /* Analyser RMS -> sprite state swap (closed / half / open) */
-  function startMouth() {
-    if (!currentAudio) { return; }
+  function startMouth(feed) {
     try {
       audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-      var src = audioCtx.createMediaElementSource(currentAudio);
+      var src = audioCtx.createMediaElementSource(feed.audio);
       if (!analyser) {
         analyser = audioCtx.createAnalyser();
         analyser.fftSize = 512;
@@ -119,14 +141,17 @@
         analyser.connect(audioCtx.destination);
       }
       src.connect(analyser);
+      feed.haveAnalyser = true;
     } catch (e) { /* analyser unavailable: fallback rhythm below */ }
-    var haveAnalyser = !!analyser;
     var tick = function () {
-      if (!currentAudio || currentAudio.paused) { stopMouth(); return; }
+      if (voiceFeed !== feed || feed.audio.paused) {
+        if (voiceFeed === feed) { stopMouth(); voiceFeed = null; }
+        return;
+      }
       var now = Date.now();
-      if (now - lastFlip < 55) { mouthRAF = requestAnimationFrame(tick); return; }
+      if (now - lastFlip < 55) { feed.raf = requestAnimationFrame(tick); return; }
       var energy = 0;
-      if (haveAnalyser && timeData) {
+      if (feed.haveAnalyser && timeData) {
         analyser.getByteTimeDomainData(timeData);
         var sum = 0, i;
         for (i = 0; i < timeData.length; i++) {
@@ -139,9 +164,9 @@
       }
       var state = energy > 0.085 ? 'open' : energy > 0.032 ? 'half' : 'closed';
       if (state !== lastState) { setMouth(state); lastFlip = now; }
-      mouthRAF = requestAnimationFrame(tick);
+      feed.raf = requestAnimationFrame(tick);
     };
-    mouthRAF = requestAnimationFrame(tick);
+    feed.raf = requestAnimationFrame(tick);
   }
 
   function botFinished() {
@@ -154,26 +179,37 @@
     if (micWanted) { setTimeout(pauseListeningThenResume, 350); }
   }
 
+  /* Single speech path for everything (canned MP3 or TTS blob).
+     Starts a new feed; the previous feed is cancelled immediately. */
+  function speakAudioEl(audio) {
+    killFeed();
+    var feed = { id: ++feedSeq, audio: audio, raf: null, haveAnalyser: false };
+    voiceFeed = feed;
+    speaking = true;
+    avatar.classList.add('bc-talking');
+    audio.onended = function () {
+      if (voiceFeed === feed) { voiceFeed = null; botFinished(); }
+    };
+    audio.play().then(function () { startMouth(feed); }).catch(function () {
+      if (voiceFeed === feed) { voiceFeed = null; botFinished(); }
+    });
+    return feed;
+  }
+
   function playAudio(name) {
     if (muted) { setTimeout(botFinished, 400); return; }
     try {
-      stopMouth();
-      if (currentAudio) { currentAudio.pause(); currentAudio.onended = null; }
-      currentAudio = new Audio('widget/audio/' + name + '.mp3');
-      currentAudio.preload = 'auto';
-      avatar.classList.add('bc-talking');
-      currentAudio.onended = botFinished;
-      currentAudio.play().then(startMouth).catch(function () { botFinished(); });
-    } catch (e) {
-      botFinished();
-    }
+      var a = new Audio('widget/audio/' + name + '.mp3');
+      a.preload = 'auto';
+      speakAudioEl(a);
+    } catch (e) { botFinished(); }
   }
 
   function toggleMute() {
     muted = !muted;
     muteBtn.textContent = muted ? '\u{1F507}' : '\u{1F50A}';
     muteBtn.title = muted ? 'Voice off' : 'Voice on';
-    if (muted && currentAudio) { currentAudio.pause(); }
+    if (muted) { killFeed(); }
   }
 
   /* -- Message helpers ---------------------------------------------------- */
@@ -200,7 +236,6 @@
     log.scrollTop = log.scrollHeight;
   }
 
-  /* -- Column mascot squish states ---------------------------------------- */
   function squishPulse() {
     avatar.classList.remove('bc-squish');
     void avatar.offsetWidth;
@@ -211,9 +246,43 @@
   }
 
   /* ============================================================
+     LIVE BRAIN (BlueColumn /recall)
+     Canned intents are the offline fallback only.
+     ============================================================ */
+  function askBrain(text) {
+    var canned = matchIntent(text) || FALLBACK;
+    return fetch(BRAIN_URL, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + BRAIN_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q: 'Adventure Club customer question: ' + text })
+    }).then(function (res) { return res.json(); }).then(function (d) {
+      var a = (d && d.answer ? String(d.answer) : '').trim();
+      if (!a || /not in available context/i.test(a) || a.length < 8) { return { t: canned.t, a: canned.a, canned: true }; }
+      return { t: a, canned: false };
+    }).catch(function () { return { t: canned.t, a: canned.a, canned: true }; });
+  }
+
+  /* Real TTS for dynamic replies; canned MP3 as last-resort fallback. */
+  function playReply(r) {
+    if (muted) { setTimeout(botFinished, 400); return; }
+    ttsFetch(r.t).then(function (blob) {
+      var a = new Audio(URL.createObjectURL(blob));
+      speakAudioEl(a);
+    }).catch(function () {
+      playAudio(r.canned ? r.a : 'fallback');
+    });
+  }
+
+  function ttsFetch(text) {
+    return fetch(TTS_URL, {
+      method: 'POST',
+      headers: { 'xi-api-key': TTS_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text, model_id: 'eleven_flash_v2_5' })
+    }).then(function (res) { if (!res.ok) { throw new Error('tts ' + res.status); } return res.blob(); });
+  }
+
+  /* ============================================================
      HANDS-FREE VOICE (Web Speech API)
-     Mic on = continuous conversation: listen -> reply spoken ->
-     listen again, until mic toggled off. Typing still works.
      ============================================================ */
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   var recog = null;
@@ -312,37 +381,98 @@
     input.value = '';
     squishPulse();
     setThinking(true);
-    var r = matchIntent(txt) || FALLBACK;
-    setTimeout(function () {
+    var t = el('Scout is thinking\u2026', 'bc-msg bc-bot bc-typing');
+    askBrain(txt).then(function (r) {
+      if (t.parentNode) { t.parentNode.removeChild(t); }
       setThinking(false);
       el(r.t, 'bc-msg bc-bot');
-      speaking = true;
-      playAudio(r.a);
-      if (r.a === 'book' || r.a === 'pricing') {
+      playReply(r);
+      if (!r.canned || r.a === 'book' || r.a === 'pricing') {
+        opts([{ label: 'Request membership', href: '/showcase/adventure-club/request/' }]);
+      } else if (r.a === 'safety' || r.a === 'trips') {
         opts(CTAS);
       }
-    }, 620);
+    });
   }
 
   function openPanel() {
     panel.classList.add('open');
     fab.setAttribute('aria-expanded', 'true');
-    if (!started) {
-      started = true;
-      var g = INTENTS[INTENTS.length - 1]; /* greet */
-      el(g.t, 'bc-msg bc-bot');
-      speaking = true;
-      playAudio('greet');
-      opts(SUGGESTIONS);
-    }
+    showGreeting();      /* chat starts immediately, silently; audio/video wait for the chooser */
+    setModeUI();
     input.focus();
   }
 
   function closePanel() {
     panel.classList.remove('open');
     fab.setAttribute('aria-expanded', 'false');
-    if (micWanted) { setMicWanted(false); }
+    switchToChat();
   }
+
+  function showGreeting() {
+    if (!started) {
+      started = true;
+      var g = INTENTS[INTENTS.length - 1]; /* greet */
+      el(g.t, 'bc-msg bc-bot');
+      opts(SUGGESTIONS);
+    }
+  }
+
+  /* -- MODE MANAGEMENT — one conversation, three modalities ------------------
+     Chat starts immediately on open (silent). Audio and Video only start
+     when picked from the chooser. Only one agent ever speaks at a time. */
+  var modeChatBtn = document.getElementById('bc-mode-chat');
+  var modeAudioBtn = document.getElementById('bc-mode-audio');
+  var modeVideoBtn = document.getElementById('bc-mode-video');
+
+  function setModeUI() {
+    if (!modeChatBtn || !modeAudioBtn || !modeVideoBtn) { return; }
+    var audioOn = micWanted || (speaking && !panel.classList.contains('bc-video-mode'));
+    modeChatBtn.classList.toggle('bc-mode-on', !panel.classList.contains('bc-video-mode') && !audioOn);
+    modeAudioBtn.classList.toggle('bc-mode-on', !panel.classList.contains('bc-video-mode') && audioOn);
+    modeVideoBtn.classList.toggle('bc-mode-on', panel.classList.contains('bc-video-mode'));
+  }
+
+  /* AUDIO AGENT: voice replies + hands-free mic. Video stage off first. */
+  function startAudioAgent() {
+    panel.classList.add('open');
+    fab.setAttribute('aria-expanded', 'true');
+    panel.classList.remove('bc-video-mode');   /* leave video stage synchronously */
+    showGreeting();
+    speaking = true;
+    playAudio('greet');
+    if (supportedSR() && !micWanted) { toggleMic(); }
+    setModeUI();
+  }
+
+  /* VIDEO AGENT: large animated Scout stage (no Simli). Chooser-only start. */
+  function startVideoAgent() {
+    panel.classList.add('open');
+    fab.setAttribute('aria-expanded', 'true');
+    if (panel.classList.contains('bc-video-mode')) { setModeUI(); return; }
+    showGreeting();
+    killFeed();                                /* hand over: stop prior speech */
+    if (micWanted) { setMicWanted(false); }
+    panel.classList.add('bc-video-mode');
+    el('Video stage is live now — watch me talk. Tap the mic and just talk to me.', 'bc-msg bc-bot');
+    speaking = true;
+    playAudio('greet');
+    if (supportedSR() && !micWanted) { toggleMic(); }
+    setModeUI();
+  }
+
+  function switchToChat() {
+    panel.classList.remove('bc-video-mode');
+    if (micWanted) { setMicWanted(false); }
+    killFeed();
+    speaking = false;
+    avatar.classList.remove('bc-talking');
+    setModeUI();
+  }
+
+  if (modeAudioBtn) { modeAudioBtn.addEventListener('click', startAudioAgent); }
+  if (modeVideoBtn) { modeVideoBtn.addEventListener('click', startVideoAgent); }
+  if (modeChatBtn) { modeChatBtn.addEventListener('click', switchToChat); }
 
   /* -- Wire up -------------------------------------------------------------- */
   fab.addEventListener('click', function () {
@@ -351,22 +481,11 @@
   if (closeBtn) { closeBtn.addEventListener('click', closePanel); }
   muteBtn.addEventListener('click', toggleMute);
   if (micBtn) { micBtn.addEventListener('click', toggleMic); }
-  if (modeChat) {
-    modeChat.addEventListener('click', function () {
-      modeChat.classList.add('bc-mode-on');
-      if (modeAudio) { modeAudio.classList.remove('bc-mode-on'); }
-      if (micWanted) { setMicWanted(false); }
-    });
-  }
-  if (modeAudio) {
-    modeAudio.addEventListener('click', function () {
-      modeAudio.classList.add('bc-mode-on');
-      if (modeChat) { modeChat.classList.remove('bc-mode-on'); }
-      toggleMic();
-    });
-  }
   document.getElementById('bc-send').addEventListener('click', function () { send(); });
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') { send(); }
   });
+
+  /* Test/deep-link hook: ?open=1 opens the panel on load (chat mode only) */
+  if (location.search.indexOf('open=1') !== -1) { openPanel(); }
 })();

@@ -442,3 +442,25 @@
 @media (max-width: 700px) {
   #bc-panel.bc-video-mode #bc-video-wrap { height: min(62vh, 560px); }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   ADVENTURE CLUB v2 — animated Scout stage (video mode, no Simli)
+   ══════════════════════════════════════════════════════════════ */
+#bc-stage { display: none; }
+#bc-panel.bc-video-mode #bc-stage {
+  display: block;
+  margin: 10px auto;
+  height: clamp(240px, 44vw, 330px);
+  width: auto;
+  max-width: calc(100% - 20px);
+  object-fit: contain;
+  border-radius: 14px;
+  background: radial-gradient(320px 200px at 70% 20%, rgba(74, 222, 128, .18), transparent 65%),
+              radial-gradient(260px 180px at 20% 90%, rgba(20, 184, 166, .14), transparent 60%),
+              #12241c;
+  padding: 6px;
+}
+#bc-panel.bc-video-mode #bc-video-live { display: none; }
+@media (max-width: 480px) {
+  #bc-panel.bc-video-mode #bc-stage { height: min(52vh, 420px); margin: 6px auto; }
+}
