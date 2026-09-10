@@ -414,3 +414,31 @@
 @media (max-width: 700px) {
   #bc-panel.bc-video-mode #bc-video-el { object-fit: contain; object-position: center top; height: min(62vh, 560px); width: auto; max-width: 100%; }
 }
+
+
+/* ---------- v13: ABSOLUTE no-crop guarantee for the video stage ---------- */
+/* Applies to the video AND anything Simli might render (canvas), with !important
+   so no other rule, framework style, or vendor inline style can reintroduce crop. */
+#bc-panel.bc-video-mode #bc-video-wrap {
+  height: min(70vh, 660px);
+  max-width: 520px;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#bc-panel.bc-video-mode #bc-video-wrap video,
+#bc-panel.bc-video-mode #bc-video-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center top !important;
+  aspect-ratio: auto !important;
+  display: block;
+}
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-wrap { height: min(62vh, 560px); }
+}
