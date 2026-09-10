@@ -1,0 +1,157 @@
+{
+  "industry": "adventure",
+  "disableOldIndustry": true,
+  "oldIndustryPatterns": ["reef", "skimmer", "aquarium", "tank", "coral", "bioload", "ottomedic", "marina"],
+  "domains": {
+    "rateLimitMs": 2500,
+    "maxConcurrency": 2
+  },
+  "targets": [
+    {
+      "id": "outdoor_forum_intent",
+      "lead_type": "consumer_intent",
+      "adapter": "GenericForumAdapter",
+      "enabled": true,
+      "tier": "free",
+      "interval_minutes": 360,
+      "seedUrls": [
+        "https://www.reddit.com/r/hiking/search/?q={QUERY}&sort=new",
+        "https://www.reddit.com/r/CampingandHiking/search/?q={QUERY}&sort=new",
+        "https://www.reddit.com/r/kayaking/search/?q={QUERY}&sort=new",
+        "https://www.trailforums.com/search/?q={QUERY}",
+        "https://www.backpacker.com/forums/search/?q={QUERY}"
+      ],
+      "queries": [
+        "guided tour sold out",
+        "booked out guide service",
+        "looking for hiking group",
+        "solo hiker want group",
+        "beginner trail advice",
+        "first overnight hike nervous",
+        "kayak trip partner",
+        "weekend trip ideas group",
+        "meetup cancelled",
+        "want to try backpacking"
+      ],
+      "extract": {
+        "fields": ["title", "url", "date", "excerpt", "author", "replies"]
+      }
+    },
+    {
+      "id": "outdoor_reddit_intent",
+      "lead_type": "consumer_intent",
+      "adapter": "RedditAdapter",
+      "enabled": true,
+      "tier": "free",
+      "interval_minutes": 240,
+      "subreddits": ["hiking", "CampingandHiking", "kayaking", "camping", "AdrenalineAddicts", "backpacking", "Ultralight", "socalhiking"],
+      "queries": [
+        "guided hike",
+        "guided kayaking",
+        "sold out tour",
+        "solo hiker",
+        "beginner trail",
+        "looking for group",
+        "weekend expedition",
+        "first camping trip"
+      ],
+      "extract": {
+        "fields": ["title", "url", "date", "excerpt", "author", "subreddit"]
+      }
+    },
+    {
+      "id": "outdoor_expo_exhibitors",
+      "lead_type": "b2b_partner",
+      "adapter": "GenericDirectoryAdapter",
+      "enabled": true,
+      "tier": "low_cost",
+      "interval_minutes": 1440,
+      "seedUrls": [
+        "https://outdoorretailer.com/exhibitors",
+        "https://www.thesuperate.com/exhibitors",
+        "https://adventureexpowest.com/exhibitor-list"
+      ],
+      "paging": { "start": 1, "end": 10 },
+      "extract": {
+        "fields": ["company_name", "website", "contact_url", "location", "category", "booth_number"]
+      }
+    },
+    {
+      "id": "outdoor_clubs",
+      "lead_type": "b2b_partner",
+      "adapter": "GenericDirectoryAdapter",
+      "enabled": true,
+      "tier": "free",
+      "interval_minutes": 10080,
+      "seedUrls": [
+        "https://www.meetup.com/topics/hiking/us/",
+        "https://americanhiking.org/members/",
+        "https://www.americanwhitewater.org/content/Member/local-clubs"
+      ],
+      "extract": {
+        "fields": ["company_name", "website", "contact_url", "location", "member_count"]
+      }
+    },
+    {
+      "id": "gear_retailers",
+      "lead_type": "b2b_partner",
+      "adapter": "GenericDirectoryAdapter",
+      "enabled": true,
+      "tier": "low_cost",
+      "interval_minutes": 2880,
+      "seedUrls": [
+        "https://www.yelp.com/search?find_desc=outfitter+gear+shop&find_loc={LOCATION}",
+        "https://www.google.com/maps/search/outdoor+gear+store+{LOCATION}"
+      ],
+      "locations": ["Denver, CO", "Seattle, WA", "Portland, OR", "Phoenix, AZ", "Asheville, NC"],
+      "extract": {
+        "fields": ["company_name", "website", "contact_url", "location", "phone", "rating", "reviews_count"]
+      }
+    },
+    {
+      "id": "tourism_boards",
+      "lead_type": "b2b_partner",
+      "adapter": "GenericDirectoryAdapter",
+      "enabled": true,
+      "tier": "low_cost",
+      "interval_minutes": 10080,
+      "seedUrls": [
+        "https://www.usta.org/members",
+        "https://adventure.travel/members"
+      ],
+      "extract": {
+        "fields": ["company_name", "website", "contact_url", "location", "focus_areas"]
+      }
+    },
+    {
+      "id": "investor_portfolios",
+      "lead_type": "investor",
+      "adapter": "GenericPortfolioAdapter",
+      "enabled": true,
+      "tier": "low_cost",
+      "interval_minutes": 10080,
+      "seedUrls": [
+        "https://www.crunchbase.com/search/organizations/field/organizations/categories/outdoor-recreation",
+        "https://www.crunchbase.com/search/organizations/field/organizations/categories/travel"
+      ],
+      "extract": {
+        "fields": ["firm_name", "partner_names", "thesis_excerpt", "contact_url", "portfolio_companies", "investment_stage"]
+      }
+    },
+    {
+      "id": "outdoor_rec_investors",
+      "lead_type": "investor",
+      "adapter": "GenericPortfolioAdapter",
+      "enabled": true,
+      "tier": "low_cost",
+      "interval_minutes": 10080,
+      "seedUrls": [
+        "https://www.outdoorindustry.org/who-we-are/our-members/",
+        "https://www.camplify.io/investors"
+      ],
+      "extract": {
+        "fields": ["firm_name", "thesis_excerpt", "contact_url", "focus_areas"]
+      }
+    }
+  ]
+}

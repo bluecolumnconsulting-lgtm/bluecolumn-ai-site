@@ -1,0 +1,66 @@
+{
+  "consumer_intent": {
+    "pain_high": [
+      "guided tour sold out", "booked out", "waitlist", "tour cancelled", "trip cancelled",
+      "no spots left", "sold out", "closed to new members", "fully booked",
+      "couldn't get a guide", "no availability", "emergency", "lost in the woods",
+      "unprepared", "gear failure", "injury"
+    ],
+    "pain_medium": [
+      "looking for group", "solo hiker", "solo kayaker", "beginner trail", "first time camping",
+      "nervous about", "don't know where to start", "planning takes forever", "logistics",
+      "permits confusing", "group fell apart", "flaky friends", "meetup cancelled",
+      "want to try backpacking", "upgrade my gear", "training plan"
+    ],
+    "signals_value": [
+      "annual pass", "thru-hike", "PCT", "AT", "CDT", "14er", "multi-day", "expedition",
+      "$", "gear worth", "custom setup", "NOLS", "outward bound", "50 miler", "ultra",
+      "river trip", "packraft", "class IV", "dark sky", "summit", "weekend warrior"
+    ],
+    "tank_size_multipliers": {
+      "solo": 1.0,
+      "pair": 1.2,
+      "small group": 1.4,
+      "family": 1.6,
+      "team": 1.8,
+      "corporate retreat": 2.0,
+      "scout troop": 2.2,
+      "large group": 2.5
+    }
+  },
+  "b2b_partner": {
+    "retailer_signals": [
+      "store", "shop", "dealer", "retail", "outfitter", "gear shop",
+      "pro shop", "outdoor store", "bike shop", "paddle shop"
+    ],
+    "service_signals": [
+      "guide service", "guided tours", "instruction", "lessons", "shuttle service",
+      "trip planning", "rentals", "outfitting", "camp", "clinic"
+    ],
+    "brand_signals": [
+      "manufacturer", "equipment", "apparel", "gear", "backpacks", "tents",
+      "kayaks", "paddleboards", "outdoor brand", "tourism board", "CVB", "DMO"
+    ],
+    "partner_type_tags": {
+      "retailer": ["store", "shop", "retail", "dealer", "outfitter"],
+      "service_provider": ["guide", "instruction", "lessons", "shuttle", "rentals"],
+      "manufacturer": ["manufacturer", "OEM", "gear maker", "brand"],
+      "distributor": ["distributor", "wholesale", "distribution"],
+      "club": ["club", "society", "group", "association", "troop"]
+    }
+  },
+  "investor": {
+    "thesis_tags": [
+      "consumer", "marketplace", "travel", "experience economy", "outdoors",
+      "recreation", "hospitality", "community", "subscription", "membership",
+      "marketplace networks", "climate", "sustainability", "wellness", "experiences"
+    ],
+    "stage_tags": [
+      "seed", "series a", "series b", "growth", "venture", "angel"
+    ],
+    "portfolio_match_keywords": [
+      "outdoor recreation", "experiences", "travel", "marketplace", "guides",
+      "adventure", "camping", "hiking", "paddling", "membership", "community", "wellness"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Scout: Adventure Club guide mascot -->
+  <circle cx="100" cy="104" r="86" fill="#1e3a2f"/>
+  <circle cx="100" cy="104" r="86" fill="none" stroke="#2e5945" stroke-width="4"/>
+  <!-- sun + peaks backdrop -->
+  <circle cx="142" cy="66" r="14" fill="#f2b544" opacity="0.9"/>
+  <path d="M40 128 L74 84 L96 112 L118 78 L156 128 Z" fill="#33604a"/>
+  <path d="M118 78 L134 100 L150 122 L118 122 Z" fill="#4a7a5e" opacity="0.85"/>
+  <path d="M74 84 L82 96 L66 96 Z" fill="#e8f1ec"/>
+  <path d="M118 78 L127 91 L109 91 Z" fill="#e8f1ec"/>
+  <!-- scarf -->
+  <path d="M58 158 Q100 176 142 158 L142 176 Q100 192 58 176 Z" fill="#e2632f"/>
+  <path d="M58 158 Q100 176 142 158 L141 166 Q100 184 59 166 Z" fill="#c94f22"/>
+  <!-- face -->
+  <circle cx="100" cy="112" r="46" fill="#f7c9a0"/>
+  <!-- hat -->
+  <ellipse cx="100" cy="78" rx="56" ry="13" fill="#b98a4b"/>
+  <path d="M64 76 Q66 46 100 44 Q134 46 136 76 Q100 86 64 76 Z" fill="#d3a15c"/>
+  <path d="M64 74 Q100 82 136 74 L136 78 Q100 87 64 78 Z" fill="#8f6836"/>
+  <path d="M100 44 L100 44" stroke="none"/>
+  <!-- eyes -->
+  <circle cx="82" cy="106" r="6.5" fill="#2b2119"/>
+  <circle cx="118" cy="106" r="6.5" fill="#2b2119"/>
+  <circle cx="84.2" cy="103.6" r="2.1" fill="#fff"/>
+  <circle cx="120.2" cy="103.6" r="2.1" fill="#fff"/>
+  <!-- brows -->
+  <path d="M74 94 Q82 90 90 94" fill="none" stroke="#8a5a33" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M110 94 Q118 90 126 94" fill="none" stroke="#8a5a33" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- cheeks -->
+  <ellipse cx="72" cy="122" rx="7" ry="4.5" fill="#f0a487" opacity="0.55"/>
+  <ellipse cx="128" cy="122" rx="7" ry="4.5" fill="#f0a487" opacity="0.55"/>
+  <!-- nose -->
+  <path d="M100 116 Q97 124 100 126 Q103 124 100 116" fill="#e8a87e"/>
+  <!-- mouth -->
+  <ellipse cx="100" cy="147" rx="15" ry="11" fill="#5e2020"/><path d="M90 152 Q100 159 110 152 L110 153 Q100 158 90 153 Z" fill="#e56b6b"/>
+ </svg>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join Adventure Club — Request Membership</title>
+<meta name="description" content="Request your Adventure Club membership. Tell us your pace and interests and we'll match you to guided hikes, kayaking trips, and weekend expeditions.">
+<style>
+  :root {
+    --bg: #0b1220;
+    --surface: #121a2b;
+    --border: rgba(148, 197, 255, .14);
+    --text: #e8eefc;
+    --muted: #9fb0cc;
+    --brand: #4ade80;
+    --brand2: #14b8a6;
+    --ok: #34d399;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background:
+      radial-gradient(900px 500px at 85% -10%, rgba(74,222,128,.13), transparent 60%),
+      radial-gradient(700px 420px at 10% 110%, rgba(20,184,166,.12), transparent 60%),
+      var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    line-height: 1.55;
+  }
+  .nav { max-width: 760px; margin: 0 auto; padding: 18px 20px 0; }
+  .nav a { color: var(--muted); text-decoration: none; font-size: 14px; }
+  .nav a:hover { color: var(--text); }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 28px 20px 70px; }
+  .chip {
+    display: inline-block; font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--brand); border: 1px solid rgba(74,222,128,.35); border-radius: 999px;
+    padding: 5px 14px; margin-bottom: 18px; background: rgba(74,222,128,.06);
+  }
+  h1 {
+    font-size: clamp(28px, 5vw, 40px); line-height: 1.15; margin-bottom: 12px;
+    background: linear-gradient(90deg, #86efac, #5eead4);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { color: var(--muted); font-size: 16px; margin-bottom: 28px; }
+  form { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 26px 22px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 16px 0 6px; }
+  label:first-of-type { margin-top: 0; }
+  input, select, textarea {
+    width: 100%; background: #0d1526; border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); padding: 12px 13px; font-size: 15px; font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: rgba(74,222,128,.55); }
+  textarea { min-height: 90px; resize: vertical; }
+  button {
+    width: 100%; margin-top: 22px; border: none; cursor: pointer;
+    background: linear-gradient(90deg, var(--brand), var(--brand2));
+    color: #071018; font-weight: 700; font-size: 16px; padding: 14px; border-radius: 12px;
+  }
+  button:hover { filter: brightness(1.08); }
+  button:disabled { opacity: .6; cursor: wait; }
+  .fine { font-size: 12.5px; color: var(--muted); margin-top: 12px; text-align: center; }
+  #done {
+    display: none; background: var(--surface); border: 1px solid rgba(52,211,153,.35);
+    border-radius: 18px; padding: 34px 26px; text-align: center;
+  }
+  #done h2 { color: var(--ok); margin-bottom: 10px; font-size: 22px; }
+  #done p { color: var(--muted); font-size: 15px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <nav class="nav"><a href="/showcase/adventure-club/">&larr; Back to Adventure Club</a></nav>
+  <div class="wrap">
+    <div id="form-view">
+      <span class="chip">Adventure Membership Request</span>
+      <h1>Join Adventure Club</h1>
+      <p class="sub">Tell us how you like to get outside. A trip guide will match you to guided hikes, kayaking trips, and weekend expeditions that fit your pace — and call to plan your first adventure.</p>
+      <form id="ac-form">
+        <label for="f-name">Name</label>
+        <input id="f-name" name="name" required autocomplete="name" placeholder="Your name">
+
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+
+        <div class="row">
+          <div>
+            <label for="f-tier">Membership tier</label>
+            <select id="f-tier" name="tier" required>
+              <option value="" disabled selected>Select…</option>
+              <option>Explorer — Weekenders ($899/yr)</option>
+              <option>Ridgeline — Monthly Adventurers ($1,149/yr)</option>
+              <option>Summit — Expedition Athletes ($1,399/yr)</option>
+              <option>Not sure yet — help me pick</option>
+            </select>
+          </div>
+          <div>
+            <label for="f-experience">Experience level</label>
+            <input id="f-experience" name="experience" placeholder="e.g. weekend day-hiker, new to kayaking">
+          </div>
+        </div>
+
+        <label for="f-notes">Adventures on your bucket list (optional)</label>
+        <textarea id="f-notes" name="notes" placeholder="Sunrise kayaks, summit expeditions, dark-sky basecamps — anything we should know…"></textarea>
+
+        <button type="submit" id="ac-submit">Request Membership</button>
+        <p class="fine">No spam. A trip guide replies with tier fit, the current trip calendar, and a gear checklist for your first outing.</p>
+      </form>
+    </div>
+    <div id="done">
+      <h2>&#10003; Request received</h2>
+      <p>Your membership request is in. An Adventure Club trip guide will call within 24 hours to plan your first adventure — routes, permits, and gear lists included.</p>
+      <p style="margin-top:18px"><a href="/showcase/adventure-club/" style="color:var(--brand)">&larr; Back to Adventure Club</a></p>
+    </div>
+  </div>
+  <script>
+    var form = document.getElementById('ac-form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = document.getElementById('ac-submit');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      var data = {
+        name: document.getElementById('f-name').value.trim(),
+        email: document.getElementById('f-email').value.trim(),
+        tier: document.getElementById('f-tier').value,
+        experience: document.getElementById('f-experience').value.trim() || 'not specified',
+        notes: document.getElementById('f-notes').value.trim() || 'none',
+        page: 'Adventure Club membership request'
+      };
+      fetch('https://formsubmit.co/ajax/bluecolumnconsulting@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function (r) {
+        if (!r.ok) { throw new Error('send failed'); }
+        document.getElementById('form-view').style.display = 'none';
+        document.getElementById('done').style.display = 'block';
+      }).catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Try again';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+/* Widget var fallbacks (self-contained) */
+#bc-fab, #bc-panel {
+  --border-color: rgba(15,23,42,.12);
+  --color-bg-primary: #ffffff;
+  --color-bg-surface: #f8fafc;
+  --color-brand: #166534;
+  --color-brand-dark: #1e40af;
+  --color-brand-light: #dbeafe;
+  --color-text-primary: #0f172a;
+  --font-display: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+/* ══════════════════════════════════════════════════════════════
+   THE BLUE COLUMN - SITE AVATAR WIDGET
+   Demo voice assistant. Column mascot squishes (squash & stretch).
+   ══════════════════════════════════════════════════════════════ */
+#bc-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 90;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 6px 18px 6px 8px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.14);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+#bc-fab:hover { box-shadow: 0 8px 28px rgba(22, 101, 52, 0.3); transform: translateY(-1px); }
+#bc-avatar {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 10px;
+  transform-origin: 50% 100%;
+  animation: bc-breathe 3.6s ease-in-out infinite;
+}
+/* Gentle idle breathing */
+@keyframes bc-breathe {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.04, 0.95); }
+}
+/* One-shot squish-pulse on user message */
+#bc-avatar.bc-squish { animation: bc-squish 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
+@keyframes bc-squish {
+  0% { transform: scale(1, 1); }
+  28% { transform: scale(1.22, 0.72); }
+  55% { transform: scale(0.86, 1.18); }
+  78% { transform: scale(1.06, 0.94); }
+  100% { transform: scale(1, 1); }
+}
+/* Faster squish rhythm while thinking */
+#bc-avatar.bc-thinking { animation: bc-think 0.55s ease-in-out infinite; }
+@keyframes bc-think {
+  0%, 100% { transform: scale(1, 1); }
+  25% { transform: scale(1.14, 0.84); }
+  50% { transform: scale(0.9, 1.12); }
+  75% { transform: scale(1.08, 0.9); }
+}
+/* While talking: RAF drives transform (audio squish); keep a glow ring
+   so the panel reads as a live video-style talking avatar. */
+#bc-avatar.bc-talking { animation: bc-none 0.3s linear infinite; box-shadow: 0 0 0 3px rgba(22, 101, 52, 0.4); border-radius: 12px; }
+@keyframes bc-none { from { filter: brightness(1); } 50% { filter: brightness(1.06); } to { filter: brightness(1); } }
+
+#bc-panel {
+  position: fixed;
+  bottom: 82px;
+  right: 20px;
+  width: min(350px, calc(100vw - 32px));
+  max-height: min(520px, 72vh);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.22);
+  z-index: 91;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+#bc-panel.open { display: flex; }
+.bc-head {
+  background: linear-gradient(120deg, #166534 0%, #0f766e 100%);
+  color: #fff;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bc-head img { width: 38px; height: 38px; object-fit: contain; background: #fff; border-radius: 8px; padding: 2px; }
+.bc-head-t { flex: 1; min-width: 0; }
+.bc-head-t b { font-family: var(--font-display); font-size: 15px; display: block; }
+.bc-head-t small { display: block; opacity: 0.85; font-weight: 400; font-size: 11.5px; }
+#bc-close { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; padding: 4px 6px; line-height: 1; }
+#bc-mute { background: none; border: none; color: #fff; font-size: 16px; cursor: pointer; padding: 4px; line-height: 1; }
+#bc-log {
+  padding: 14px;
+  height: 280px;
+  overflow-y: auto;
+  background: var(--color-bg-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bc-msg {
+  max-width: 85%;
+  padding: 9px 13px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+.bc-msg.bc-bot {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--color-text-primary);
+  align-self: flex-start;
+  border-bottom-left-radius: 3px;
+}
+.bc-msg.bc-user {
+  background: var(--color-brand);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 3px;
+}
+.bc-opts { display: flex; flex-wrap: wrap; gap: 6px; align-self: flex-start; max-width: 95%; }
+.bc-opts button {
+  background: var(--color-bg-primary);
+  border: 1.5px solid var(--color-brand);
+  color: var(--color-brand);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.bc-opts button:hover { background: var(--color-brand-light); }
+.bc-input { display: flex; border-top: 1px solid var(--border-color); background: var(--color-bg-primary); }
+.bc-input input {
+  border: none;
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  font-size: 14px;
+  background: transparent;
+  color: var(--color-text-primary);
+  outline: none;
+}
+.bc-input button {
+  background: var(--color-brand);
+  color: #fff;
+  border: none;
+  padding: 0 18px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+@media (max-width: 700px) {
+  #bc-fab { bottom: calc(14px + env(safe-area-inset-bottom)); right: 14px; padding: 5px 14px 5px 6px; font-size: 13px; }
+  #bc-avatar { width: 36px; height: 36px; }
+  #bc-panel { bottom: calc(66px + env(safe-area-inset-bottom)); right: 14px; width: calc(100vw - 28px); max-height: 68vh; }
+  #bc-log { height: min(240px, 44vh); }
+}
+
+/* ---------- Video avatar mode (Simli) ---------- */
+#bc-video { font-size: 15px; }
+#bc-video-wrap { display: none; }
+#bc-panel.bc-video-mode #bc-video-wrap {
+  display: block;
+  position: relative;
+  background: #171922;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(15,17,28,.45);
+  max-width: 620px;
+  margin: 10px auto;
+}
+#bc-panel.bc-video-mode #bc-video-el {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+}
+#bc-video-live {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(10,12,18,.72);
+  color: #e8ecf5;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+#bc-video-live i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: bc-live-pulse 1.4s ease-in-out infinite;
+}
+@keyframes bc-live-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,.55); }
+  50% { opacity: .65; box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+}
+#bc-panel.bc-video-mode #bc-log { height: 190px; }
+#bc-panel.bc-video-mode .bc-head img { display: none; }
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-el { height: clamp(220px, 48vw, 280px); aspect-ratio: auto; }
+  #bc-panel.bc-video-mode #bc-video-wrap { margin: 8px; }
+  #bc-panel.bc-video-mode #bc-log { height: 150px; }
+}
+
+/* ---------- Hands-free mic button ---------- */
+#bc-mic {
+  background: transparent;
+  color: var(--color-brand);
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  padding: 0 6px;
+  line-height: 1;
+}
+#bc-mic.bc-mic-on {
+  color: #ef4444;
+  animation: bc-mic-pulse 1.3s ease-in-out infinite;
+}
+@keyframes bc-mic-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .7; transform: scale(1.15); }
+}
+
+
+/* ---------- Marina hovering presence ---------- */
+#bc-fab {
+  background: transparent;
+  border: none;
+  padding: 0;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: none;
+}
+#bc-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 25%;
+  border: 3px solid rgba(56, 189, 248, .75);
+  box-shadow: 0 10px 30px rgba(10, 20, 40, .45);
+  animation: marina-float 3.2s ease-in-out infinite;
+}
+@keyframes marina-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+#bc-fab .bc-talk-bubble {
+  background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+  color: #06101d;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(56, 189, 248, .4);
+  animation: marina-bubble 1.8s ease-in-out infinite;
+  white-space: nowrap;
+}
+@keyframes marina-bubble {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .85; transform: scale(1.06); }
+}
+
+/* ---------- Marina v4: bigger, more centered ---------- */
+#bc-fab { right: 44px; bottom: 26px; }
+#bc-avatar {
+  width: 112px;
+  height: 112px;
+  border-width: 4px;
+  object-position: center 22%;
+}
+@media (max-width: 700px) {
+  #bc-fab { right: 26px; bottom: 22px; }
+  #bc-avatar { width: 96px; height: 96px; }
+}
+
+/* ---------- Video agent FAB (separate entry point, v8) ---------- */
+#bc-fab-video {
+  position: fixed;
+  right: 48px;
+  bottom: 176px;
+  z-index: 999989;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.4);
+}
+#bc-fab-video:hover { transform: translateY(-1px); }
+@media (max-width: 700px) {
+  #bc-fab-video { right: 26px; bottom: 142px; padding: 10px 15px; font-size: 13px; }
+}
+
+/* ---------- Video agent stage: bigger, shows more of Marina ---------- */
+#bc-panel.bc-video-mode #bc-video-el {
+  aspect-ratio: 3 / 4;
+  object-position: center top;
+  max-height: 60vh;
+}
+#bc-panel.bc-video-mode #bc-video-wrap { max-width: 560px; }
+#bc-panel.bc-video-mode #bc-log { height: 150px; }
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-el { height: clamp(320px, 96vw, 460px); aspect-ratio: auto; }
+  #bc-panel.bc-video-mode #bc-video-wrap { margin: 6px; }
+  #bc-panel.bc-video-mode #bc-log { height: 110px; }
+}
+
+/* ---------- Mode chooser (v9): Chat / Audio / Video ---------- */
+#bc-chooser {
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+}
+#bc-chooser button {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: transparent;
+  color: #dfe6f2;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+#bc-chooser button.bc-mode-on {
+  background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+  border-color: transparent;
+  color: #fff;
+}
+#bc-chooser button:disabled { opacity: .55; cursor: wait; }
+
+/* ---------- Video stage v9: a lot bigger, waist-up ---------- */
+#bc-panel.bc-video-mode { width: min(720px, 94vw); }
+#bc-panel.bc-video-mode #bc-video-el {
+  width: 100%;
+  height: min(66vh, 640px);
+  aspect-ratio: auto;
+  object-fit: contain;
+  object-position: center top;
+  background: #0b0d14;
+  max-height: none;
+}
+#bc-panel.bc-video-mode #bc-log { height: 110px; }
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode { width: calc(100vw - 16px); }
+  #bc-panel.bc-video-mode #bc-video-el { height: min(56vh, 520px); }
+  #bc-panel.bc-video-mode #bc-log { height: 92px; }
+}
+
+/* ---------- v11: video stage fits the stream — portrait, waist-up ---------- */
+#bc-panel.bc-video-mode #bc-video-wrap { max-width: 520px; margin: 10px auto; }
+#bc-panel.bc-video-mode #bc-video-el {
+  height: min(64vh, 620px);
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;
+  margin: 0 auto;
+  display: block;
+}
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-el { height: min(58vh, 540px); aspect-ratio: 3 / 4; width: auto; object-fit: cover; }
+}
+
+/* typing indicator */
+.bc-typing { opacity: .6; font-style: italic; }
+
+
+/* ---------- v12: video stage — full frame, NEVER crops the face ---------- */
+#bc-panel.bc-video-mode #bc-video-el {
+  object-fit: contain;
+  object-position: center top;
+  height: min(68vh, 640px);
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-el { object-fit: contain; object-position: center top; height: min(62vh, 560px); width: auto; max-width: 100%; }
+}
+
+
+/* ---------- v13: ABSOLUTE no-crop guarantee for the video stage ---------- */
+/* Applies to the video AND anything Simli might render (canvas), with !important
+   so no other rule, framework style, or vendor inline style can reintroduce crop. */
+#bc-panel.bc-video-mode #bc-video-wrap {
+  height: min(70vh, 660px);
+  max-width: 520px;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#bc-panel.bc-video-mode #bc-video-wrap video,
+#bc-panel.bc-video-mode #bc-video-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center top !important;
+  aspect-ratio: auto !important;
+  display: block;
+}
+@media (max-width: 700px) {
+  #bc-panel.bc-video-mode #bc-video-wrap { height: min(62vh, 560px); }
+}
