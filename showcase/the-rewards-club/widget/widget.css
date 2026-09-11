@@ -36,8 +36,8 @@
 }
 #bc-fab:hover { box-shadow: 0 8px 28px rgba(37, 99, 235, 0.24); transform: translateY(-1px); }
 #bc-avatar {
-  width: 42px;
-  height: 42px;
+  width: 56px;
+  height: 56px;
   object-fit: cover;
   object-position: center 22%;
   border-radius: 50%;
@@ -181,7 +181,7 @@
 
 @media (max-width: 700px) {
   #bc-fab { bottom: calc(14px + env(safe-area-inset-bottom)); right: 14px; }
-  #bc-avatar { width: 42px; height: 42px; }
+  #bc-avatar { width: 52px; height: 52px; }
   #bc-panel { bottom: calc(66px + env(safe-area-inset-bottom)); right: 14px; width: calc(100vw - 28px); max-height: 68vh; }
   #bc-log { height: min(240px, 44vh); }
 }

@@ -104,7 +104,11 @@
       c.width = S; c.height = S;
       var vw = videoEl.videoWidth, vh = videoEl.videoHeight;
       var side = Math.min(vw, vh);
-      c.getContext('2d').drawImage(videoEl, (vw - side) / 2, (vh - side) * 0.12, side, side, 0, 0, S, S);
+      /* tighter face crop so the captured still matches the baked framing */
+      var sside = side * 0.62;
+      var sx = (vw - sside) / 2;
+      var sy = (vh - sside) * 0.22;
+      c.getContext('2d').drawImage(videoEl, sx, sy, sside, sside, 0, 0, S, S);
       var url = c.toDataURL('image/jpeg', 0.9);
       setFaceStill(url);
       try { localStorage.setItem('bc_face_still', url); } catch (eLS) {}
