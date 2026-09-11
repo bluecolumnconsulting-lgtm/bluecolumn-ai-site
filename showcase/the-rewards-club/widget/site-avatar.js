@@ -86,6 +86,36 @@
   var videoEl = document.getElementById('bc-video-el');
   var simliAudio = document.getElementById('bc-simli-audio');
 
+  /* Face still: capture a frame from the live Simli stream so the
+     floating avatar + chat header show the NEW Simli face, not the
+     old animated cutout. Persisted per-device via localStorage. */
+  function setFaceStill(url) {
+    try {
+      var fabImg = document.getElementById('bc-avatar');
+      var headImg = document.querySelector('.bc-head img');
+      if (fabImg) { fabImg.src = url; }
+      if (headImg) { headImg.src = url; }
+    } catch (eSet) {}
+  }
+  function captureFaceStill() {
+    try {
+      if (!videoEl || !videoEl.videoWidth) { return; }
+      var S = 220, c = document.createElement('canvas');
+      c.width = S; c.height = S;
+      var vw = videoEl.videoWidth, vh = videoEl.videoHeight;
+      var side = Math.min(vw, vh);
+      c.getContext('2d').drawImage(videoEl, (vw - side) / 2, (vh - side) * 0.12, side, side, 0, 0, S, S);
+      var url = c.toDataURL('image/jpeg', 0.9);
+      setFaceStill(url);
+      try { localStorage.setItem('bc_face_still', url); } catch (eLS) {}
+    } catch (eCap) {}
+  }
+  try {
+    var savedStill = localStorage.getItem('bc_face_still');
+    if (savedStill) { setFaceStill(savedStill); }
+  } catch (eStill) {}
+  if (videoEl) { videoEl.addEventListener('loadeddata', captureFaceStill); }
+
   if (!fab || !panel || !log || !input) { return; }
 
   /* -- Audio engine (audio-bot mode) -------------------------- */
