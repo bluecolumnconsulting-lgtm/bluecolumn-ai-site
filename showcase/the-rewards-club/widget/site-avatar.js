@@ -15,7 +15,7 @@
 
   /* Simli demo credentials (demo tier key, public demo widget) */
   var SIMLI_API_KEY = '5e2ucmvyrlmkapwg4hzyf';
-  var SIMLI_FACE_ID = 'dd10cb5a-d31d-4f12-b69f-6db3383c006e';
+  var SIMLI_FACE_ID = 'c65af549-9105-442a-92a3-dc6c89e34149';
 
   /* --- Live brain + dynamic voice (v2): same stack as Marina --- */
   var BRAIN_URL = 'https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/recall';
