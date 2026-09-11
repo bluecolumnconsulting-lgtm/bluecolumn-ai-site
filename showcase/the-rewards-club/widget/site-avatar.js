@@ -79,7 +79,8 @@
   var log = document.getElementById('bc-log');
   var input = document.getElementById('bc-in');
   var muteBtn = document.getElementById('bc-mute');
-  var closeBtn = document.getElementById('bc-close');
+  muteBtn.textContent = '\u{1F507}';
+  muteBtn.title = 'Voice off';  var closeBtn = document.getElementById('bc-close');
   var videoBtn = document.getElementById('bc-video');
   var micBtn = document.getElementById('bc-mic');
   var videoWrap = document.getElementById('bc-video-wrap');
@@ -123,7 +124,7 @@
   if (!fab || !panel || !log || !input) { return; }
 
   /* -- Audio engine (audio-bot mode) -------------------------- */
-  var muted = false;
+  var muted = true; /* chat-first: voice is opt-in via the 🔊 button or video mode */
   var currentAudio = null;
   var started = false;
   var mouthRAF = null, audioCtx = null, analyser = null, mouthData = null;
@@ -546,8 +547,6 @@
       started = true;
       var g = INTENTS[INTENTS.length - 1]; /* greet */
       el(g.t, 'bc-msg bc-bot');
-      speaking = true;
-      playAudio('greet');
       opts(SUGGESTIONS);
     }
     input.focus();
