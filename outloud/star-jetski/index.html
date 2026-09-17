@@ -44,7 +44,7 @@ body{font-family:Inter,-apple-system,sans-serif;background:#000;color:#fff;heigh
 #bot-send{background:var(--sun);border:none;width:48px;height:48px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
 #bot-send svg{width:22px;height:22px;stroke:#1d1600;stroke-width:2.5;fill:none}
 #bot-log{display:none}#bot-fab{display:none}
-@media(max-width:480px){#poster,#bot-video-el{max-width:92vw}#caption{width:94%;font-size:.88rem}#panels{max-height:45vh}.panel{max-width:92vw}.ctl{width:44px;height:44px}}
+body.video-live #panels,body.video-live #caption{opacity:0;pointer-events:none}#panels,#caption{transition:opacity .3s}@media(max-width:480px){#poster,#bot-video-el{max-width:92vw}#caption{width:94%;font-size:.88rem}#panels{max-height:45vh}.panel{max-width:92vw}.ctl{width:44px;height:44px}}
 </style></head><body>
 <div id="start-ov"><img src="bot-face-stella.png?v=3" alt="Stella"><h1>Star Jet Ski — OutLoud</h1><p>Talk to Stella. The screen responds as you speak — like a drive-thru menu.</p><button id="start-btn">Start Talking</button></div>
 <main id="stage">
@@ -100,6 +100,6 @@ window.onBotSay=function(t){var cap=document.getElementById('caption');if(cap){c
  var plan=window.Planner.build(t,mode);window.ContentDirector.execute(plan);};
 document.getElementById('start-btn').addEventListener('click',function(){document.getElementById('start-ov').style.display='none';window.toggleBot();setTimeout(function(){document.getElementById('bot-video').click();},600);});
 /* Simli face swap: poster (real Simli face crop) stays until the live stream has frames */
-window.SIMLI_WATCH=setInterval(function(){var v=document.getElementById('bot-video-el');if(v&&v.readyState>=2&&v.videoWidth>0){v.style.display='block';document.getElementById('live-badge').style.display='block';var p=document.getElementById('poster');if(p)p.style.display='none';clearInterval(window.SIMLI_WATCH);}else if(v&&v.style.display==='block'&&!(v.videoWidth>0)){v.style.display='none';var p2=document.getElementById('poster');if(p2)p2.style.display='block';}},400);
+window.SIMLI_WATCH=setInterval(function(){var v=document.getElementById('bot-video-el');var live=!!(v&&v.readyState>=2&&v.videoWidth>0);document.body.classList.toggle('video-live',live);if(v){v.style.display=live?'block':'none';}var p=document.getElementById('poster');if(p)p.style.display=live?'none':'block';document.getElementById('live-badge').style.display=live?'block':'none';},400);
 </script>
 </body></html>
