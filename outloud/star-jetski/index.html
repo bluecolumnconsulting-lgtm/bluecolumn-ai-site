@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Star Jet Ski — Ask Stella Live | OutLoud</title>
+<meta name="description" content="Talk live with Stella about Star Jet Ski Rentals, Panama City Beach. $150/hr, daily 9-6, Yamaha VX. Call 850.640.6093.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--deep:#04455c;--sea:#0a7fa8;--sun:#ffb200;--sand:#fff8ec;--ink:#123243;--line:#dcebef;--card:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,-apple-system,sans-serif;background:var(--deep);color:var(--ink);height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+#start-ov{position:fixed;inset:0;background:var(--deep);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:24px}
+#start-ov img{width:150px;height:150px;border-radius:50%;border:4px solid var(--sun);object-fit:cover}
+#start-ov h1{color:#fff;font-size:1.6rem}#start-ov p{color:#cfe8f0;font-size:.95rem;max-width:340px}
+#start-btn{background:var(--sun);color:#1d1600;border:none;border-radius:999px;padding:16px 44px;font-size:1.15rem;font-weight:800;cursor:pointer}
+#stage{position:relative;flex:0 0 44%;background:#065a77;display:flex;align-items:center;justify-content:center;min-height:0}
+#bot-video-el{width:min(240px,56vh);aspect-ratio:1;border-radius:50%;object-fit:cover;background:#0a2530;border:4px solid rgba(255,255,255,.9);display:none}
+#poster{width:min(220px,52vh);aspect-ratio:1;border-radius:50%;object-fit:cover;border:4px solid var(--sun)}
+#live-badge{position:absolute;top:14px;left:14px;background:var(--sun);color:#1d1600;font-weight:800;font-size:.72rem;border-radius:999px;padding:4px 12px;display:none}
+#caption{position:absolute;bottom:0;left:0;right:0;background:rgba(4,42,56,.85);color:#fff;font-size:.88rem;padding:10px 16px;min-height:44px;line-height:1.35}
+#dock{flex:1;background:var(--sand);position:relative;overflow:hidden;display:flex;flex-direction:column}
+.panel{position:absolute;inset:0;padding:18px 18px 12px;overflow-y:auto;opacity:0;transform:translateY(12px);transition:opacity .28s,transform .28s;pointer-events:none;background:var(--sand)}
+.panel.show{opacity:1;transform:none;pointer-events:auto}
+.panel h2{font-size:1.15rem;margin-bottom:10px;color:var(--deep)}
+.panel p,.panel li{font-size:.92rem;color:#3c5a68;line-height:1.5}
+.panel ul{margin:8px 0 0 18px}
+.big{font-size:1.7rem;font-weight:800;color:var(--sea)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chips button,.p-cta{background:#fff;border:1.5px solid var(--sea);color:var(--deep);border-radius:999px;padding:9px 16px;font-size:.85rem;font-weight:700;cursor:pointer}
+.p-cta{background:var(--sun);border-color:var(--sun);color:#1d1600;display:inline-block;text-decoration:none;margin-top:12px}
+.kv{margin-top:8px}.kv b{color:var(--deep)}
+#inputbar{flex:0 0 auto;background:#fff;border-top:1px solid var(--line);display:flex;gap:8px;align-items:center;padding:10px 12px}
+#bot-in{flex:1;border:1.5px solid var(--line);border-radius:999px;padding:10px 16px;font-size:.95rem;outline:none}
+#bot-in:focus{border-color:var(--sea)}
+.ctl{background:none;border:none;cursor:pointer;width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;opacity:.75;flex:0 0 auto}
+.ctl:hover{opacity:1;background:rgba(10,127,168,.1)}
+.ctl.on{background:var(--sun);opacity:1}
+.ctl svg{width:20px;height:20px;stroke:#04455c;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#bot-send{background:var(--sea);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+#bot-send svg{width:20px;height:20px;stroke:#fff;stroke-width:2;fill:none}
+#bot-log{display:none}#bot-fab{display:none}
+.bk{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin-top:10px;font-size:.9rem}
+.bk span:first-child{color:#5c7b8a;font-weight:600}
+</style></head><body>
+<div id="start-ov"><img src="bot-face-stella.png" alt="Stella"><h1>Ask Stella — Live</h1><p>Talk to the Star Jet Ski concierge. Pricing, the island run, booking — just say it. The screen follows your conversation.</p><button id="start-btn">Tap to talk</button></div>
+<header id="stage"><img id="poster" src="bot-face-stella.png" alt="Stella"><video id="bot-video-el" autoplay playsinline muted></video><span id="live-badge">LIVE</span><div id="caption">Tap the mic and just talk — the screen updates as we chat.</div><audio id="bot-simli-audio" autoplay></audio></header>
+<main id="dock">
+<section class="panel show" id="p-welcome"><h2>Hey, I'm Stella</h2><p>Ask me anything about Star Jet Ski Rentals — out loud or by typing. Try the mic button below and just talk.</p><div class="chips"><button onclick="go('pricing')">Pricing</button><button onclick="go('book')">Book a ride</button><button onclick="go('requirements')">What do I need?</button><button onclick="go('island')">Island run</button><button onclick="go('findus')">Find us</button></div></section>
+<section class="panel" id="p-pricing"><h2>Pricing</h2><div class="big">From $150<span style="font-size:.85rem;color:#5c7b8a"> / hour</span></div><ul><li>Jet ski rides &amp; guided tours, 1 or 2 hours</li><li>Daily 9am–6pm, same-day booking OK</li><li>Brand-new Yamaha VX Deluxe skis</li><li>Safety gear included · photo package optional</li></ul><a class="p-cta" href="tel:8506406093">Call 850.640.6093</a><div class="chips"><button onclick="go('book')">Book a ride</button><button onclick="go('island')">Island run</button></div></section>
+<section class="panel" id="p-book"><h2>Book your ride</h2><p>Just tell me: jet ski or boat tour, how long, and when — voice or typing. I'll walk you through it and hold your slot.</p><div class="bk"><span>Ride</span><b id="bk-type">—</b><span>Length</span><b id="bk-len">—</b><span>When</span><b id="bk-time">—</b><span>Name</span><b id="bk-name">—</b></div><a class="p-cta" href="tel:8506406093">Or call 850.640.6093</a><div class="chips"><button onclick="go('pricing')">Pricing</button></div></section>
+<section class="panel" id="p-requirements"><h2>What you need</h2><ul><li>Riders 16+ with a valid ID</li><li>Boating certificate if born 1988 or later — we issue one on site, good for a year</li><li>No experience needed, safety gear included</li><li>Two riders per ski within weight limit</li></ul><div class="chips"><button onclick="go('pricing')">Pricing</button><button onclick="go('book')">Book a ride</button></div></section>
+<section class="panel" id="p-island"><h2>The Island Run</h2><p>Guided ride through dolphin country — shallow Gulf water, Shell Island stops, shells and sea turtles. 1 or 2-hour tours, professional photography optional.</p><div class="chips"><button onclick="go('book')">Book the island run</button><button onclick="go('pricing')">Pricing</button></div></section>
+<section class="panel" id="p-findus"><h2>Find us</h2><p>Panama City Beach, Florida — on the sand, daily 9am–6pm.</p><a class="p-cta" href="tel:8506406093">Call 850.640.6093</a><div class="chips"><button onclick="go('welcome')">Back to start</button></div></section>
+</main>
+<footer id="inputbar"><button id="bot-mute" class="ctl" title="Voice on" aria-label="Voice on"><svg class="ico-on" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg><svg class="ico-off" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg></button><button id="bot-mic" class="ctl" title="Talk hands-free" aria-label="Talk hands-free"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></button><input id="bot-in" placeholder="Ask or book…"><button id="bot-send" aria-label="Send"><svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button><button id="bot-video" class="ctl" title="Live video avatar" aria-label="Show live video"><svg viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg></button></footer>
+<div id="bot-panel" role="dialog"><div id="bot-log"></div></div>
+<button id="bot-fab">Stella</button>
+<script src="vendor/simli-client.js?v=1"></script><script src="marina-agent.js?v=1"></script>
+<script>
+window.BOT_CFG={name:'Stella',business:'Star Jet Ski Rentals',brainPrefix:'Star Jet Ski Rentals customer question: ',faceId:'5fc23ea5-8175-4a82-aaaf-cdd8c88543dc',voiceId:'FGY2WhTYpPnrIDTdsKH5',greeting:"Hey, I'm Stella! Ask me anything about Star Jet Ski — pricing, what you need, the island run — or say 'book' and I'll get your ride started.",placeholder:'Ask or book…',suggestions:[],fallback:"Great question — call us at 850.640.6093 and we'll sort it out in a minute. Or ask me about pricing, requirements, or the island run.",
+pre:function(t){var low=t.toLowerCase();
+ if(mode==='bk-name'){bk.name=t;mode=null;return{t:"Locked in, "+t.split(' ')[0]+"! Here's your request: "+(bk.type||'Jet ski ride')+", "+(bk.len||'1 hour')+", "+(bk.time||'flexible')+". Star confirms by text within minutes during open hours (9-6).",opts:['Pricing','Island run']};}
+ if(mode==='bk-time'){bk.time=t;mode='bk-name';return{t:"Last thing — what's your name?"};}
+ if(mode==='bk-len'){bk.len=t;mode='bk-time';return{t:"And what time of day?",opts:['Morning','Midday','Afternoon','Flexible']};}
+ if(mode==='bk-type'){bk.type=t;mode='bk-len';return{t:t+" — solid pick. How long: 1 hour or 2?",opts:['1 hour','2 hours']};}
+ if(low.indexOf('book')>-1||low.indexOf('reserve')>-1||low.indexOf('rent')>-1){mode='bk-type';return{t:"Let's do it. What are you riding — jet ski ride, guided tour, or boat tour?",opts:['Jet Ski Ride','Guided Tour','Boat Tour']};}
+ return null;},
+intents:[{k:['price','cost','how much','expensive'],t:"Hourly rides and tours start at $150 for 1 hour, and we run 9 to 6 daily with brand-new Yamaha VX Deluxe skis. Same-day bookings are fine."},{k:['license','require','need','old','age'],t:"Riders need to be 16 or older with a valid ID. If you were born in 1988 or later you'll need a boating certificate — we issue one on site, good for a full year."},{k:['island','dolphin','shell'],t:"The island run is our guided tour through dolphin country — Shell Island stops, shells, sea turtles. One or two hours, and photo packages are optional."}]};
+var mode=null,bk={},cur='welcome';
+function go(k){cur=k;document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('show')});document.getElementById('p-'+k).classList.add('show');}
+function routePanel(t){var low=t.toLowerCase();
+ if(/book|reserve|slot/.test(low))return'book';if(/price|cost|much|expensive|150/.test(low))return'pricing';
+ if(/license|require|need|old|age|id\b/.test(low))return'requirements';if(/island|dolphin|shell|tour/.test(low))return'island';
+ if(/where|hour|location|open|address|call|phone|park/.test(low))return'findus';if(/hi\b|hello|hey/.test(low))return'welcome';return null;}
+window.onBotSay=function(t){var cap=document.getElementById('caption');if(cap)cap.textContent=t;
+ if(mode){['type','len','time','name'].forEach(function(f){var el=document.getElementById('bk-'+f);if(bk[f]&&el)el.textContent=bk[f];});go('book');return;}
+ var k=routePanel(t);if(k)go(k);};
+document.getElementById('start-btn').addEventListener('click',function(){document.getElementById('start-ov').style.display='none';window.toggleBot();});
+</script>
+</body></html>
