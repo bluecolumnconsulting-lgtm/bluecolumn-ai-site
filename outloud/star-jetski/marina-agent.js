@@ -1,5 +1,5 @@
 /* ===============================================================
-   MARINA-GRADE SITE AGENT v1 · OutLoud 2.0 build (BlueColumn AI)
+   MARINA-GRADE SITE AGENT v1 (BlueColumn AI)
    Parity with the Marina v14 reference stack:
    - LIVE BRAIN: BlueColumn /recall answers any customer question in
      real time (query prefixed with the business name).
@@ -119,7 +119,6 @@
     if (micWanted) { setTimeout(pauseListeningThenResume, 350); }
   }
   function cancelSpeech() {
-    if (window.ContentDirector && window.ContentDirector.cancel) { try { window.ContentDirector.cancel(); } catch (eCD) {} }
     /* ONE VOICE: newest user message always wins */
     try { if (currentAudio) { currentAudio.pause(); } } catch (e) {}
     if (simliFeed) { clearInterval(simliFeed.iv); simliFeed = null; }

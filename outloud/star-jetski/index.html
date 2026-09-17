@@ -1,105 +1,272 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Star Jet Ski — Ask Stella Live | OutLoud</title>
-<meta name="description" content="Talk live with Stella about Star Jet Ski Rentals, Panama City Beach. $150/hr, daily 9-6, Yamaha VX. Call 850.640.6093.">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Star Jet Ski Rentals — Talk to Stella Live</title>
+<meta name="description" content="Meet Stella, the live video assistant for Star Jet Ski Rentals in Panama City Beach. Ask about pricing, requirements, the island run, or book your jet ski — 850.640.6093.">
+<!-- OutLoud experience — built by BlueColumn AI as a sales demo for Star Jet Ski Rentals. Not affiliated with starjetskirentals.com. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2304455c'/%3E%3Ccircle cx='8' cy='8' r='5' fill='%23ffb200'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--deep:#04455c;--sea:#0a7fa8;--turq:#19b8c4;--sun:#ffb200;--sand:#fff8ec;--ink:#123243;--line:#dcebef;--card:#fff}
+:root{
+ --deep:#04455c; --abyss:#02222e; --turq:#19b8c4; --sun:#ffb200;
+ --line:rgba(255,255,255,.18);
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Inter,-apple-system,sans-serif;background:#000;color:#fff;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
-#start-ov{position:fixed;inset:0;background:rgba(4,42,56,.95);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:24px}
-#start-ov img{width:180px;height:180px;border-radius:50%;border:4px solid var(--sun);object-fit:cover;box-shadow:0 0 40px rgba(255,178,0,.3)}
-#start-ov h1{color:#fff;font-size:1.8rem}#start-ov p{color:#cfe8f0;font-size:1rem;max-width:360px}
-#start-btn{background:var(--sun);color:#1d1600;border:none;border-radius:999px;padding:18px 48px;font-size:1.25rem;font-weight:800;cursor:pointer}
-#stage{position:relative;flex:1;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#04455c 0%,#065a77 100%)}
-#bot-video-el{width:100%;height:100%;max-width:500px;aspect-ratio:1;border-radius:50%;object-fit:cover;background:#0a2530;border:6px solid rgba(255,178,0,.4);box-shadow:0 0 60px rgba(255,178,0,.2),0 0 120px rgba(10,127,168,.15);display:none}
-#poster{width:100%;height:100%;max-width:500px;aspect-ratio:1;border-radius:50%;object-fit:cover;border:6px solid var(--sun);box-shadow:0 0 40px rgba(255,178,0,.3)}
-#live-badge{position:absolute;top:24px;left:50%;transform:translateX(-50%);background:var(--sun);color:#1d1600;font-weight:800;font-size:.75rem;border-radius:999px;padding:6px 18px;display:none;animation:pulse 1.5s infinite}
-@keyframes pulse{50%{opacity:.7}}
-#brand-logo{position:absolute;top:24px;right:24px;width:72px;height:72px;background:var(--deep);border:3px solid var(--sun);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(255,178,0,.3);opacity:.9}
-#brand-logo svg{width:48px;height:48px;stroke:var(--sun);stroke-width:2.5}
-#caption{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);width:90%;max-width:480px;background:rgba(4,42,56,.9);color:#fff;font-size:.95rem;padding:14px 20px;border-radius:999px;border:2px solid rgba(255,178,0,.3);text-align:center;line-height:1.4;min-height:56px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 40px rgba(0,0,0,.4)}
-#caption.typing::after{content:"";display:inline-block;width:18px;height:18px;margin-left:8px;border:2px solid var(--sun);border-right-color:transparent;border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-#panels{position:absolute;bottom:0;left:0;right:0;height:auto;max-height:50vh;pointer-events:none;display:flex;flex-direction:column;align-items:center;padding-bottom:180px;z-index:10}
-.panel{width:90%;max-width:420px;background:rgba(4,42,56,.95);border:2px solid rgba(255,178,0,.3);border-radius:16px;padding:16px 20px;margin-bottom:10px;opacity:0;transform:translateY(20px) scale(.95);transition:opacity .35s,transform .35s;pointer-events:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.panel.show{opacity:1;transform:none}.panel.hl{border-color:#ffb200;box-shadow:0 0 30px rgba(255,178,0,.35)}
-.panel h2{font-size:1.1rem;margin-bottom:8px;color:var(--sun);display:flex;align-items:center;gap:8px}
-.panel h2::before{content:"";width:8px;height:8px;background:var(--sun);border-radius:50%}
-.panel p,.panel li{font-size:.9rem;color:#cfe8f0;line-height:1.5}
-.panel ul{margin:8px 0 0 18px}
-.kv{margin-top:8px;font-size:.88rem}.kv b{color:var(--sun)}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.chips button{background:rgba(255,178,0,.15);border:1.5px solid var(--sun);color:var(--sun);border-radius:999px;padding:8px 16px;font-size:.8rem;font-weight:700;cursor:pointer}
-.chips button:hover{background:var(--sun);color:#1d1600}
-.ctl{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.3);cursor:pointer;width:48px;height:48px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;opacity:.85;flex:0 0 auto;transition:all .15s}
-.ctl:hover{opacity:1;background:var(--sun);border-color:var(--sun)}
-.ctl.on{background:var(--sun);border-color:var(--sun);opacity:1}
-.ctl svg{width:22px;height:22px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.ctl.muted .ico-on{display:none}.ctl:not(.muted) .ico-off{display:none}
-#inputbar{position:fixed;bottom:0;left:0;right:0;padding:16px 20px 24px;background:linear-gradient(180deg,transparent 0%,#000 40%);display:flex;gap:10px;align-items:center;justify-content:center;z-index:50}
-#bot-in{width:70%;max-width:400px;border:2px solid rgba(255,255,255,.3);border-radius:999px;padding:12px 20px;font-size:1rem;color:#fff;background:rgba(4,42,56,.8);outline:none}
-#bot-in:focus{border-color:var(--sun);background:#04455c}
-#bot-in::placeholder{color:rgba(255,255,255,.5)}
-#bot-send{background:var(--sun);border:none;width:48px;height:48px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
-#bot-send svg{width:22px;height:22px;stroke:#1d1600;stroke-width:2.5;fill:none}
-#bot-log{display:none}#bot-fab{display:none}
-body.video-live #panels,body.video-live #caption{opacity:0;pointer-events:none}#panels,#caption{transition:opacity .3s}@media(max-width:480px){#poster,#bot-video-el{max-width:92vw}#caption{width:94%;font-size:.88rem}#panels{max-height:45vh}.panel{max-width:92vw}.ctl{width:44px;height:44px}}
-</style></head><body>
-<div id="start-ov"><img src="bot-face-stella.png?v=3" alt="Stella"><h1>Star Jet Ski — OutLoud</h1><p>Talk to Stella. The screen responds as you speak — like a drive-thru menu.</p><button id="start-btn">Start Talking</button></div>
-<main id="stage">
-  <img id="poster" src="bot-face-stella.png?v=3" alt="Stella">
-  <video id="bot-video-el" autoplay playsinline muted></video>
-  <span id="live-badge">LIVE</span>
-  <div id="brand-logo"><svg viewBox="0 0 64 64"><path d="M32 4 L12 28 L32 52 L52 28 Z" fill="none"/><text x="32" y="42" text-anchor="middle" font-size="9" fill="#ffb200" font-weight="bold">SJS</text></svg></div>
-  <div id="caption">Tap "Start Talking" — then just talk. The screen follows the conversation.</div>
-  <audio id="bot-simli-audio" autoplay></audio>
-</main>
-<div id="panels">
-  <section class="panel show" id="p-welcome"><h2>Welcome</h2><p>Ask Stella anything — pricing, the island run, booking, or what you need. The screen updates as we talk.</p><div class="chips"><button onclick="go('pricing')">Pricing</button><button onclick="go('book')">Book</button><button onclick="go('requirements')">Requirements</button><button onclick="go('island')">Island Run</button><button onclick="go('findus')">Find Us</button></div></section>
-  <section class="panel" id="p-pricing"><h2>Pricing</h2><p style="font-size:1.5rem;font-weight:800;color:#ffb200">From $150 / hour</p><ul><li>Jet ski rides & guided tours, 1–2 hours</li><li>Daily 9am–6pm, same-day booking OK</li><li>Brand-new Yamaha VX Deluxe skis</li><li>Safety gear included · photo package optional</li></ul><div class="chips"><button onclick="go('book')">Book a ride</button><button onclick="go('island')">Island Run</button></div></section>
-  <section class="panel" id="p-book"><h2>Book Your Ride</h2><p>Just say what you want — jet ski or boat tour, how long, when. I'll walk you through it and hold your slot.</p><div class="chips"><button onclick="go('pricing')">Pricing</button></div></section>
-  <section class="panel" id="p-requirements"><h2>What You Need</h2><ul><li>Riders 16+ with valid ID</li><li>Boating certificate if born 1988 or later — issued on site, good for a year</li><li>No experience needed, safety gear included</li><li>Two riders per ski, weight limit applies</li></ul><div class="chips"><button onclick="go('pricing')">Pricing</button><button onclick="go('book')">Book</button></div></section>
-  <section class="panel" id="p-island"><h2>The Island Run</h2><p>Guided ride through dolphin country — Shell Island stops, shells, sea turtles. 1 or 2 hours, photography optional.</p><div class="chips"><button onclick="go('book')">Book the island run</button><button onclick="go('pricing')">Pricing</button></div></section>
-  <section class="panel" id="p-findus"><h2>Find Us</h2><p>Panama City Beach, Florida — on the sand, daily 9am–6pm.</p><a href="tel:8506406093" style="display:inline-block;margin-top:10px;padding:10px 20px;background:#ffb200;color:#1d1600;border-radius:999px;font-weight:800;text-decoration:none">Call 850.640.6093</a><div class="chips"><button onclick="go('welcome')">Back</button></div></section>
+html,body{height:100%}
+body{font-family:'Inter','SF Pro Text',-apple-system,'Segoe UI',sans-serif;color:#eaf6fa;background:linear-gradient(180deg,#02222e 0%,#04455c 100%);overflow:hidden}
+
+/* ---------- Drive-thru panels (visible only while video is NOT live) ---------- */
+#panels{position:fixed;inset:0;z-index:120;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity .5s ease}
+.dpanel{display:none;max-width:520px;width:100%;background:rgba(2,34,46,.72);border:1px solid var(--line);border-radius:18px;padding:30px 32px;backdrop-filter:blur(8px);text-align:center}
+.dpanel.active{display:block;animation:panel-in .35s ease}
+@keyframes panel-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.dpanel h2{font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:12px}
+.dpanel h2 em{color:var(--sun);font-style:normal}
+.dpanel p{font-size:.98rem;color:#c9e4ee;line-height:1.6}
+.dpanel .big{font-size:2rem;font-weight:800;color:var(--sun);margin:10px 0}
+.dpanel .hint{margin-top:16px;font-size:.82rem;color:#8fb5c2}
+.dpanel a{color:var(--sun);font-weight:700;text-decoration:none}
+
+#panel-tabs{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:130;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;transition:opacity .5s ease}
+#panel-tabs button{background:rgba(2,34,46,.6);border:1px solid var(--line);color:#cfe8f0;border-radius:999px;padding:7px 16px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s,color .2s}
+#panel-tabs button.active{background:var(--sun);color:#1d1600;border-color:var(--sun)}
+
+/* ---------- Caption bar (latest Stella reply) ---------- */
+#caption{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:140;max-width:min(640px,calc(100vw - 32px));background:rgba(2,34,46,.78);border:1px solid var(--line);border-radius:14px;padding:13px 20px;backdrop-filter:blur(8px);transition:opacity .5s ease}
+#caption .who{font-size:.68rem;font-weight:800;letter-spacing:1.2px;color:var(--turq);text-transform:uppercase;margin-bottom:4px}
+#caption-text{display:block;font-size:.92rem;line-height:1.5;color:#eaf6fa;max-height:5.4em;overflow:hidden}
+
+/* ---------- Video-live: clean face (panels + caption fade out) ---------- */
+body.video-live #panels,body.video-live #caption,body.video-live #panel-tabs{opacity:0;pointer-events:none}
+
+/* ---------- Start overlay ---------- */
+#start-overlay{position:fixed;inset:0;z-index:300;background:linear-gradient(180deg,#02222e 0%,#04455c 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;transition:opacity .45s ease}
+#start-overlay.gone{opacity:0;pointer-events:none}
+#start-overlay img{width:min(220px,44vw);height:min(220px,44vw);border-radius:50%;object-fit:cover;object-position:center 20%;border:4px solid rgba(255,255,255,.85);box-shadow:0 10px 40px rgba(0,0,0,.45)}
+#start-overlay h1{font-size:clamp(1.7rem,4.5vw,2.4rem);font-weight:800;color:#fff;margin-top:26px}
+#start-overlay h1 em{color:var(--sun);font-style:normal}
+#start-overlay p{color:#c9e4ee;font-size:1rem;margin:12px 0 30px;max-width:420px;line-height:1.6}
+#start-btn{background:var(--sun);color:#1d1600;border:none;border-radius:999px;padding:18px 46px;font-weight:800;font-size:1.15rem;cursor:pointer;box-shadow:0 6px 24px rgba(255,178,0,.35);font-family:inherit;transition:transform .15s}
+#start-btn:hover{transform:scale(1.04)}
+#start-note{margin-top:22px;font-size:.75rem;color:#8fb5c2}
+
+/* ---------- Engine DOM (ported from jake.html — same ids, engine requires them) ---------- */
+#bot-fab{display:none}
+#bot-panel{display:none} /* chat UI kept in DOM for the engine but visually hidden */
+/* When video goes live the panel becomes the full-screen stage */
+#bot-panel.video-mode{display:block;position:fixed;inset:0;width:100%;max-width:none;border-radius:0;box-shadow:none;background:#000;z-index:200}
+#bot-panel.video-mode .bot-head,#bot-panel.video-mode #bot-log,#bot-panel.video-mode .bot-input{display:none !important}
+#bot-panel.video-mode #bot-video-wrap{display:block !important;width:100%;height:100%;padding:0;background:#000}
+#bot-panel.video-mode #bot-video-el{width:100%;height:100%;border-radius:0;border:none;box-shadow:none;object-fit:cover;object-position:center 30%;background:transparent;margin:0}
+#bot-panel.video-mode #bot-video-live{display:none}
+
+/* Engine internals — unchanged structural styles from jake.html */
+.bot-head{background:linear-gradient(135deg,var(--deep),var(--turq));color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
+.bot-head small{display:block;opacity:.8;font-weight:400}
+.bot-ctl{background:none;border:none;cursor:pointer;color:#fff;padding:0;margin-left:6px;width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;opacity:.75;transition:background .15s,opacity .15s}
+.bot-ctl svg{width:20px;height:20px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.bot-ctl.on{background:var(--sun);opacity:1}
+.bot-ctl.on svg{stroke:#1d1600}
+.bot-ctl.muted .ico-on{display:none}
+.bot-ctl:not(.muted) .ico-off{display:none}
+.bot-ctl.starting{opacity:.45;animation:ctl-pulse 1s infinite}
+@keyframes ctl-pulse{50%{opacity:.9}}
+#bot-video-wrap{display:none;position:relative;background:var(--deep);padding:16px 0 14px}
+#bot-video-live{position:absolute;top:8px;left:8px;background:rgba(220,40,40,.9);color:#fff;font-size:.62rem;font-weight:800;padding:2px 8px;border-radius:999px;display:flex;align-items:center;gap:4px;letter-spacing:.5px}
+#bot-video-live i{width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:vblink 1.2s infinite}
+@keyframes vblink{50%{opacity:.15}}
+#bot-video-el{width:130px;height:130px;border-radius:50%;object-fit:cover;object-position:center 15%;display:block;margin:0 auto;background:#0a2530;border:3px solid rgba(255,255,255,.9);box-shadow:0 4px 14px rgba(0,0,0,.28)}
+#bot-log{padding:14px;height:300px;overflow-y:auto;background:#f2f9fa;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:85%;padding:9px 13px;border-radius:12px;font-size:.9rem;white-space:pre-line}
+.msg.bot{background:#fff;border:1px solid #dcebef;align-self:flex-start;border-bottom-left-radius:3px;color:#123243}
+.msg.user{background:var(--deep);color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+.bot-opts{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start}
+.bot-opts button{background:#fff;border:1.5px solid var(--turq);color:var(--deep);border-radius:999px;padding:5px 12px;font-size:.82rem;font-weight:700;cursor:pointer}
+.bot-input{display:none;border-top:1px solid #dcebef}
+.bc-typing{display:flex;gap:3px;align-items:center}
+.bc-typing span{width:6px;height:6px;border-radius:50%;background:#5c7b8a;display:inline-block;animation:bdot 1s infinite}
+.bc-typing span:nth-child(2){animation-delay:.15s}
+.bc-typing span:nth-child(3){animation-delay:.3s}
+@keyframes bdot{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+@media(max-width:600px){
+ .dpanel{padding:24px 20px}
+ #panel-tabs{top:14px;width:calc(100% - 20px)}
+ #panel-tabs button{padding:6px 12px;font-size:.72rem}
+ #caption{bottom:18px}
+}
+</style>
+</head>
+<body>
+
+<!-- Drive-thru panel tabs -->
+<div id="panel-tabs" role="tablist">
+ <button class="active" data-panel="welcome">Welcome</button>
+ <button data-panel="pricing">Pricing</button>
+ <button data-panel="book">Book</button>
+ <button data-panel="requirements">Requirements</button>
+ <button data-panel="island">Island Run</button>
+ <button data-panel="findus">Find Us</button>
 </div>
-<footer id="inputbar"><button id="bot-mute" class="ctl" title="Voice on" aria-label="Voice on"><svg class="ico-on" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg><svg class="ico-off" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg></button><button id="bot-mic" class="ctl" title="Talk hands-free" aria-label="Talk hands-free"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></button><input id="bot-in" placeholder="Ask or book…"><button id="bot-send" aria-label="Send"><svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button><button id="bot-video" class="ctl" title="Live video avatar" aria-label="Show live video"><svg viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg></button></footer>
-<div id="bot-panel" role="dialog"><div id="bot-log"></div></div>
-<button id="bot-fab">Stella</button>
-<script src="vendor/simli-client.js?v=1"></script><script src="marina-agent.js?v=2"></script>
+
+<!-- Drive-thru panels — shown only while the video is NOT live -->
+<div id="panels">
+ <section class="dpanel active" data-panel="welcome">
+ <h2>Talk to <em>Stella</em></h2>
+ <p>Stella is the live assistant for Star Jet Ski Rentals. Ask her anything out loud — pricing, what to bring, the island run — or say <b>"book"</b> and she'll start your reservation.</p>
+ <p class="hint">Tip: tap the microphone icon in the top-right controls to talk hands-free.</p>
+ </section>
+ <section class="dpanel" data-panel="pricing">
+ <h2>Simple <em>Pricing</em></h2>
+ <div class="big">From $150 / hour</div>
+ <p>Brand-new Yamaha VX Deluxe jet skis. Safety gear always included. Guided tours and boat tours are priced by the slot — just ask.</p>
+ </section>
+ <section class="dpanel" data-panel="book">
+ <h2>Lock In Your <em>Slot</em></h2>
+ <p>Say <b>"book"</b> to Stella and she'll take your details in under a minute. Prefer to call? <a href="tel:8506406093">850.640.6093</a> — daily 9am to 6pm.</p>
+ <p class="hint">Same-day bookings are welcome. Star confirms every slot by text.</p>
+ </section>
+ <section class="dpanel" data-panel="requirements">
+ <h2>What You <em>Need</em></h2>
+ <p>16 or older with a valid ID to operate. Born on or after January 1, 1988? Florida requires a Temporary Boating Certificate — about 20 minutes online before you ride. Life jackets included, no experience needed.</p>
+ </section>
+ <section class="dpanel" data-panel="island">
+ <h2>The <em>Island Run</em></h2>
+ <p>On open rides you can take the skis to the nearby island — shells, sand, and the favorite run of the summer. Ask Stella how it works.</p>
+ </section>
+ <section class="dpanel" data-panel="findus">
+ <h2>Find <em>Us</em></h2>
+ <p><b>Phone:</b> <a href="tel:8506406093">850.640.6093</a><br><b>Location:</b> Panama City Beach, FL<br><b>Hours:</b> Daily 9:00am – 6:00pm</p>
+ </section>
+</div>
+
+<!-- Caption bar — mirrors Stella's latest reply -->
+<div id="caption" aria-live="polite">
+ <span class="who">Stella</span>
+ <span id="caption-text">Tap Start Talking and ask me anything.</span>
+</div>
+
+<!-- Start overlay -->
+<div id="start-overlay">
+ <img src="bot-face-stella.png?v=1" alt="Stella, live assistant for Star Jet Ski Rentals">
+ <h1>Meet <em>Stella</em></h1>
+ <p>The live video assistant for Star Jet Ski Rentals. Ask about pricing, requirements, or the island run — or get booked in under a minute.</p>
+ <button id="start-btn">Start Talking</button>
+ <p id="start-note">Demo experience by BlueColumn AI (bluecolumn.ai)</p>
+</div>
+
+<!-- Stella engine DOM — ported verbatim from the proven jake.html stack -->
+<button id="bot-fab" aria-hidden="true" tabindex="-1">Stella</button>
+<div id="bot-panel" role="dialog" aria-label="Stella chat">
+ <div class="bot-head"><div><b>Stella</b><small>Bookings &amp; answers · 24/7</small></div><button id="bot-mute" class="bot-ctl" style="margin-left:auto" title="Voice on" aria-label="Voice on"><svg class="ico-on" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg><svg class="ico-off" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg></button><button id="bot-mic" class="bot-ctl" title="Talk hands-free" aria-label="Talk hands-free"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></button><button id="bot-video" class="bot-ctl" title="Live video avatar" aria-label="Show live video avatar"><svg viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg></button></div>
+ <div id="bot-video-wrap" aria-hidden="true"><span id="bot-video-live"><i></i>LIVE</span><video id="bot-video-el" autoplay playsinline muted></video><audio id="bot-simli-audio" autoplay></audio></div>
+ <div id="bot-log"></div>
+ <div class="bot-input">
+ <input id="bot-in" placeholder="Ask or book…" aria-label="Message Stella">
+ <button id="bot-send">Send</button>
+ </div>
+</div>
+
 <script>
-window.BOT_CFG={name:'Stella',business:'Star Jet Ski Rentals',brainPrefix:'Star Jet Ski Rentals customer question: ',faceId:'5fc23ea5-8175-4a82-aaaf-cdd8c88543dc',voiceId:'FGY2WhTYpPnrIDTdsKH5',greeting:"Hey, I'm Stella! Ask me anything — pricing, the island run, what you need — or say 'book' and I'll get your ride started.",placeholder:'Ask or book…',suggestions:[],fallback:"Great question — call us at 850.640.6093 and we'll sort it out. Or ask me about pricing, requirements, or the island run.",
-pre:function(t){var low=t.toLowerCase();
- if(mode==='bk-name'){bk.name=t;mode=null;return{t:"Locked in, "+t.split(' ')[0]+"! Your request: "+(bk.type||'Jet ski ride')+", "+(bk.len||'1 hour')+", "+(bk.time||'flexible')+". Star confirms by text within minutes (9-6).",opts:['Pricing','Island run']};}
- if(mode==='bk-time'){bk.time=t;mode='bk-name';return{t:"Last thing — what's your name?"};}
- if(mode==='bk-len'){bk.len=t;mode='bk-time';return{t:"What time of day?",opts:['Morning','Midday','Afternoon','Flexible']};}
- if(mode==='bk-type'){bk.type=t;mode='bk-len';return{t:t+" — solid pick. How long: 1 hour or 2?",opts:['1 hour','2 hours']};}
- if(low.indexOf('book')>-1||low.indexOf('reserve')>-1||low.indexOf('rent')>-1){mode='bk-type';return{t:"Let's do it. What are you riding — jet ski ride, guided tour, or boat tour?",opts:['Jet Ski Ride','Guided Tour','Boat Tour']};}
- return null;},
-intents:[{k:['price','cost','how much','expensive'],t:"Hourly rides and tours start at $150 for 1 hour. We run 9 to 6 daily with brand-new Yamaha VX Deluxe skis. Same-day bookings fine."},{k:['license','require','need','old','age'],t:"Riders 16+ with valid ID. Born 1988 or later needs a boating certificate — we issue one on site, good for a year."},{k:['island','dolphin','shell'],t:"The island run is our guided tour through dolphin country — Shell Island stops, shells, sea turtles. 1 or 2 hours, photo packages optional."}]};
-var mode=null,bk={},cur='welcome';
-function go(k){cur=k;document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('show')});document.getElementById('p-'+k).classList.add('show');}
-/* ===== OutLoud 2.0 — Response Plan runtime ===== */
-window.ContentDirector={timers:[],cancel:function(){this.timers.forEach(clearTimeout);this.timers=[];document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('show','hl')});},
- execute:function(plan){var cd=this;cd.cancel();(plan.content&&plan.content.actions||[]).forEach(function(a){cd.timers.push(setTimeout(function(){
- if(a.op==='show'){go(a.target);}else if(a.op==='highlight'){var el=document.getElementById('p-'+a.target);if(el){el.classList.add('hl');}}
- },a.delay||0));});}};
-window.Planner={build:function(t,mode){var low=t.toLowerCase(),acts=[],panels=[];
- if(mode){panels.push('book');}
- if(/\$|150|price|cost|much|hour|expensive/.test(low))panels.push('pricing');
- if(/book|reserve|slot|locked/.test(low))panels.push('book');
- if(/license|require|need|old|age|16\+|cert/i.test(low))panels.push('requirements');
- if(/island|dolphin|shell|tour/.test(low))panels.push('island');
- if(/where|hour|location|open|address|call|phone|panama|beach/.test(low))panels.push('findus');
- if(/hey|i'm stella|welcome/.test(low))panels.push('welcome');
- if(!panels.length)panels.push(cur);
- panels.slice(0,2).forEach(function(p,i){acts.push({op:'show',target:p,delay:i*500});acts.push({op:'highlight',target:p,delay:i*500+250});});
- return{protocol:'outloud-2.0',speech:t,content:{actions:acts},timeline:{sync:'tts-start'}};}};
-window.onBotSay=function(t){var cap=document.getElementById('caption');if(cap){cap.classList.remove('typing');cap.textContent=t;}
- ['type','len','time','name'].forEach(function(f){var el=document.getElementById('bk-'+f);if(bk[f]&&el)el.textContent=bk[f];});
- var plan=window.Planner.build(t,mode);window.ContentDirector.execute(plan);};
-document.getElementById('start-btn').addEventListener('click',function(){document.getElementById('start-ov').style.display='none';window.toggleBot();setTimeout(function(){document.getElementById('bot-video').click();},600);});
-/* Simli face swap: poster (real Simli face crop) stays until the live stream has frames */
-window.SIMLI_WATCH=setInterval(function(){var v=document.getElementById('bot-video-el');var live=!!(v&&v.readyState>=2&&v.videoWidth>0);document.body.classList.toggle('video-live',live);if(v){v.style.display=live?'block':'none';}var p=document.getElementById('poster');if(p)p.style.display=live?'none':'block';document.getElementById('live-badge').style.display=live?'block':'none';},400);
+/* Stella — Marina-grade agent config: live BlueColumn brain, dynamic
+ ElevenLabs voice, Simli person avatar, one-voice guard.
+ The guided booking flow stays as a canned pre-hook; knowledge questions
+ go to the live brain first, canned intents are fallback only. */
+function saveLead(b){const leads=JSON.parse(localStorage.getItem('star_leads')||'[]');leads.push({...b,at:new Date().toISOString()});localStorage.setItem('star_leads',JSON.stringify(leads));}
+const booking={};
+let mode=null;
+window.BOT_CFG={
+ name:'Stella',
+ business:'Star Jet Ski Rentals',
+ brainPrefix:'Star Jet Ski Rentals customer question: ',
+ faceId:'5fc23ea5-8175-4a82-aaaf-cdd8c88543dc',
+ voiceId:'FGY2WhTYpPnrIDTdsKH5',
+ greeting:"Hey! Stella here. I answer live — pricing, requirements, the island run — or say 'book' and I'll get your slot started. Tap the mic to talk, or the camera to see me on video.",
+ suggestions:[],
+ placeholder:'Ask or book…',
+ pre:function(txt){
+ const low=txt.toLowerCase();
+ if(mode==='book-name'){booking.name=txt;mode='book-phone';return{t:"Great, "+txt.split(' ')[0]+" — what's the best phone number for your confirmation text?"};}
+ if(mode==='book-phone'){booking.phone=txt;mode=null;saveLead(booking);return{t:"Locked in! Here's your request:\n• "+(booking.type||'Jet Ski Ride')+" · "+(booking.len||'1 hour')+"\n• "+(booking.time||'flexible time')+(booking.date?(" · "+booking.date):"")+"\n• "+txt+"\n\nStar confirms slots by text — usually within minutes during open hours (9–6). Want anything else?",opts:["Pricing","What do I need?","No, I'm good"]};}
+ if(mode==='book-type'){booking.type=txt;mode='book-len';return{t:txt+" — solid pick. How long: 1 hour or 2?"};}
+ if(mode==='book-len'){booking.len=txt;mode='book-date';return{t:"Which day works? Type a date (like 'today', 'tomorrow', or 9/15) or say flexible."};}
+ if(mode==='book-date'){booking.date=txt;mode='book-time';return{t:"And what time of day?",opts:["Morning (9–12)","Midday (12–3)","Afternoon (3–6)","Flexible"]};}
+ if(mode==='book-time'){booking.time=txt;mode='book-name';return{t:"Last thing — what's your name?"};}
+ if(low.includes('book')||low.includes('reserve')||low.includes('rent')){mode='book-type';return{t:"Let's do it. What are you riding — Jet Ski Ride, Guided Tour, or Boat Tour?",opts:["Jet Ski Ride","Guided Jet Ski Tour","Boat Tour"]};}
+ return null;
+ },
+ intents:[
+ {k:['price','cost','how much'],t:"Jet ski sessions start at $150/hour — brand-new Yamaha VX Deluxe, safety gear included. Guided tours and boat tours are priced by the slot. Want me to start a booking?"},
+ {k:['need','license','certifi','age','old'],t:"To ride: 16+ with a valid ID. Born on or after Jan 1, 1988? Florida needs a Temporary Boating Certificate — 20 minutes online before you ride. Life jackets included, no experience needed."},
+ {k:['island'],t:"Yes — you can run the skis to the nearby island on open rides. It's the favorite run."},
+ {k:['weather','storm','rain'],t:"Bad Weather Protection: if weather kills your slot, we rebook or refund. You're never stuck."},
+ {k:['speaker','music','bluetooth'],t:"Yep — the Yamahas have Bluetooth speakers. Bring the playlist."},
+ {k:['phone','call','human','talk'],t:"You can reach Star directly at 850.640.6093, daily 9am–6pm. Or leave your number here and they'll text you."},
+ {k:['thank'],t:"Anytime See you on the water!"},
+ {k:['hello','hi','hey'],t:"Hey! Ask me anything — pricing, requirements, the island run — or say 'book' and I'll get your slot started."}
+ ],
+ fallback:"I can help with pricing, requirements, or getting you booked. For anything else, Star's crew is at 850.640.6093 daily 9–6."
+};
 </script>
-</body></html>
+<script src="vendor/simli-client.js?v=1"></script>
+<script src="marina-agent.js?v=1"></script>
+<script>
+/* ---------- OutLoud presentation layer ---------- */
+(function(){
+ var captionText=document.getElementById('caption-text');
+ var panels=document.querySelectorAll('.dpanel');
+ var tabs=document.querySelectorAll('#panel-tabs button');
+ var videoEl=document.getElementById('bot-video-el');
+
+ function showPanel(name){
+ var hit=false;
+ panels.forEach(function(p){
+ var on=p.getAttribute('data-panel')===name;
+ p.classList.toggle('active',on);
+ if(on){hit=true;}
+ });
+ tabs.forEach(function(b){b.classList.toggle('active',b.getAttribute('data-panel')===name);});
+ return hit;
+ }
+
+ tabs.forEach(function(b){
+ b.addEventListener('click',function(){showPanel(b.getAttribute('data-panel'));});
+ });
+
+ /* Latest bot reply -> caption bar + keyword-driven panel switching */
+ window.onBotSay=function(t){
+ captionText.textContent=t;
+ var low=(t||'').toLowerCase(),name=null;
+ if(/price|cost|how much|\$|per hour|hourly/.test(low)){name='pricing';}
+ else if(/book|reserve|slot|confirm/.test(low)){name='book';}
+ else if(/need|license|certifi|require|\bage\b|\bold\b|born|id\b/.test(low)){name='requirements';}
+ else if(/island/.test(low)){name='island';}
+ else if(/where|located|location|address|find us|hours|open daily|panama city beach/.test(low)){name='findus';}
+ if(name){showPanel(name);}
+ };
+
+ /* Start flow: overlay -> open panel -> auto-start Simli video */
+ document.getElementById('start-btn').addEventListener('click',function(){
+ var ov=document.getElementById('start-overlay');
+ ov.classList.add('gone');
+ setTimeout(function(){ov.style.display='none';},500);
+ if(window.toggleBot){window.toggleBot();}
+ setTimeout(function(){
+ var vb=document.getElementById('bot-video');
+ if(vb){vb.click();}
+ },600);
+ });
+
+ /* Poll for live video frames: body.video-live = clean face, panels hidden */
+ setInterval(function(){
+ var live=!!(videoEl&&videoEl.videoWidth>0);
+ document.body.classList.toggle('video-live',live);
+ },400);
+})();
+</script>
+</body>
+</html>
