@@ -99,7 +99,7 @@ body.video-live #panels,body.video-live #caption,body.video-live #panel-tabs{opa
  #panel-tabs button{padding:6px 12px;font-size:.72rem}
  #caption{bottom:18px}
 }
-</style>
+#bot-video-el,#bot-video-el video{max-width:min(62vw,300px)!important;max-height:38vh!important}/*ol-fix*/</style>
 </head>
 <body>
 
@@ -152,7 +152,7 @@ body.video-live #panels,body.video-live #caption,body.video-live #panel-tabs{opa
 
 <!-- Start overlay -->
 <div id="start-overlay">
- <img src="bot-face-stella.png?v=1" alt="Stella, live assistant for Star Jet Ski Rentals">
+ <img src="bot-face-stella.png?v=2" alt="Stella, live assistant for Star Jet Ski Rentals">
  <h1>Meet <em>Stella</em></h1>
  <p>The live video assistant for Star Jet Ski Rentals. Ask about pricing, requirements, or the island run — or get booked in under a minute.</p>
  <button id="start-btn">Start Talking</button>
@@ -213,7 +213,7 @@ window.BOT_CFG={
 };
 </script>
 <script src="vendor/simli-client.js?v=1"></script>
-<script src="marina-agent.js?v=1"></script>
+<script src="marina-agent.js?v=3"></script>
 <script>
 /* ---------- OutLoud presentation layer ---------- */
 (function(){
