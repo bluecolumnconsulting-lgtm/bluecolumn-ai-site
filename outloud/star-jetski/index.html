@@ -23,9 +23,9 @@
   --radius-lg:20px;
   --radius-md:16px;
   --radius-sm:999px;
-  --stage-h:45vh;
-  --stage-max:390px;
-  --avatar-size:min(76vw,300px);
+  --stage-h:46vh;
+  --stage-max:430px;
+  --avatar-size:min(66vw,380px);
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
@@ -38,16 +38,17 @@ button,input{font:inherit}
 a{color:inherit}
 .page{
   min-height:100vh;
-  padding:18px 16px 20px;
+  padding:20px 20px 12px;
   display:flex;
   flex-direction:column;
-  gap:14px;
+  gap:6px;
 }
 .topline{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
+  padding:0 6px;
   color:var(--deep);
   font-size:12px;
   letter-spacing:.08em;
@@ -60,25 +61,27 @@ a{color:inherit}
   min-height:var(--stage-h);
   max-height:var(--stage-max);
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:center;
-  padding:14px 0 6px;
+  padding:4px 0 0;
+  flex:0 0 auto;
 }
 .stage-backdrop{
   position:absolute;
-  inset:4% 6% 2%;
+  inset:1% 4% 14%;
   border-radius:32px;
-  background:radial-gradient(circle at 50% 20%, rgba(255,178,0,.22), transparent 38%), linear-gradient(180deg, rgba(4,69,92,.08), rgba(4,69,92,.02));
+  background:radial-gradient(circle at 50% 20%, rgba(255,178,0,.24), transparent 40%), linear-gradient(180deg, rgba(4,69,92,.08), rgba(4,69,92,.02));
 }
 .avatar-ring{
   position:relative;
   width:var(--avatar-size);
   height:var(--avatar-size);
-  max-width:300px;
-  max-height:300px;
+  max-width:380px;
+  max-height:380px;
   border-radius:50%;
-  background:linear-gradient(180deg, rgba(255,178,0,.25), rgba(255,178,0,.85));
+  background:linear-gradient(180deg, rgba(255,178,0,.25), rgba(255,178,0,.88));
   padding:10px;
+  margin-top:min(2vh,12px);
   box-shadow:0 16px 48px rgba(255,178,0,.18), 0 8px 22px rgba(2,34,46,.18);
   display:flex;
   align-items:center;
@@ -110,7 +113,7 @@ body.video-live .poster-face{opacity:0}
 .status-chip{
   position:absolute;
   left:50%;
-  bottom:8px;
+  top:calc(100% + 14px);
   transform:translateX(-50%);
   display:inline-flex;
   align-items:center;
@@ -123,6 +126,7 @@ body.video-live .poster-face{opacity:0}
   font-weight:700;
   letter-spacing:.02em;
   box-shadow:0 10px 30px rgba(2,34,46,.18);
+  z-index:3;
 }
 .status-dot,.spinner{
   width:10px;
@@ -138,6 +142,7 @@ body.video-live .poster-face{opacity:0}
 .caption{
   align-self:center;
   width:min(100%, 760px);
+  margin-top:-2px;
   background:rgba(255,248,236,.92);
   border:1px solid rgba(4,69,92,.14);
   border-radius:999px;
@@ -165,7 +170,7 @@ body.video-live .poster-face{opacity:0}
   width:min(100%, 960px);
   margin:0 auto;
   display:grid;
-  gap:12px;
+  gap:10px;
   transition:opacity .35s ease;
 }
 .panel{
@@ -243,7 +248,7 @@ body.video-live .poster-face{opacity:0}
   position:sticky;
   bottom:0;
   margin-top:auto;
-  padding-top:6px;
+  padding-top:0;
   background:linear-gradient(180deg, rgba(255,248,236,0), rgba(255,248,236,.9) 28%, rgba(255,248,236,1) 100%);
 }
 .composer-card{
@@ -320,16 +325,21 @@ body.video-live .status-chip{background:rgba(4,69,92,.74)}
   .caption{padding:14px 20px}
 }
 @media (max-width: 480px){
-  .topline{font-size:11px}
+  .page{padding:20px 18px 12px; gap:5px}
+  .topline{font-size:11px; padding:0 6px}
   .meta{font-size:10px}
-  .stage-shell{padding-top:8px; min-height:38vh}
-  .avatar-ring{padding:8px; width:min(72vw,280px); height:min(72vw,280px)}
-  .caption{padding:11px 14px}
-  .panel{padding:16px}
+  .stage-shell{padding-top:0; min-height:45vh; max-height:none}
+  .avatar-ring{padding:8px; width:min(66vw,380px); height:min(66vw,380px); margin-top:6px}
+  .status-chip{top:calc(100% + 10px)}
+  .caption{padding:11px 14px; margin-top:-2px}
+  .panel-stack{gap:8px}
+  .panel{padding:15px}
   .fact-grid{grid-template-columns:1fr}
   .control-row{align-items:flex-end}
   .input-shell{padding-right:4px}
   #live-input{font-size:13px}
+  .composer{padding-top:0}
+  .footer-note{margin-top:0}
 }
 </style>
 </head>
@@ -464,10 +474,13 @@ body.video-live .status-chip{background:rgba(4,69,92,.74)}
   <div class="footer-note">Demo by BlueColumn AI — not affiliated with Star Jet Ski Rentals</div>
 </div>
 <script>
-  document.documentElement.style.setProperty('--avatar-size', Math.min(window.innerWidth * 0.72, 300) + 'px');
-  window.addEventListener('resize', function(){
-    document.documentElement.style.setProperty('--avatar-size', Math.min(window.innerWidth * 0.72, 300) + 'px');
-  });
+  function setAvatarSize(){
+    var isMobile = window.innerWidth <= 480;
+    var size = isMobile ? Math.min(window.innerWidth * 0.66, 380) : Math.min(window.innerWidth * 0.72, 300);
+    document.documentElement.style.setProperty('--avatar-size', size + 'px');
+  }
+  setAvatarSize();
+  window.addEventListener('resize', setAvatarSize);
 </script>
 
 <button id="bot-fab" aria-hidden="true" tabindex="-1">Hidden launcher</button>
