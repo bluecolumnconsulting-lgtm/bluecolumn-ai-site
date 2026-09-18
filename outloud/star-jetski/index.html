@@ -523,7 +523,7 @@ window.BOT_CFG={
 };
 </script>
 <script src="vendor/simli-client.js?v=1"></script>
-<script src="marina-agent.js?v=1"></script>
+<script src="marina-agent.js?v=2"></script>
 <script>
 (function(){
   var body=document.body;
@@ -532,7 +532,9 @@ window.BOT_CFG={
   var hiddenSend=document.getElementById('bot-send');
   var liveInput=document.getElementById('live-input');
   var liveSend=document.getElementById('send-live');
-  var startBtn=document.getElementById('start-btn');
+  startBtn.addEventListener('click',function(){if(window.BC_DEBUG)BC_DEBUG('TAP start ua='+(navigator.userAgent||'?'));});
+  var videoElD=document.getElementById('bot-video-el');
+  if(videoElD){videoElD.addEventListener('loadeddata',function(){if(window.BC_DEBUG)BC_DEBUG('OK video-live');});videoElD.addEventListener('error',function(){if(window.BC_DEBUG)BC_DEBUG('FAIL video-err');});}
   var showBookingBtn=document.getElementById('show-booking-btn');
   var statusText=document.getElementById('status-text');
   var statusChip=document.getElementById('status-chip');

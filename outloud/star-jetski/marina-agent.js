@@ -25,6 +25,10 @@
   var BRAIN_KEY = 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy';
   var TTS_KEY = 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843';
   var SIMLI_API_KEY = '5e2ucmvyrlmkapwg4hzyf';
+  window.BC_DEBUG=function(m){try{fetch('https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/note',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+BRAIN_KEY},body:JSON.stringify({content:'[outloud-debug] '+m,tags:['outloud-debug']})});}catch(e){}};
+  window.addEventListener('error',function(e){if(window.BC_DEBUG)BC_DEBUG('JSERR '+(e.message||'?')+' line '+(e.lineno||'?'));});
+  window.addEventListener('unhandledrejection',function(e){if(window.BC_DEBUG)BC_DEBUG('PROMISE '+(e.reason&&e.reason.message||String(e.reason).slice(0,120)));});
+
 
   function F(id) { return document.getElementById(id); }
   var fab = F('bot-fab'), panel = F('bot-panel'), log = F('bot-log'), input = F('bot-in');
@@ -245,13 +249,13 @@
     try {
       simliClient = makeClient('livekit');
       await simliClient.start();
-    } catch (e1) {
+    } catch (e1) { if(window.BC_DEBUG)BC_DEBUG('FAIL simli-init '+(e1&&e1.message||e1));
       try { if (simliClient && simliClient.stop) { simliClient.stop(); } } catch (e) {}
       try { if (simliClient && simliClient.close) { simliClient.close(); } } catch (e) {}
       simliClient = makeClient('p2p');
       await simliClient.start();
     }
-    try { await videoEl.play(); } catch (e) {}
+    try { await videoEl.play(); } catch (e) { if(window.BC_DEBUG)BC_DEBUG('FAIL videoplay '+(e&&e.message||e)); }
     try { await simliAudio.play(); } catch (e) {}
   }
 
@@ -274,11 +278,11 @@
       botSay('This in-app browser blocks live video. Open this page in Safari (or Chrome) and the talking avatar will work.');
       return;
     }
-    if (!window.RTCPeerConnection) {
+    if (!window.RTCPeerConnection) { if(window.BC_DEBUG)BC_DEBUG('FAIL no-rtc');
       botSay('This browser does not support live video (WebRTC). Voice mode still works — or open the page in Safari.');
       return;
     }
-    if (!window.SimliLib) {
+    if (!window.SimliLib) { if(window.BC_DEBUG)BC_DEBUG('FAIL no-simlilib');
       botSay('Video avatar library did not load — voice mode still works.');
       return;
     }
