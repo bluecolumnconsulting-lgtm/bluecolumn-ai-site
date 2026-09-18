@@ -22,18 +22,16 @@
   if (!CFG) { return; }
 
   var BRAIN_URL = 'https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/recall';
-  var BRAIN_KEY = 'bc_live_zFFQhM4aQJJ-qPM77gFLgv6eOrNpmyDu';
+  var BRAIN_KEY = 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy';
   var TTS_KEY = 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843';
   var SIMLI_API_KEY = '5e2ucmvyrlmkapwg4hzyf';
 
-  /* -- Elements (each site keeps its existing bot DOM ids) ----- */
   function F(id) { return document.getElementById(id); }
   var fab = F('bot-fab'), panel = F('bot-panel'), log = F('bot-log'), input = F('bot-in');
   var muteBtn = F('bot-mute'), micBtn = F('bot-mic'), videoBtn = F('bot-video');
   var videoEl = F('bot-video-el'), simliAudio = F('bot-simli-audio'), avatarEl = F('bot-avatar');
   if (!fab || !panel || !log || !input) { return; }
 
-  /* -- State --------------------------------------------------- */
   var muted = false, started = false, speaking = false, speechEndCb = null;
   var currentAudio = null, mouthRAF = null, audioCtx = null, analyser = null, mouthData = null;
   var videoMode = { on: false }, videoStarting = false, simliClient = null, simliFeed = null;
@@ -41,7 +39,6 @@
   var recog = null, micOn = false, micWanted = false;
   var supported = !!SR;
 
-  /* -- Message helpers ----------------------------------------- */
   function addMsg(t, cls) {
     var d = document.createElement('div');
     d.className = cls;
@@ -51,7 +48,7 @@
     return d;
   }
   function botSay(t) {
-    if (window.onBotSay) { try { window.onBotSay(t); } catch (eO) {} }
+    if (window.onBotSay) { window.onBotSay(t); }
     return addMsg(t, 'msg bot');
   }
   function userSay(t) { return addMsg(t, 'msg user'); }
@@ -78,7 +75,6 @@
     log.scrollTop = log.scrollHeight;
   }
 
-  /* -- Mouth animation (squish on the emoji avatar) ------------ */
   function stopMouth() {
     if (mouthRAF) { cancelAnimationFrame(mouthRAF); mouthRAF = null; }
     if (avatarEl) { avatarEl.style.transform = ''; avatarEl.classList.remove('talking'); }
@@ -95,7 +91,7 @@
         analyser.connect(audioCtx.destination);
         mouthData = new Uint8Array(analyser.frequencyBinCount);
       }
-    } catch (e) { /* analyser unavailable: CSS rhythm still applies */ }
+    } catch (e) { }
     var tick = function () {
       if (!currentAudio || currentAudio.paused) { stopMouth(); return; }
       var energy = 0.5 + 0.5 * Math.sin(Date.now() / 80);
@@ -119,16 +115,12 @@
     if (micWanted) { setTimeout(pauseListeningThenResume, 350); }
   }
   function cancelSpeech() {
-    /* ONE VOICE: newest user message always wins */
     try { if (currentAudio) { currentAudio.pause(); } } catch (e) {}
     if (simliFeed) { clearInterval(simliFeed.iv); simliFeed = null; }
     stopMouth();
     speaking = false; speechEndCb = null;
   }
 
-  /* ============================================================
-     LIVE BRAIN (BlueColumn /recall) — canned intents = fallback
-     ============================================================ */
   function matchIntent(text) {
     var low = text.toLowerCase();
     for (var i = 0; i < CFG.intents.length; i++) {
@@ -155,9 +147,6 @@
     }).catch(function () { return { t: cannedText, canned: true }; });
   }
 
-  /* ============================================================
-     DYNAMIC TTS + ONE-VOICE VIDEO STREAMING (Marina v14 rules)
-     ============================================================ */
   function ttsFetch(text) {
     return fetch('https://api.elevenlabs.io/v1/text-to-speech/' + CFG.voiceId + '?output_format=mp3_44100_128', {
       method: 'POST',
@@ -197,7 +186,7 @@
       var feed = { iv: null };
       simliFeed = feed;
       var iv = setInterval(function () {
-        if (simliFeed !== feed) { clearInterval(iv); return; } /* superseded by newer speech */
+        if (simliFeed !== feed) { clearInterval(iv); return; }
         if (!simliReady()) { clearInterval(iv); if (simliFeed === feed) { simliFeed = null; } botFinished(); return; }
         if (pos >= bytes.length) { clearInterval(iv); if (simliFeed === feed) { simliFeed = null; } return; }
         var end = Math.min(pos + CHUNK, bytes.length);
@@ -212,7 +201,7 @@
   function speakTextThroughSimli(text) {
     ttsFetch(text).then(function (blob) { return blob.arrayBuffer(); })
       .then(function (ab) { return simliStream(ab); })
-      .catch(function () { botFinished(); /* v14: never overlap the avatar voice */ });
+      .catch(function () { botFinished(); });
   }
 
   function playReply(r) {
@@ -226,14 +215,11 @@
       currentAudio.onended = botFinished;
       currentAudio.play().then(startMouth).catch(function () { botFinished(); });
     }).catch(function () {
-      if (videoMode.on && simliReady()) { botFinished(); return; } /* never overlap the avatar */
-      botFinished(); /* TTS unavailable: reply stays as text, voice stays silent */
+      if (videoMode.on && simliReady()) { botFinished(); return; }
+      botFinished();
     });
   }
 
-  /* ============================================================
-     SIMLI VIDEO (person avatar, real-time WebRTC)
-     ============================================================ */
   async function startSimli() {
     var res = await fetch('https://api.simli.ai/startAudioToVideoSession', {
       method: 'POST',
@@ -316,9 +302,6 @@
     }
   }
 
-  /* ============================================================
-     HANDS-FREE VOICE (Web Speech API)
-     ============================================================ */
   function buildRecognizer() {
     var r = new SR();
     r.lang = 'en-US';
@@ -366,7 +349,7 @@
     if (micWanted) {
       if (muted) { toggleMute(); }
       recog = recog || buildRecognizer();
-      try { recog.start(); setMicUI(true); } catch (e) { /* already started */ }
+      try { recog.start(); setMicUI(true); } catch (e) { }
     } else {
       try { recog && recog.stop(); } catch (e) {}
       setMicUI(false);
@@ -385,13 +368,10 @@
     if (videoBtn) { videoBtn.classList.toggle('on', videoMode.on || videoStarting); }
   }
 
-  /* ============================================================
-     CONVERSATION FLOW — site flow hook first, then live brain
-     ============================================================ */
   function send(txt) {
     txt = (txt || input.value).trim();
     if (!txt) { return; }
-    cancelSpeech(); /* one voice at a time: new speech cancels the active feed */
+    cancelSpeech();
     userSay(txt);
     input.value = '';
     var t = typing();
@@ -402,8 +382,6 @@
       speaking = true;
       playReply(r);
     }
-    /* site-specific canned flow (e.g. StarBot booking) wins — it is a
-       guided intent, not a knowledge question */
     var flowed = null;
     try { flowed = CFG.pre ? CFG.pre(txt) : null; } catch (eP) { flowed = null; }
     if (flowed && flowed.t) {
@@ -413,7 +391,6 @@
     askBrain(txt).then(deliver);
   }
 
-  /* -- Panel open/close ---------------------------------------- */
   function openPanel() {
     panel.classList.add('open');
     fab.setAttribute('aria-expanded', 'true');
@@ -432,7 +409,6 @@
     if (videoMode.on) { toggleVideo(); }
   }
 
-  /* -- Wire up -------------------------------------------------- */
   fab.addEventListener('click', function () {
     if (panel.classList.contains('open')) { closePanel(); } else { openPanel(); }
   });
@@ -443,7 +419,6 @@
   if (sendBtn) { sendBtn.addEventListener('click', function () { send(); }); }
   input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { send(); } });
 
-  /* Expose for legacy inline onclicks (botSend/toggleBot) if any remain */
   window.botSend = function (t) { send(t); };
   window.toggleBot = openPanel;
 })();

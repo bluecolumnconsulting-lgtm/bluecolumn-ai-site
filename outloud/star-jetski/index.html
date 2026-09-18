@@ -3,179 +3,476 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Star Jet Ski Rentals — Talk to Stella Live</title>
-<meta name="description" content="Meet Stella, the live video assistant for Star Jet Ski Rentals in Panama City Beach. Ask about pricing, requirements, the island run, or book your jet ski — 850.640.6093.">
-<!-- OutLoud experience — built by BlueColumn AI as a sales demo for Star Jet Ski Rentals. Not affiliated with starjetskirentals.com. -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2304455c'/%3E%3Ccircle cx='8' cy='8' r='5' fill='%23ffb200'/%3E%3C/svg%3E">
+<title>OutLoud | Star Jet Ski Rentals</title>
+<meta name="description" content="Talk live with Stella from Star Jet Ski Rentals. Ask about pricing, booking, requirements, Shell Island runs, or how to find the dock in Panama City Beach.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2304455c'/%3E%3Ccircle cx='32' cy='32' r='18' fill='%23ffb200'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
- --deep:#04455c; --abyss:#02222e; --turq:#19b8c4; --sun:#ffb200;
- --line:rgba(255,255,255,.18);
+  --deep:#04455c;
+  --deep-2:#022d3c;
+  --sun:#ffb200;
+  --cream:#fff8ec;
+  --ink:#123243;
+  --line:rgba(4,69,92,.12);
+  --line-strong:rgba(4,69,92,.18);
+  --shadow:0 18px 48px rgba(2,34,46,.16);
+  --radius-xl:24px;
+  --radius-lg:20px;
+  --radius-md:16px;
+  --radius-sm:999px;
+  --stage-h:45vh;
+  --stage-max:390px;
+  --avatar-size:min(76vw,300px);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
-body{font-family:'Inter','SF Pro Text',-apple-system,'Segoe UI',sans-serif;color:#eaf6fa;background:linear-gradient(180deg,#02222e 0%,#04455c 100%);overflow:hidden}
-
-/* ---------- Drive-thru panels (visible only while video is NOT live) ---------- */
-#panels{position:fixed;inset:0;z-index:120;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity .5s ease}
-.dpanel{display:none;max-width:520px;width:100%;background:rgba(2,34,46,.72);border:1px solid var(--line);border-radius:18px;padding:30px 32px;backdrop-filter:blur(8px);text-align:center}
-.dpanel.active{display:block;animation:panel-in .35s ease}
-@keyframes panel-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.dpanel h2{font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:12px}
-.dpanel h2 em{color:var(--sun);font-style:normal}
-.dpanel p{font-size:.98rem;color:#c9e4ee;line-height:1.6}
-.dpanel .big{font-size:2rem;font-weight:800;color:var(--sun);margin:10px 0}
-.dpanel .hint{margin-top:16px;font-size:.82rem;color:#8fb5c2}
-.dpanel a{color:var(--sun);font-weight:700;text-decoration:none}
-
-#panel-tabs{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:130;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;transition:opacity .5s ease}
-#panel-tabs button{background:rgba(2,34,46,.6);border:1px solid var(--line);color:#cfe8f0;border-radius:999px;padding:7px 16px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s,color .2s}
-#panel-tabs button.active{background:var(--sun);color:#1d1600;border-color:var(--sun)}
-
-/* ---------- Caption bar (latest Stella reply) ---------- */
-#caption{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:140;max-width:min(640px,calc(100vw - 32px));background:rgba(2,34,46,.78);border:1px solid var(--line);border-radius:14px;padding:13px 20px;backdrop-filter:blur(8px);transition:opacity .5s ease}
-#caption .who{font-size:.68rem;font-weight:800;letter-spacing:1.2px;color:var(--turq);text-transform:uppercase;margin-bottom:4px}
-#caption-text{display:block;font-size:.92rem;line-height:1.5;color:#eaf6fa;max-height:5.4em;overflow:hidden}
-
-/* ---------- Video-live: clean face (panels + caption fade out) ---------- */
-body.video-live #panels,body.video-live #caption,body.video-live #panel-tabs{opacity:0;pointer-events:none}
-
-/* ---------- Start overlay ---------- */
-#start-overlay{position:fixed;inset:0;z-index:300;background:linear-gradient(180deg,#02222e 0%,#04455c 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;transition:opacity .45s ease}
-#start-overlay.gone{opacity:0;pointer-events:none}
-#start-overlay img{width:min(220px,44vw);height:min(220px,44vw);border-radius:50%;object-fit:cover;object-position:center 20%;border:4px solid rgba(255,255,255,.85);box-shadow:0 10px 40px rgba(0,0,0,.45)}
-#start-overlay h1{font-size:clamp(1.7rem,4.5vw,2.4rem);font-weight:800;color:#fff;margin-top:26px}
-#start-overlay h1 em{color:var(--sun);font-style:normal}
-#start-overlay p{color:#c9e4ee;font-size:1rem;margin:12px 0 30px;max-width:420px;line-height:1.6}
-#start-btn{background:var(--sun);color:#1d1600;border:none;border-radius:999px;padding:18px 46px;font-weight:800;font-size:1.15rem;cursor:pointer;box-shadow:0 6px 24px rgba(255,178,0,.35);font-family:inherit;transition:transform .15s}
-#start-btn:hover{transform:scale(1.04)}
-#start-note{margin-top:22px;font-size:.75rem;color:#8fb5c2}
-
-/* ---------- Engine DOM (ported from jake.html — same ids, engine requires them) ---------- */
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:linear-gradient(180deg,#fefcf7 0%,#fff8ec 48%,#f8f0df 100%);
+  color:var(--ink);
+}
+button,input{font:inherit}
+a{color:inherit}
+.page{
+  min-height:100vh;
+  padding:18px 16px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.topline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  color:var(--deep);
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.brand{font-weight:800}
+.meta{font-weight:600; opacity:.76; text-align:right}
+.stage-shell{
+  position:relative;
+  min-height:var(--stage-h);
+  max-height:var(--stage-max);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 0 6px;
+}
+.stage-backdrop{
+  position:absolute;
+  inset:4% 6% 2%;
+  border-radius:32px;
+  background:radial-gradient(circle at 50% 20%, rgba(255,178,0,.22), transparent 38%), linear-gradient(180deg, rgba(4,69,92,.08), rgba(4,69,92,.02));
+}
+.avatar-ring{
+  position:relative;
+  width:var(--avatar-size);
+  height:var(--avatar-size);
+  max-width:300px;
+  max-height:300px;
+  border-radius:50%;
+  background:linear-gradient(180deg, rgba(255,178,0,.25), rgba(255,178,0,.85));
+  padding:10px;
+  box-shadow:0 16px 48px rgba(255,178,0,.18), 0 8px 22px rgba(2,34,46,.18);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.avatar-core{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  overflow:hidden;
+  background:linear-gradient(180deg,#0a4157,#032633);
+  position:relative;
+  isolation:isolate;
+}
+.poster-face,
+#bot-video-el,
+#stage-mask{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 18%;
+  display:block;
+  border-radius:50%;
+  background:#0a3242;
+}
+#stage-mask{position:absolute; inset:0; z-index:2; pointer-events:none; background:transparent}
+.poster-face{position:absolute; inset:0; transition:opacity .35s ease}
+body.video-live .poster-face{opacity:0}
+.status-chip{
+  position:absolute;
+  left:50%;
+  bottom:8px;
+  transform:translateX(-50%);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border-radius:999px;
+  background:rgba(4,69,92,.9);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.02em;
+  box-shadow:0 10px 30px rgba(2,34,46,.18);
+}
+.status-dot,.spinner{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  flex:0 0 auto;
+}
+.status-dot{background:#6dd6a5; box-shadow:0 0 0 6px rgba(109,214,165,.16)}
+.spinner{border:2px solid rgba(255,255,255,.26); border-top-color:var(--sun); animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pulse{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.82}}
+.caption{
+  align-self:center;
+  width:min(100%, 760px);
+  background:rgba(255,248,236,.92);
+  border:1px solid rgba(4,69,92,.14);
+  border-radius:999px;
+  padding:12px 16px;
+  box-shadow:var(--shadow);
+  transition:opacity .35s ease;
+}
+.caption-label{
+  display:block;
+  color:var(--deep);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+#caption-text{
+  display:block;
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.45;
+  min-height:1.45em;
+}
+.panel-stack{
+  width:min(100%, 960px);
+  margin:0 auto;
+  display:grid;
+  gap:12px;
+  transition:opacity .35s ease;
+}
+.panel{
+  display:none;
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  padding:18px;
+}
+.panel.active{display:block}
+.panel h2{
+  margin:0 0 8px;
+  font-size:20px;
+  line-height:1.15;
+  color:var(--deep);
+}
+.panel p,.panel li,.panel .detail{font-size:14px; line-height:1.5; color:#325466}
+.kicker{font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:#8a6a1e; margin-bottom:8px}
+.fact-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px}
+.fact{
+  border-radius:16px;
+  background:var(--cream);
+  border:1px solid rgba(255,178,0,.18);
+  padding:12px;
+}
+.fact strong{display:block; color:var(--deep); font-size:17px; margin-bottom:4px}
+.inline-list{display:grid; gap:8px; padding:0; margin:12px 0 0; list-style:none}
+.inline-list li{display:flex; gap:10px; align-items:flex-start}
+.inline-list svg{width:18px;height:18px; flex:0 0 auto; stroke:var(--deep); margin-top:2px}
+.tabs{display:flex; gap:8px; overflow:auto; padding-bottom:2px; margin-bottom:12px; scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  border:none;
+  background:#e9f1f4;
+  color:var(--deep);
+  padding:9px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+  cursor:pointer;
+}
+.tabs button.active{background:var(--sun); color:#1d1600}
+.cta-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+.primary,.secondary{
+  border:none;
+  border-radius:999px;
+  padding:12px 18px;
+  font-weight:800;
+  cursor:pointer;
+}
+.primary{background:var(--sun); color:#1d1600}
+.secondary{background:#e9f1f4; color:var(--deep)}
+.booking-flow{display:grid; gap:10px}
+.flow-status{
+  display:grid;
+  gap:8px;
+  padding:12px;
+  background:var(--cream);
+  border:1px solid rgba(255,178,0,.2);
+  border-radius:16px;
+}
+.flow-step{display:flex; gap:10px; align-items:flex-start}
+.flow-step-num{
+  width:22px;height:22px;border-radius:50%;background:#dce9ee;color:var(--deep);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex:0 0 auto
+}
+.flow-step.done .flow-step-num,
+.flow-step.current .flow-step-num{background:var(--sun); color:#1d1600}
+.flow-step.done .flow-copy strong,
+.flow-step.current .flow-copy strong{color:var(--deep)}
+.flow-copy strong{display:block; font-size:13px; margin-bottom:2px; color:#4d6b7b}
+.flow-copy span{display:block; font-size:13px; color:#607d8b}
+.composer{
+  position:sticky;
+  bottom:0;
+  margin-top:auto;
+  padding-top:6px;
+  background:linear-gradient(180deg, rgba(255,248,236,0), rgba(255,248,236,.9) 28%, rgba(255,248,236,1) 100%);
+}
+.composer-card{
+  width:min(100%, 960px);
+  margin:0 auto;
+  background:rgba(255,255,255,.96);
+  border:1px solid var(--line-strong);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:12px;
+}
+.control-row{display:flex; gap:10px; align-items:center}
+.input-shell{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--cream);
+  border:1px solid rgba(4,69,92,.12);
+  border-radius:999px;
+  padding:0 6px 0 14px;
+  min-height:52px;
+}
+#bot-in{
+  flex:1;
+  border:none;
+  outline:none;
+  background:transparent;
+  color:var(--ink);
+  min-width:0;
+}
+#bot-in::placeholder{color:#6d8794}
+.icon-btn,.send-btn{
+  border:none;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+.icon-btn{background:#e9f1f4; color:var(--deep)}
+.icon-btn svg,.send-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn.on{background:var(--sun); color:#1d1600}
+.icon-btn.muted{background:#dfe7ea; color:#7b8f99}
+.send-btn{background:var(--deep); color:#fff}
+.helper-text{margin-top:8px; font-size:12px; color:#607d8b}
+.footer-note{
+  width:min(100%, 960px);
+  margin:4px auto 0;
+  text-align:center;
+  font-size:11px;
+  color:#6f8793;
+}
 #bot-fab{display:none}
-#bot-panel{display:none} /* chat UI kept in DOM for the engine but visually hidden */
-/* When video goes live the panel becomes the full-screen stage */
-#bot-panel.video-mode{display:block;position:fixed;inset:0;width:100%;max-width:none;border-radius:0;box-shadow:none;background:#000;z-index:200}
-#bot-panel.video-mode .bot-head,#bot-panel.video-mode #bot-log,#bot-panel.video-mode .bot-input{display:none !important}
-#bot-panel.video-mode #bot-video-wrap{display:block !important;width:100%;height:100%;padding:0;background:#000}
-#bot-panel.video-mode #bot-video-el{width:100%;height:100%;border-radius:0;border:none;box-shadow:none;object-fit:cover;object-position:center 30%;background:transparent;margin:0}
-#bot-panel.video-mode #bot-video-live{display:none}
-
-/* Engine internals — unchanged structural styles from jake.html */
-.bot-head{background:linear-gradient(135deg,var(--deep),var(--turq));color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
-.bot-head small{display:block;opacity:.8;font-weight:400}
-.bot-ctl{background:none;border:none;cursor:pointer;color:#fff;padding:0;margin-left:6px;width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;opacity:.75;transition:background .15s,opacity .15s}
-.bot-ctl svg{width:20px;height:20px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.bot-ctl.on{background:var(--sun);opacity:1}
-.bot-ctl.on svg{stroke:#1d1600}
-.bot-ctl.muted .ico-on{display:none}
-.bot-ctl:not(.muted) .ico-off{display:none}
-.bot-ctl.starting{opacity:.45;animation:ctl-pulse 1s infinite}
-@keyframes ctl-pulse{50%{opacity:.9}}
-#bot-video-wrap{display:none;position:relative;background:var(--deep);padding:16px 0 14px}
-#bot-video-live{position:absolute;top:8px;left:8px;background:rgba(220,40,40,.9);color:#fff;font-size:.62rem;font-weight:800;padding:2px 8px;border-radius:999px;display:flex;align-items:center;gap:4px;letter-spacing:.5px}
-#bot-video-live i{width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:vblink 1.2s infinite}
-@keyframes vblink{50%{opacity:.15}}
-#bot-video-el{width:130px;height:130px;border-radius:50%;object-fit:cover;object-position:center 15%;display:block;margin:0 auto;background:#0a2530;border:3px solid rgba(255,255,255,.9);box-shadow:0 4px 14px rgba(0,0,0,.28)}
-#bot-log{padding:14px;height:300px;overflow-y:auto;background:#f2f9fa;display:flex;flex-direction:column;gap:8px}
-.msg{max-width:85%;padding:9px 13px;border-radius:12px;font-size:.9rem;white-space:pre-line}
-.msg.bot{background:#fff;border:1px solid #dcebef;align-self:flex-start;border-bottom-left-radius:3px;color:#123243}
-.msg.user{background:var(--deep);color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
-.bot-opts{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start}
-.bot-opts button{background:#fff;border:1.5px solid var(--turq);color:var(--deep);border-radius:999px;padding:5px 12px;font-size:.82rem;font-weight:700;cursor:pointer}
-.bot-input{display:none;border-top:1px solid #dcebef}
-.bc-typing{display:flex;gap:3px;align-items:center}
-.bc-typing span{width:6px;height:6px;border-radius:50%;background:#5c7b8a;display:inline-block;animation:bdot 1s infinite}
-.bc-typing span:nth-child(2){animation-delay:.15s}
-.bc-typing span:nth-child(3){animation-delay:.3s}
-@keyframes bdot{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-
-@media(max-width:600px){
- .dpanel{padding:24px 20px}
- #panel-tabs{top:14px;width:calc(100% - 20px)}
- #panel-tabs button{padding:6px 12px;font-size:.72rem}
- #caption{bottom:18px}
+#bot-panel{display:block; position:fixed; inset:0; pointer-events:none; z-index:1}
+.bot-head,#bot-log{display:none !important}
+.bot-input{display:block; position:fixed; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden}
+#bot-video-wrap{display:block !important; position:absolute; inset:0; pointer-events:none; background:transparent; padding:0}
+#bot-video-live{display:none}
+#bot-simli-audio{position:absolute; width:0; height:0; opacity:0; pointer-events:none}
+#bot-panel{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1}
+#bot-panel.video-mode{position:absolute; inset:0; display:block; background:transparent; pointer-events:none; z-index:1}
+#bot-panel.video-mode #bot-video-wrap{display:block !important; position:absolute; inset:0; padding:0; background:transparent}
+#bot-panel.video-mode #bot-video-el{width:100% !important; height:100% !important; max-width:none !important; max-height:none !important; border-radius:50% !important; border:none !important; box-shadow:none !important; margin:0 !important; object-fit:cover !important; object-position:center 18% !important}
+body.video-live .caption,
+body.video-live .panel-stack{opacity:0; pointer-events:none}
+body.video-live .status-chip{background:rgba(4,69,92,.74)}
+@media (min-width: 900px){
+  .page{padding:22px 28px 22px}
+  .panel-stack{grid-template-columns:1.08fr .92fr; align-items:start}
+  .panel.full{grid-column:1 / -1}
+  .caption{padding:14px 20px}
 }
-#bot-video-el,#bot-video-el video{max-width:min(62vw,300px)!important;max-height:38vh!important}/*ol-fix*/</style>
+@media (max-width: 480px){
+  .topline{font-size:11px}
+  .meta{font-size:10px}
+  .stage-shell{padding-top:8px; min-height:38vh}
+  .avatar-ring{padding:8px; width:min(72vw,280px); height:min(72vw,280px)}
+  .caption{padding:11px 14px}
+  .panel{padding:16px}
+  .fact-grid{grid-template-columns:1fr}
+  .control-row{align-items:flex-end}
+  .input-shell{padding-right:4px}
+  #live-input{font-size:13px}
+}
+</style>
 </head>
 <body>
+<div class="page">
+  <div class="topline">
+    <div class="brand">OutLoud · Star Jet Ski Rentals</div>
+    <div class="meta">Panama City Beach · Daily 9am–6pm</div>
+  </div>
 
-<!-- Drive-thru panel tabs -->
-<div id="panel-tabs" role="tablist">
- <button class="active" data-panel="welcome">Welcome</button>
- <button data-panel="pricing">Pricing</button>
- <button data-panel="book">Book</button>
- <button data-panel="requirements">Requirements</button>
- <button data-panel="island">Island Run</button>
- <button data-panel="findus">Find Us</button>
-</div>
+  <section class="stage-shell" aria-label="Live avatar stage">
+    <div class="stage-backdrop"></div>
+    <div class="avatar-ring pulse" id="avatar-stage">
+      <div class="avatar-core">
+        <img class="poster-face" src="bot-face-stella.png?v=1" alt="Stella from Star Jet Ski Rentals">
+        <div id="stage-mask"></div>
+        <div id="bot-panel" role="dialog" aria-label="Stella live assistant">
+          <div class="bot-head"><div><b>Stella</b><small>Bookings &amp; answers · 24/7</small></div></div>
+          <div id="bot-video-wrap" aria-hidden="true">
+            <span id="bot-video-live"><i></i>LIVE</span>
+            <video id="bot-video-el" autoplay playsinline muted></video>
+            <audio id="bot-simli-audio" autoplay></audio>
+          </div>
+          <div id="bot-log"></div>
+          <div class="bot-input">
+            <input id="bot-in" placeholder="Ask Stella anything" aria-label="Message Stella">
+            <button id="bot-send" type="button">Send</button>
+          </div>
+        </div>
+      </div>
+      <div class="status-chip" id="status-chip"><span class="status-dot"></span><span id="status-text">Ready when you are</span></div>
+    </div>
+  </section>
 
-<!-- Drive-thru panels — shown only while the video is NOT live -->
-<div id="panels">
- <section class="dpanel active" data-panel="welcome">
- <h2>Talk to <em>Stella</em></h2>
- <p>Stella is the live assistant for Star Jet Ski Rentals. Ask her anything out loud — pricing, what to bring, the island run — or say <b>"book"</b> and she'll start your reservation.</p>
- <p class="hint">Tip: tap the microphone icon in the top-right controls to talk hands-free.</p>
- </section>
- <section class="dpanel" data-panel="pricing">
- <h2>Simple <em>Pricing</em></h2>
- <div class="big">From $150 / hour</div>
- <p>Brand-new Yamaha VX Deluxe jet skis. Safety gear always included. Guided tours and boat tours are priced by the slot — just ask.</p>
- </section>
- <section class="dpanel" data-panel="book">
- <h2>Lock In Your <em>Slot</em></h2>
- <p>Say <b>"book"</b> to Stella and she'll take your details in under a minute. Prefer to call? <a href="tel:8506406093">850.640.6093</a> — daily 9am to 6pm.</p>
- <p class="hint">Same-day bookings are welcome. Star confirms every slot by text.</p>
- </section>
- <section class="dpanel" data-panel="requirements">
- <h2>What You <em>Need</em></h2>
- <p>16 or older with a valid ID to operate. Born on or after January 1, 1988? Florida requires a Temporary Boating Certificate — about 20 minutes online before you ride. Life jackets included, no experience needed.</p>
- </section>
- <section class="dpanel" data-panel="island">
- <h2>The <em>Island Run</em></h2>
- <p>On open rides you can take the skis to the nearby island — shells, sand, and the favorite run of the summer. Ask Stella how it works.</p>
- </section>
- <section class="dpanel" data-panel="findus">
- <h2>Find <em>Us</em></h2>
- <p><b>Phone:</b> <a href="tel:8506406093">850.640.6093</a><br><b>Location:</b> Panama City Beach, FL<br><b>Hours:</b> Daily 9:00am – 6:00pm</p>
- </section>
-</div>
+  <div class="caption" id="caption" aria-live="polite">
+    <span class="caption-label">Stella</span>
+    <span id="caption-text">Tap Start Talking and I’ll come on live. Ask about pricing, requirements, island runs, or booking.</span>
+  </div>
 
-<!-- Caption bar — mirrors Stella's latest reply -->
-<div id="caption" aria-live="polite">
- <span class="who">Stella</span>
- <span id="caption-text">Tap Start Talking and ask me anything.</span>
-</div>
+  <section class="panel-stack">
+    <div class="panel full active" data-panel="welcome">
+      <div class="tabs" role="tablist" aria-label="Information panels">
+        <button type="button" class="active" data-panel-target="welcome">Welcome</button>
+        <button type="button" data-panel-target="pricing">Pricing</button>
+        <button type="button" data-panel-target="booking">Book</button>
+        <button type="button" data-panel-target="requirements">Requirements</button>
+        <button type="button" data-panel-target="island">Island Run</button>
+        <button type="button" data-panel-target="findus">Find Us</button>
+      </div>
+      <div class="kicker">Drive-thru live link</div>
+      <h2>The page is Stella.</h2>
+      <p>Start talking and Stella connects automatically. When her live video is up, the content gets out of the way. If video cannot connect, voice mode keeps working here with the same booking flow and answers.</p>
+      <div class="cta-row">
+        <button type="button" class="primary" id="start-btn">Start Talking</button>
+        <button type="button" class="secondary" id="show-booking-btn">Open Booking</button>
+      </div>
+    </div>
 
-<!-- Start overlay -->
-<div id="start-overlay">
- <img src="bot-face-stella.png?v=2" alt="Stella, live assistant for Star Jet Ski Rentals">
- <h1>Meet <em>Stella</em></h1>
- <p>The live video assistant for Star Jet Ski Rentals. Ask about pricing, requirements, or the island run — or get booked in under a minute.</p>
- <button id="start-btn">Start Talking</button>
- <p id="start-note">Demo experience by BlueColumn AI (bluecolumn.ai)</p>
-</div>
+    <div class="panel" data-panel="pricing">
+      <div class="kicker">Pricing</div>
+      <h2>$150 per hour.</h2>
+      <p>Rides and tours are available in 1–2 hour blocks, every day from 9am to 6pm.</p>
+      <div class="fact-grid">
+        <div class="fact"><strong>$150/hr</strong><span>Jet ski pricing</span></div>
+        <div class="fact"><strong>1–2 hrs</strong><span>Rides or tours</span></div>
+        <div class="fact"><strong>Yamaha VX Deluxe</strong><span>Current ski model</span></div>
+        <div class="fact"><strong>Gear included</strong><span>Safety gear provided</span></div>
+      </div>
+    </div>
 
-<!-- Stella engine DOM — ported verbatim from the proven jake.html stack -->
-<button id="bot-fab" aria-hidden="true" tabindex="-1">Stella</button>
-<div id="bot-panel" role="dialog" aria-label="Stella chat">
- <div class="bot-head"><div><b>Stella</b><small>Bookings &amp; answers · 24/7</small></div><button id="bot-mute" class="bot-ctl" style="margin-left:auto" title="Voice on" aria-label="Voice on"><svg class="ico-on" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg><svg class="ico-off" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg></button><button id="bot-mic" class="bot-ctl" title="Talk hands-free" aria-label="Talk hands-free"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></button><button id="bot-video" class="bot-ctl" title="Live video avatar" aria-label="Show live video avatar"><svg viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg></button></div>
- <div id="bot-video-wrap" aria-hidden="true"><span id="bot-video-live"><i></i>LIVE</span><video id="bot-video-el" autoplay playsinline muted></video><audio id="bot-simli-audio" autoplay></audio></div>
- <div id="bot-log"></div>
- <div class="bot-input">
- <input id="bot-in" placeholder="Ask or book…" aria-label="Message Stella">
- <button id="bot-send">Send</button>
- </div>
+    <div class="panel" data-panel="booking">
+      <div class="kicker">Booking flow</div>
+      <h2>Reserve with Stella.</h2>
+      <div class="booking-flow">
+        <p class="detail">Say or type <strong>book</strong>. Stella will walk through type, length, date and time, name, then phone number.</p>
+        <div class="flow-status" id="booking-status"></div>
+      </div>
+    </div>
+
+    <div class="panel" data-panel="requirements">
+      <div class="kicker">Requirements</div>
+      <h2>What riders need.</h2>
+      <ul class="inline-list">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Operators must be 16 or older with a valid ID.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Born in 1988 or later? A boating certificate is required.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>The certificate can be issued on-site and stays valid for one year.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Safety gear is included with every ride.</span></li>
+      </ul>
+    </div>
+
+    <div class="panel" data-panel="island">
+      <div class="kicker">Shell Island</div>
+      <h2>Island runs and dolphin water.</h2>
+      <p>Ask Stella about Shell Island routes, open-water rides, and tours where riders often spot dolphins around the Panama City Beach side of the run.</p>
+    </div>
+
+    <div class="panel" data-panel="findus">
+      <div class="kicker">Find us</div>
+      <h2>Panama City Beach, Florida.</h2>
+      <ul class="inline-list">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h12v20l-6-4-6 4V2z"/></svg><span>OutLoud demo for Star Jet Ski Rentals in Panama City Beach, FL.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92V19a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 5.09 11.8 19.79 19.79 0 0 1 2.02 3.09 2 2 0 0 1 4 1h2.09a2 2 0 0 1 2 1.72l.36 2.57a2 2 0 0 1-.57 1.74L6.7 8.2a16 16 0 0 0 9.1 9.1l1.17-1.18a2 2 0 0 1 1.74-.57l2.57.36A2 2 0 0 1 22 16.92z"/></svg><span><a href="tel:8506406093">850.640.6093</a></span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Daily hours: 9:00am–6:00pm</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="composer" aria-label="Conversation controls">
+    <div class="composer-card">
+      <div class="control-row">
+        <button type="button" id="bot-mute" class="icon-btn" aria-label="Toggle speaker">
+          <svg class="ico-on" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          <svg class="ico-off" viewBox="0 0 24 24" style="display:none"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>
+        </button>
+        <button type="button" id="bot-video" class="icon-btn" aria-label="Toggle camera">
+          <svg viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+        </button>
+        <button type="button" id="bot-mic" class="icon-btn" aria-label="Toggle microphone">
+          <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </button>
+        <div class="input-shell">
+          <input id="live-input" type="text" placeholder="Ask about pricing, requirements, or booking" aria-label="Ask Stella">
+          <button type="button" id="send-live" class="send-btn" aria-label="Send message">
+            <svg viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="helper-text">If live video is unavailable, Stella stays in voice mode here and shows the right panel as she answers.</div>
+    </div>
+  </section>
+
+  <div class="footer-note">Demo by BlueColumn AI — not affiliated with Star Jet Ski Rentals</div>
 </div>
+<script>
+  document.documentElement.style.setProperty('--avatar-size', Math.min(window.innerWidth * 0.72, 300) + 'px');
+  window.addEventListener('resize', function(){
+    document.documentElement.style.setProperty('--avatar-size', Math.min(window.innerWidth * 0.72, 300) + 'px');
+  });
+</script>
+
+<button id="bot-fab" aria-hidden="true" tabindex="-1">Hidden launcher</button>
 
 <script>
-/* Stella — Marina-grade agent config: live BlueColumn brain, dynamic
- ElevenLabs voice, Simli person avatar, one-voice guard.
- The guided booking flow stays as a canned pre-hook; knowledge questions
- go to the live brain first, canned intents are fallback only. */
 function saveLead(b){const leads=JSON.parse(localStorage.getItem('star_leads')||'[]');leads.push({...b,at:new Date().toISOString()});localStorage.setItem('star_leads',JSON.stringify(leads));}
 const booking={};
 let mode=null;
@@ -206,66 +503,151 @@ window.BOT_CFG={
  {k:['weather','storm','rain'],t:"Bad Weather Protection: if weather kills your slot, we rebook or refund. You're never stuck."},
  {k:['speaker','music','bluetooth'],t:"Yep — the Yamahas have Bluetooth speakers. Bring the playlist."},
  {k:['phone','call','human','talk'],t:"You can reach Star directly at 850.640.6093, daily 9am–6pm. Or leave your number here and they'll text you."},
- {k:['thank'],t:"Anytime See you on the water!"},
+ {k:['thank'],t:"Anytime. See you on the water."},
  {k:['hello','hi','hey'],t:"Hey! Ask me anything — pricing, requirements, the island run — or say 'book' and I'll get your slot started."}
  ],
  fallback:"I can help with pricing, requirements, or getting you booked. For anything else, Star's crew is at 850.640.6093 daily 9–6."
 };
 </script>
 <script src="vendor/simli-client.js?v=1"></script>
-<script src="marina-agent.js?v=4"></script>
+<script src="marina-agent.js?v=1"></script>
 <script>
-/* ---------- OutLoud presentation layer ---------- */
 (function(){
- var captionText=document.getElementById('caption-text');
- var panels=document.querySelectorAll('.dpanel');
- var tabs=document.querySelectorAll('#panel-tabs button');
- var videoEl=document.getElementById('bot-video-el');
+  var body=document.body;
+  var videoEl=document.getElementById('bot-video-el');
+  var hiddenInput=document.getElementById('bot-in');
+  var hiddenSend=document.getElementById('bot-send');
+  var liveInput=document.getElementById('live-input');
+  var liveSend=document.getElementById('send-live');
+  var startBtn=document.getElementById('start-btn');
+  var showBookingBtn=document.getElementById('show-booking-btn');
+  var statusText=document.getElementById('status-text');
+  var statusChip=document.getElementById('status-chip');
+  var captionText=document.getElementById('caption-text');
+  var panels=[].slice.call(document.querySelectorAll('.panel[data-panel]'));
+  var tabBtns=[].slice.call(document.querySelectorAll('[data-panel-target]'));
+  var bookingStatus=document.getElementById('booking-status');
+  var fallbackTimer=null;
+  var flowOrder=['book-type','book-len','book-date','book-time','book-name','book-phone'];
+  var flowLabels={
+    'book-type':'Ride type',
+    'book-len':'Length',
+    'book-date':'Date',
+    'book-time':'Time',
+    'book-name':'Name',
+    'book-phone':'Phone'
+  };
 
- function showPanel(name){
- var hit=false;
- panels.forEach(function(p){
- var on=p.getAttribute('data-panel')===name;
- p.classList.toggle('active',on);
- if(on){hit=true;}
- });
- tabs.forEach(function(b){b.classList.toggle('active',b.getAttribute('data-panel')===name);});
- return hit;
- }
+  function showPanel(name){
+    panels.forEach(function(panel){ panel.classList.toggle('active', panel.getAttribute('data-panel')===name); });
+    tabBtns.forEach(function(btn){ btn.classList.toggle('active', btn.getAttribute('data-panel-target')===name); });
+  }
 
- tabs.forEach(function(b){
- b.addEventListener('click',function(){showPanel(b.getAttribute('data-panel'));});
- });
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){ showPanel(btn.getAttribute('data-panel-target')); });
+  });
 
- /* Latest bot reply -> caption bar + keyword-driven panel switching */
- window.onBotSay=function(t){
- captionText.textContent=t;
- var low=(t||'').toLowerCase(),name=null;
- if(/price|cost|how much|\$|per hour|hourly/.test(low)){name='pricing';}
- else if(/book|reserve|slot|confirm/.test(low)){name='book';}
- else if(/need|license|certifi|require|\bage\b|\bold\b|born|id\b/.test(low)){name='requirements';}
- else if(/island/.test(low)){name='island';}
- else if(/where|located|location|address|find us|hours|open daily|panama city beach/.test(low)){name='findus';}
- if(name){showPanel(name);}
- };
+  function currentMode(){ return window.eval('mode'); }
+  function currentBooking(){ return window.eval('booking'); }
 
- /* Start flow: overlay -> open panel -> auto-start Simli video */
- document.getElementById('start-btn').addEventListener('click',function(){
- var ov=document.getElementById('start-overlay');
- ov.classList.add('gone');
- setTimeout(function(){ov.style.display='none';},500);
- if(window.toggleBot){window.toggleBot();}
- setTimeout(function(){
- var vb=document.getElementById('bot-video');
- if(vb){vb.click();}
- },600);
- });
+  function renderBookingStatus(){
+    var modeValue=currentMode();
+    var data=currentBooking()||{};
+    var activeIndex=flowOrder.indexOf(modeValue);
+    if(activeIndex<0 && modeValue===null && data.phone){ activeIndex=flowOrder.length; }
+    bookingStatus.innerHTML='';
+    flowOrder.forEach(function(step, idx){
+      var wrap=document.createElement('div');
+      var state='';
+      var fieldKey=step.replace('book-','');
+      var value=data[fieldKey] || '';
+      if(idx < activeIndex || (step==='book-phone' && data.phone && modeValue===null)){ state='done'; }
+      else if(idx===activeIndex){ state='current'; }
+      wrap.className='flow-step '+state;
+      wrap.innerHTML='<span class="flow-step-num">'+(idx+1)+'</span><div class="flow-copy"><strong>'+flowLabels[step]+'</strong><span>'+(value || (state==='current' ? 'Waiting now' : 'Not collected yet'))+'</span></div>';
+      bookingStatus.appendChild(wrap);
+    });
+  }
 
- /* Poll for live video frames: body.video-live = clean face, panels hidden */
- setInterval(function(){
- var live=!!(videoEl&&videoEl.videoWidth>0);
- document.body.classList.toggle('video-live',live);
- },400);
+  function setConnecting(on, msg){
+    if(on){
+      statusChip.innerHTML='<span class="spinner"></span><span id="status-text">'+(msg || 'Connecting to Stella…')+'</span>';
+      document.getElementById('avatar-stage').classList.add('pulse');
+    } else {
+      statusChip.innerHTML='<span class="status-dot"></span><span id="status-text">'+(msg || 'Ready when you are')+'</span>';
+      document.getElementById('avatar-stage').classList.remove('pulse');
+    }
+  }
+
+  function syncLiveState(){
+    var live=!!(videoEl && videoEl.videoWidth>0);
+    body.classList.toggle('video-live', live);
+    if(live){
+      statusChip.innerHTML='<span class="status-dot"></span><span id="status-text">Stella is live</span>';
+      document.getElementById('avatar-stage').classList.remove('pulse');
+    }
+  }
+
+  window.onBotSay=function(t){
+    captionText.textContent=t;
+    var low=(t||'').toLowerCase();
+    if(/could not connect|did not load|blocks live video|does not support live video/.test(low)){
+      setConnecting(false,'Voice mode only');
+      showPanel('welcome');
+    } else if(/price|cost|how much|150\/hour|\$150/.test(low)){
+      showPanel('pricing');
+    } else if(/book|reserve|slot|confirmation text|what are you riding|which day works|what time of day|what's your name|phone number|locked in/.test(low)){
+      showPanel('booking');
+      renderBookingStatus();
+    } else if(/need|license|certifi|valid id|16\+|born on or after/.test(low)){
+      showPanel('requirements');
+    } else if(/island|dolphin|shell island/.test(low)){
+      showPanel('island');
+    } else if(/850\.640\.6093|panama city beach|daily 9|find us|location/.test(low)){
+      showPanel('findus');
+    }
+    renderBookingStatus();
+  };
+
+  function sendLive(){
+    var value=liveInput.value.trim();
+    if(!value){ return; }
+    hiddenInput.value=value;
+    hiddenSend.click();
+    liveInput.value='';
+    renderBookingStatus();
+  }
+
+  liveSend.addEventListener('click', sendLive);
+  liveInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); sendLive(); } });
+  showBookingBtn.addEventListener('click', function(){ showPanel('booking'); renderBookingStatus(); liveInput.focus(); });
+
+  startBtn.addEventListener('click', function(){
+    startBtn.disabled=true;
+    setConnecting(true,'Connecting to Stella…');
+    captionText.textContent='Connecting to Stella…';
+    if(window.toggleBot){ window.toggleBot(); }
+    showPanel('welcome');
+    fallbackTimer=setTimeout(function(){
+      if(!(videoEl && videoEl.videoWidth>0)){
+        setConnecting(false,'Voice mode only');
+        captionText.textContent='Live video is taking longer than expected. You can keep talking in voice mode here.';
+      }
+    },12000);
+    setTimeout(function(){ document.getElementById('bot-video').click(); },300);
+  });
+
+  document.getElementById('bot-video').addEventListener('click', function(){
+    if(!(videoEl && videoEl.videoWidth>0)){ setConnecting(true,'Connecting to Stella…'); }
+  });
+
+  setInterval(function(){
+    syncLiveState();
+    renderBookingStatus();
+    if(videoEl && videoEl.videoWidth>0 && fallbackTimer){ clearTimeout(fallbackTimer); fallbackTimer=null; }
+  },400);
+
+  renderBookingStatus();
 })();
 </script>
 </body>
