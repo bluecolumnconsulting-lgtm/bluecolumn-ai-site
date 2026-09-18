@@ -22,7 +22,7 @@
   if (!CFG) { return; }
 
   var BRAIN_URL = 'https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/recall';
-  var BRAIN_KEY = 'export NEW_BC_KEY';
+  var BRAIN_KEY = 'bc_live_zFFQhM4aQJJ-qPM77gFLgv6eOrNpmyDu';
   var TTS_KEY = 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843';
   var SIMLI_API_KEY = '5e2ucmvyrlmkapwg4hzyf';
 
