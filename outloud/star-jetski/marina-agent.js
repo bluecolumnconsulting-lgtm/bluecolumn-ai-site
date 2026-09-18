@@ -25,9 +25,10 @@
   var BRAIN_KEY = 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy';
   var TTS_KEY = 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843';
   var SIMLI_API_KEY = '5e2ucmvyrlmkapwg4hzyf';
-  window.BC_DEBUG=function(m){try{fetch('https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/note',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+BRAIN_KEY},body:JSON.stringify({content:'[outloud-debug] '+m,tags:['outloud-debug']})});}catch(e){}};
+  window.BC_DEBUG=function(m){try{fetch('https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/note',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+BRAIN_KEY},body:JSON.stringify({text:'[outloud-debug] '+m,tags:['outloud-debug']})});}catch(e){}};
   window.addEventListener('error',function(e){if(window.BC_DEBUG)BC_DEBUG('JSERR '+(e.message||'?')+' line '+(e.lineno||'?'));});
   window.addEventListener('unhandledrejection',function(e){if(window.BC_DEBUG)BC_DEBUG('PROMISE '+(e.reason&&e.reason.message||String(e.reason).slice(0,120)));});
+  BC_DEBUG('page-load UA='+(navigator.userAgent||'?')+' rtc='+!!window.RTCPeerConnection+' simli='+!!window.SimliLib+' v=5');
 
 
   function F(id) { return document.getElementById(id); }
