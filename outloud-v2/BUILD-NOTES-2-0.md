@@ -2,7 +2,24 @@
 
 Built 2026-09-20 from the spec stored in BlueColumn (sess_q6q730f3, note-20260917-144159).
 Build target: `bc-ai-site/outloud-v2/` ONLY. The live page at `bc-ai-site/outloud/` is untouched.
-No deploy, no push. Vanilla JS, no build step — every module is a plain `<script>` tag in boot order.
+Vanilla JS, no build step — every module is a plain `<script>` tag in boot order.
+Script tags carry `?v=2` (cache bust; bump on every deploy).
+
+## Improvement pass 2026-09-20 (same day, after Joe's first real test)
+
+Trigger: Joe viewed the page and said the agent wasn't working great yet. Self-critique + fixes, deployed same day.
+
+**The big one — the live brain now actually has knowledge and drives answers:**
+- DISCOVERY: the BlueColumn namespace behind the page had NO OutLoud product knowledge ingested, so /recall answered "information not in available context" for every real visitor question. Fixed by ingesting a canonical OutLoud product knowledge doc into the namespace via /agent-remember (what OutLoud is, pricing, how it works, live client sites, timeline, trades served, booking). The brain now answers grounded questions like "do you work with landscapers in Queen Creek?" correctly.
+- `business-knowledge.js` rewritten: constructed brain queries (persona prefix + cleaned topic, greeting filler stripped), "not in available context" filtered, session cache for repeats, abort timeout.
+- Latency policy (measured /recall round-trip ~4s): strong catalog matches (core demo questions: what OutLoud is, pricing, how it works, live sites, timeline) answer instantly; EVERYTHING else goes to the live brain first, catalog second, honest fallback last. Raising `STRONG` in business-knowledge.js to 999 flips all questions to the brain once recall latency improves (edge proxy is the real fix).
+- `response-planner.js` rewritten: brain answers are wrapped in full Response Plans (expressions, gestures, gaze, follow-up questions), pricing/live-sites panels attach by intent even on brain answers, follow-ups rotate (never the same line twice), repeated questions get varied openings, greetings rotate, visitor name used when known.
+- Lead capture recovered from messy input: bail-out phrases ("never mind"), questions mid-capture get answered then the pending question is re-asked, filler names rejected, "no business" accepted as Independent, phones validated and formatted, summary + booking panel shows the captured lead.
+- `speech-director.js`: TTS fetch timeout (7s), and voice failure can no longer leave an empty transcript — text lands on the conversation rail even when both ElevenLabs and browser TTS fail.
+- `content-director.js`: new live-sites panel (client roster + 40% proof stat), booking form validates name + phone (tel input) before capture, captured lead renders as a confirmation summary in the panel.
+- Duplicate boot greeting removed (greeting is single-source from the pipeline turn). Em-dash scrubbed from all user-facing copy.
+- New QA: `_qa/simulate-conversations.js` — 10 end-to-end simulated visitor conversations through the real code path with mocked RAG (33 checks): greeting variety, pricing panel + follow-up, grounded long-tail answers, happy-path booking, messy-input recovery, capture bail-out, mid-capture questions, honest unknowns. All pass, plus 27/27 plan-pipeline, 14/14 browser smoke, 6/6 mic/lipsync.
+- Cache: `?v=2` on all scripts + stylesheets in index.html.
 
 ## Architecture map (layer → file → responsibility)
 

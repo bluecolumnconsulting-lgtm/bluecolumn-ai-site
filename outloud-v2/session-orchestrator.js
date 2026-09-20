@@ -66,6 +66,8 @@
       self.input.type('Tell me more about ' + data.label);
     });
     this.content.onAction('booking.submit', function (data) {
+      /* Content Director validates; require name + phone before capture. */
+      if (!data || !data.name || !data.phone) { return; }
       Object.keys(data).forEach(function (k) {
         if (data[k]) { self.memory.setFact('lead.' + k, data[k], 'user-stated'); }
       });
@@ -126,7 +128,7 @@
       self.render(v.plan);
     }).catch(function () {
       self._setState('LISTENING');
-      self.bus.publish('error', { where: 'pipeline', message: 'Could not build a response — try again.' });
+      self.bus.publish('error', { where: 'pipeline', message: 'Something hiccuped building that reply. Say it again, or type it.' });
     });
   };
 

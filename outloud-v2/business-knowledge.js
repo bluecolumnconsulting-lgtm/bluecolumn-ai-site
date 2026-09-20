@@ -7,42 +7,51 @@
      • Response logic (planner) only receives answers through
        retrieve(), never raw internals.
 
-   Retrieval order:
-     1. Static catalog below (instant, offline-safe).
-     2. BlueColumn RAG /recall for open questions (live brain).
+   Retrieval order (live brain first, catalog as safety net):
+     1. BlueColumn RAG /recall with a constructed query
+        (persona prefix + cleaned topic). The namespace holds the
+        canonical OutLoud product knowledge doc ingested 2026-09-20.
+        Answers that come back "not in available context" are
+        filtered out — the runtime never repeats that line.
+     2. Static catalog (instant, offline-safe).
+     3. Honest fallback that invites the next question.
+   The RAG call is raced against a timeout so a slow brain never
+   stalls the conversation.
    =============================================================== */
 (function () {
   'use strict';
   var CONFIG = window.OUTLOUD.CONFIG;
   var SECRETS = window.OUTLOUD.SECRETS;
+  var RAG = CONFIG.rag || { timeoutMs: 5000, minAnswerChars: 8, notInContext: /not in available context/i };
 
-  /* --- Static catalog: the business's own knowledge, hand-curated.
-         Mirrors facts already published on the OutLoud product page. --- */
+  /* --- Static catalog: instant, offline-safe fallback.
+         Mirrors facts already published on the OutLoud product page
+         and in the canonical knowledge doc ingested in BlueColumn. --- */
   var CATALOG = [
     {
       id: 'what-is',
       k: ['what is outloud', 'what does outloud', 'outloud do', 'tell me about', 'who are you', 'what is this'],
-      t: "OutLoud is BlueColumn's AlwaysOn conversational website. Your site talks with every visitor the moment they land — answering questions, quoting work, and booking appointments — 24/7. This page is the product: the agent you're talking to is the demo."
+      t: "OutLoud is BlueColumn's AlwaysOn conversational website. Your site talks with every visitor the moment they land, answering questions, quoting work, and booking appointments around the clock. This page is the product: the agent you're talking to is the demo."
     },
     {
       id: 'pricing',
-      k: ['price', 'cost', 'how much', 'pricing', 'plans', 'fee'],
+      k: ['price', 'cost', 'how much', 'plans', 'fee', 'expensive', 'budget'],
       t: "AlwaysOn Essential is $497 setup plus $97 per month: an OutLoud site that answers customer questions, captures leads, and books on a live calendar. AlwaysOn Lead Engine is $997 setup plus $197 per month and adds a managed lead list for your trade and service area. Setups are one-time; no contracts, month to month."
     },
     {
       id: 'how-it-works',
-      k: ['how does it work', 'how it works', 'how do', 'brain', 'stack', 'under the hood', 'built'],
+      k: ['how does it work', 'how it works', 'how do', 'brain', 'stack', 'under the hood', 'built', 'what can you do', 'capab'],
       t: "Every OutLoud page carries an agent like me. A live BlueColumn brain answers from the business's own knowledge, an ElevenLabs voice speaks the answer, and the mascot moves while it talks. Mic in, voice out, calendar connected."
     },
     {
       id: 'live-sites',
-      k: ['client', 'example', 'live page', 'sites', 'who uses', 'demo pages', 'customers'],
+      k: ['client', 'example', 'live page', 'sites', 'who uses', 'demo pages', 'customers', 'references', 'portfolio'],
       t: "Six live client pages right now: Star Jet Ski Rentals, Vulcan Fence, HomeSpark, OttoMedic, Adventure Club, and Venture Club. At Arcadia Fence & Gate, booked jobs went up 40% in the first month on OutLoud."
     },
     {
       id: 'timeline',
-      k: ['how long', 'timeline', 'when can', 'launch', 'get started how fast', 'turnaround'],
-      t: "A live OutLoud site takes about 30 days. We build it, run it, and manage it — you show up to the booked jobs."
+      k: ['how long', 'timeline', 'when can', 'launch', 'get started how fast', 'turnaround', 'how fast'],
+      t: "A live OutLoud site takes about 30 days. We build it, run it, and manage it. You show up to the booked jobs."
     },
     {
       id: 'booking-flow',
@@ -72,14 +81,34 @@
       if (s > bestS) { bestS = s; best = CATALOG[i]; }
     }
     if (best && bestS >= 4) {
-      return { text: best.t, source: 'catalog', knowledgeId: best.id };
+      return { text: best.t, source: 'catalog', knowledgeId: best.id, _score: bestS };
     }
     return null;
   }
 
-  /* --- Live RAG (BlueColumn /recall). Failure falls back to the
-         catalog / honest fallback — the runtime never blocks on it. --- */
-  function fromRag(text) {
+  /* Clean the visitor's message into a good brain query: persona
+     prefix + topic, minus greeting filler that wastes retrieval. */
+  function buildQuery(text) {
+    var q = String(text || '').trim()
+      .replace(/^(hi|hey|hello|yo|ok|okay|so|um|uh)[,!. ]+/i, '')
+      .replace(/\b(can you|could you|please|tell me|do you know|i want to know|whats|what's)\b/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (q.length < 3) { q = String(text || '').trim(); }
+    return CONFIG.business.ragPrefix + q;
+  }
+
+  function ragFetch(query) {
+    /* Repeat questions answer from the session cache instantly. */
+    try {
+      var cached = sessionStorage.getItem('ol-rag:' + query);
+      if (cached) {
+        var c = JSON.parse(cached);
+        if (c && c.text) { return Promise.resolve({ text: c.text, source: 'rag', knowledgeId: 'rag:cached' }); }
+      }
+    } catch (e) {}
+    var ctrl = (typeof AbortController === 'function') ? new AbortController() : null;
+    var timer = setTimeout(function () { try { ctrl.abort(); } catch (e) {} }, RAG.timeoutMs);
     var url = CONFIG.endpoints.blueColumnBase + '/recall';
     return fetch(url, {
       method: 'POST',
@@ -87,27 +116,48 @@
         'Authorization': 'Bearer ' + SECRETS.blueColumnKey,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ q: CONFIG.business.ragPrefix + text })
+      body: JSON.stringify({ q: query }),
+      signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) { return res.json(); }).then(function (d) {
+      clearTimeout(timer);
       var a = (d && d.answer ? String(d.answer) : '').trim();
-      if (!a || /not in available context/i.test(a) || a.length < 8) { return null; }
+      if (!a || RAG.notInContext.test(a) || a.length < RAG.minAnswerChars) { return null; }
+      try { sessionStorage.setItem('ol-rag:' + query, JSON.stringify({ text: a })); } catch (e) {}
       return { text: a, source: 'rag', knowledgeId: 'rag:' + Date.now() };
-    }).catch(function () { return null; });
+    }).catch(function () { clearTimeout(timer); return null; });
   }
 
-  /* Public API (Context 1 boundary — callers only ever see answers). */
+  /* Public API (Context 1 boundary — callers only ever see answers).
+
+     Latency policy (measured 2026-09-20: /recall round-trip ~4s):
+       • STRONG catalog match (core demo questions: pricing, what
+         OutLoud is, how it works, live sites, timeline) answers
+         instantly — the visitor never waits on the wire for a fact
+         the business already published.
+       • EVERYTHING ELSE goes to the live brain first: constructed
+         query, context filter, honest fallback. The brain is the
+         only source for the long tail, and every brain answer is
+         wrapped into a full Response Plan.
+       • Repeats hit the session cache instantly.
+     When /recall latency drops (edge proxy), raise STRONG to 999
+     and the brain takes back every question. */
+  var STRONG = 8;
+
   window.OUTLOUD.knowledge = {
     retrieve: function (query) {
       var local = fromCatalog(query);
-      if (local) { return Promise.resolve(local); }
-      return fromRag(query).then(function (r) {
-        return r || {
-          text: "I can answer questions about OutLoud — what it does, what it costs, how it works — or book you a live walkthrough. What would you like to know?",
+      if (local && local._score >= STRONG) {
+        return Promise.resolve({ text: local.text, source: 'catalog', knowledgeId: local.knowledgeId });
+      }
+      return ragFetch(buildQuery(query)).then(function (r) {
+        if (r) { return r; }
+        if (local) { return { text: local.text, source: 'catalog', knowledgeId: local.knowledgeId }; }
+        return {
+          text: "I don't have that one yet. I can answer questions about OutLoud, like what it does, what it costs, or how it works. If it's something specific to your business, leave your email and a strategist will follow up. What else can I help with?",
           source: 'fallback'
         };
       });
     },
-    /* Fast synchronous path for the planner's intent routing. */
     peek: fromCatalog
   };
 })();

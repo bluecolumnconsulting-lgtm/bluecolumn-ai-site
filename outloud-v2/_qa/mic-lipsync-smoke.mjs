@@ -14,7 +14,7 @@ await page.waitForTimeout(1600);
 const pos0 = await page.evaluate(() => document.getElementById('mascot').style.backgroundPosition);
 await page.fill('#ol-text-in', 'what is outloud');
 await page.click('#ol-send');
-await page.waitForTimeout(3500); // mid-speech
+await page.waitForTimeout(6000); // mid-speech (RAG + TTS latency)
 const frames = await page.evaluate(() => new Promise(res => {
   const seen = new Set();
   const iv = setInterval(() => { seen.add(document.getElementById('mascot').style.backgroundPosition); }, 100);

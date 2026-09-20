@@ -129,9 +129,10 @@
   avatar.attach(F('ol-avatar-stage'));
   content.mount();
   orch.sessionStart();
-  addMsg('outloud', "Hey, I'm OutLoud — this page is me. Ask me anything: what OutLoud does, what it costs, how it works — or say book a demo and I'll take your details.");
   /* Greeting runs through the full pipeline as a validated plan turn
-     (internal=true keeps it off the transcript; the line above is the copy). */
+     (internal=true keeps the trigger off the transcript). The reply
+     lands on the transcript via the speech chunk walk, so voice and
+     text can never disagree or double up. */
   setTimeout(function () {
     bus.publish('transcript.final', { text: 'hello', internal: true });
   }, 600);

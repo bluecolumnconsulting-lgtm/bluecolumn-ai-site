@@ -31,6 +31,8 @@
   }
 
   SpeechDirector.prototype.ttsFetch = function (text) {
+    var ctrl = (typeof AbortController === 'function') ? new AbortController() : null;
+    var timer = setTimeout(function () { try { ctrl.abort(); } catch (e) {} }, 7000); /* never hang the voice */
     return fetch(CONFIG.endpoints.ttsBase + CONFIG.voice.voiceId +
       '?output_format=' + CONFIG.voice.outputFormat, {
       method: 'POST',
@@ -38,27 +40,37 @@
         'xi-api-key': SECRETS.elevenLabsKey,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ text: text, model_id: CONFIG.voice.model })
+      body: JSON.stringify({ text: text, model_id: CONFIG.voice.model }),
+      signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) {
+      clearTimeout(timer);
       if (!res.ok) { throw new Error('tts ' + res.status); }
       return res.blob();
-    });
+    }).catch(function (e) { clearTimeout(timer); throw e; });
   };
 
   /* Browser TTS fallback — honest, labeled. Used when ElevenLabs
-     fails (offline, key, network) so the answer is still spoken. */
+     fails (offline, key, network) so the answer is still spoken.
+     If browser TTS is missing too, the text still reaches the
+     transcript: voice failure must never leave the visitor with
+     an empty conversation rail. */
   SpeechDirector.prototype.speakFallback = function (text) {
     var self = this;
     var synth = window.speechSynthesis;
     if (!(synth && window.SpeechSynthesisUtterance)) {
+      /* No voice at all: put the whole reply on the transcript. */
+      self.bus.publish('speech.chunk.start', { text: text, silent: true });
+      if (self.onChunkStart) { self.onChunkStart(text); }
       self.speaking = false;
       self.bus.publish('speech.end', { fallback: true, silent: true });
       if (self.onDone) { self.onDone(); }
       return;
     }
+    var started = false;
     var u = new SpeechSynthesisUtterance(text);
     u.rate = 1.02;
     u.onstart = function () {
+      started = true;
       /* Fallback still walks the transcript so the page stays in sync. */
       self.bus.publish('speech.chunk.start', { text: text });
       if (self.onChunkStart) { self.onChunkStart(text); }
@@ -69,6 +81,11 @@
       if (self.onDone) { self.onDone(); }
     };
     u.onerror = function () {
+      if (!started) {
+        /* Utterance never began: land the text on the transcript. */
+        self.bus.publish('speech.chunk.start', { text: text, silent: true });
+        if (self.onChunkStart) { self.onChunkStart(text); }
+      }
       self.speaking = false;
       self.bus.publish('speech.end', { fallback: true, failed: true });
       if (self.onDone) { self.onDone(); }

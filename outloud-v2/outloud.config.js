@@ -39,6 +39,15 @@
       streamChunks: true   // plan-level chunk streaming; true token streaming is TODO(edge-proxy)
     },
 
+    /* --- Live RAG (BlueColumn /recall) is the PRIMARY brain.
+         Catalog below is the instant fallback when the brain has no
+         grounded answer or the network is down. --- */
+    rag: {
+      timeoutMs: 6500,          // recall takes ~4s; long-tail questions wait for the brain
+      minAnswerChars: 8,        // shorter = junk
+      notInContext: /not in available context/i
+    },
+
     /* --- Business identity (Context 1 prefix for RAG) --- */
     business: {
       name: 'OutLoud by BlueColumn',

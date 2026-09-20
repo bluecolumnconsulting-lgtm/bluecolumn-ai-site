@@ -62,20 +62,40 @@
       return p;
     });
 
+    /* --- live client sites panel --- */
+    this.register('sites-panel', function () {
+      var p = el('div', 'ol-panel');
+      p.appendChild(el('h3', 'ol-panel-title', 'Live on OutLoud'));
+      var rows = el('div', 'ol-panel-rows');
+      [
+        { name: 'Star Jet Ski Rentals' },
+        { name: 'Vulcan Fence' },
+        { name: 'HomeSpark' },
+        { name: 'OttoMedic' },
+        { name: 'Adventure Club' },
+        { name: 'Venture Club' }
+      ].forEach(function (r) {
+        rows.appendChild(el('div', 'ol-panel-row ol-row-static', '<span class="ol-row-name">' + r.name + '</span>'));
+      });
+      p.appendChild(rows);
+      p.appendChild(el('p', 'ol-panel-note mono', 'At Arcadia Fence and Gate, booked jobs went up 40% in the first month.'));
+      return p;
+    });
+
     /* --- booking panel (lead capture form) --- */
     this.register('booking-panel', function () {
       var f = el('form', 'ol-panel ol-form');
       f.setAttribute('data-stub', 'booking: server-side validation + calendar write TODO');
       f.appendChild(el('h3', 'ol-panel-title', 'Book a walkthrough'));
-      ['name', 'business', 'phone'].forEach(function (key) {
+      [['name', 'text', 'Your name'], ['business', 'text', 'Business (or "none")'], ['phone', 'tel', 'Best phone number']].forEach(function (pair) {
         var input = el('input', 'ol-input');
-        input.type = 'text';
-        input.name = key;
-        input.placeholder = key === 'name' ? 'Your name' : (key === 'business' ? 'Business' : 'Best phone number');
+        input.type = pair[1];
+        input.name = pair[0];
+        input.placeholder = pair[2];
         input.autocomplete = 'off';
         f.appendChild(input);
       });
-      var note = el('p', 'ol-panel-note mono', 'Stubbed in 2.0: the strategist handoff is validated server-side in production.');
+      var note = el('p', 'ol-panel-note mono', 'A BlueColumn strategist schedules the walkthrough from these details.');
       var submit = el('button', 'ol-submit', 'Send it');
       submit.type = 'submit';
       f.appendChild(submit);
@@ -83,9 +103,19 @@
       f.addEventListener('submit', function (ev) {
         ev.preventDefault();
         var data = {};
-        [].forEach.call(f.querySelectorAll('input'), function (i) { data[i.name] = i.value.trim(); });
+        [].forEach.call(f.querySelectorAll('input'), function (i) {
+          data[i.name] = i.value.trim();
+          i.classList.remove('ol-missing');
+        });
+        var missing = [];
+        if (!data.name) { missing.push('name'); f.querySelector('[name=name]').classList.add('ol-missing'); }
+        if (!data.phone || data.phone.replace(/\D/g, '').length < 7) { missing.push('phone'); f.querySelector('[name=phone]').classList.add('ol-missing'); }
+        if (missing.length) {
+          note.textContent = 'Need a ' + missing.join(' and a ') + ' so the strategist can actually call you.';
+          return;
+        }
         self.emitAction('booking.submit', data);
-        note.textContent = 'Captured in session memory. Production: calendar + SMS confirmation run server-side.';
+        note.textContent = 'Captured. Production: calendar + SMS confirmation run server-side.';
       });
       return f;
     });
@@ -131,7 +161,24 @@
           [].forEach.call(r.el.querySelectorAll('.pulse'), function (n) { n.classList.remove('pulse'); });
         }, 4000));
       } else if (action.action === 'update' && action.data) {
-        Object.keys(action.data).forEach(function (k) { r.el.setAttribute('data-' + k, String(action.data[k])); });
+        var d = action.data;
+        Object.keys(d).forEach(function (k) { r.el.setAttribute('data-' + k, String(d[k])); });
+        /* Captured lead: swap the form for a confirmation summary. */
+        if (d.leadCaptured) {
+          var title = r.el.querySelector('.ol-panel-title');
+          if (title) { title.textContent = 'Walkthrough request captured'; }
+          [].forEach.call(r.el.querySelectorAll('input, .ol-submit'), function (n) {
+            n.classList.add('ol-hidden');
+            if (n.tagName === 'BUTTON') { n.disabled = true; }
+          });
+          var sum = r.el.querySelector('.ol-lead-summary');
+          if (!sum) {
+            sum = el('p', 'ol-lead-summary');
+            r.el.insertBefore(sum, r.el.querySelector('.ol-panel-note'));
+          }
+          sum.textContent = 'Captured: ' + (d.leadName || '') + (d.leadBusiness ? ' at ' + d.leadBusiness : '') +
+            (d.leadPhone ? ', ' + d.leadPhone : '') + '. A strategist will call to schedule.';
+        }
       }
       self.bus.publish('content.action', { action: action.action, target: action.target });
     };

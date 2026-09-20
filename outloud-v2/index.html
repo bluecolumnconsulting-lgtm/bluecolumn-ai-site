@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OutLoud 2.0 — Response Plan Runtime</title>
+  <title>OutLoud 2.0 · Response Plan Runtime</title>
   <meta name="description" content="OutLoud 2.0: a Response Plan runtime coordinating conversation, voice, avatar behavior, and on-page content. This page is the product." />
   <meta name="theme-color" content="#F2F6FC" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="runtime.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="runtime.css?v=2" />
 </head>
 <body>
 
@@ -34,14 +34,14 @@
     <!-- ============ AVATAR STAGE ============ -->
     <section class="ol-stage-panel" aria-label="OutLoud agent stage">
       <p class="ol-kicker mono">One runtime · speech + avatar + content, driven by validated Response Plans</p>
-      <h1 class="ol-title">Ask this page a question.<br /><em>It answers out loud — and shows its work.</em></h1>
+      <h1 class="ol-title">Ask this page a question.<br /><em>It answers out loud, and shows its work.</em></h1>
 
       <div id="ol-avatar-stage" class="ol-avatar-stage" aria-label="OutLoud mascot"></div>
 
       <div class="ol-status-row">
         <span id="ol-state" class="ol-state" data-state="IDLE">IDLE</span>
       </div>
-      <p class="ol-hint mono">Talk, type, or tap a plan-priced panel below. Barge in anytime while it speaks — it stops and listens.</p>
+      <p class="ol-hint mono">Talk, type, or tap a plan-priced panel below. Barge in anytime while it speaks: it stops and listens.</p>
     </section>
 
     <!-- ============ CONVERSATION ============ -->
@@ -71,18 +71,19 @@
 
   <p class="sr-status mono" id="ol-sr-status" role="status" aria-live="polite"></p>
 
-  <!-- Layers, in boot order. No build step; plain script tags. -->
-  <script src="outloud.config.js"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
-  <script src="event-bus.js"></script>           <!-- OutLoudEvent envelope + pub/sub -->
-  <script src="business-knowledge.js"></script>  <!-- Context 1: business knowledge (RAG) -->
-  <script src="customer-memory.js"></script>     <!-- Context 2: customer/session memory -->
-  <script src="plan-validator.js"></script>      <!-- plan validation + graceful repair -->
-  <script src="response-planner.js"></script>    <!-- Context 3: reasoning → Response Plan -->
-  <script src="realtime-input.js"></script>      <!-- mic, VAD, streaming transcript, barge-in -->
-  <script src="speech-director.js"></script>     <!-- ElevenLabs TTS + chunk streaming -->
-  <script src="avatar-director.js"></script>     <!-- sprite adapter: face/gaze/gesture channels -->
-  <script src="content-director.js"></script>    <!-- Content Registry + Action Registry -->
-  <script src="session-orchestrator.js"></script><!-- state machine + event routing -->
-  <script src="runtime.js"></script>             <!-- bootstrap + page chrome -->
+  <!-- Layers, in boot order. No build step; plain script tags.
+       ?v=2 = improved brain pass 2026-09-20 (bump on every deploy). -->
+  <script src="outloud.config.js?v=2"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
+  <script src="event-bus.js?v=2"></script>           <!-- OutLoudEvent envelope + pub/sub -->
+  <script src="business-knowledge.js?v=2"></script>  <!-- Context 1: business knowledge (RAG) -->
+  <script src="customer-memory.js?v=2"></script>     <!-- Context 2: customer/session memory -->
+  <script src="plan-validator.js?v=2"></script>      <!-- plan validation + graceful repair -->
+  <script src="response-planner.js?v=2"></script>    <!-- Context 3: reasoning → Response Plan -->
+  <script src="realtime-input.js?v=2"></script>      <!-- mic, VAD, streaming transcript, barge-in -->
+  <script src="speech-director.js?v=2"></script>     <!-- ElevenLabs TTS + chunk streaming -->
+  <script src="avatar-director.js?v=2"></script>     <!-- sprite adapter: face/gaze/gesture channels -->
+  <script src="content-director.js?v=2"></script>    <!-- Content Registry + Action Registry -->
+  <script src="session-orchestrator.js?v=2"></script><!-- state machine + event routing -->
+  <script src="runtime.js?v=2"></script>             <!-- bootstrap + page chrome -->
 </body>
 </html>
