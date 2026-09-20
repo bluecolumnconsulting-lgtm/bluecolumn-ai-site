@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OutLoud by BlueColumn — Your website talks. And books jobs 24/7.</title>
-  <meta name="description" content="OutLoud by BlueColumn: AlwaysOn conversational AI websites for local businesses. Chatbots that see, speak, and remember — answering questions, qualifying leads, and booking appointments 24/7. Arcadia Fence booked 40% more jobs in month one. Live in ~30 days." />
-  <meta property="og:title" content="OutLoud by BlueColumn — Your website talks. And books jobs 24/7." />
-  <meta property="og:description" content="Businesses lose sales to voicemail. You won't. Your website talks, answers, qualifies, and books 24/7 — Arcadia Fence booked 40% more jobs in month one." />
+  <title>OutLoud by BlueColumn — This page is OutLoud</title>
+  <meta name="description" content="This page is OutLoud. Meet Buddy, the live OutLoud demo agent: he answers questions out loud about what OutLoud does, what it costs, and how to get one for your business." />
+  <meta property="og:title" content="OutLoud by BlueColumn — This page is OutLoud" />
+  <meta property="og:description" content="The page is the product. Tap once and Buddy, the OutLoud agent, greets you out loud and answers anything about OutLoud — live." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="/outloud/" />
   <meta property="og:image" content="/outloud/logo.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OutLoud by BlueColumn — Your website talks. And books jobs 24/7." />
-  <meta name="twitter:description" content="AlwaysOn conversational AI websites for local businesses. Chatbots that see, speak, and remember." />
+  <meta name="twitter:title" content="OutLoud by BlueColumn — This page is OutLoud" />
+  <meta name="twitter:description" content="AlwaysOn conversational websites for local businesses. This page is the live demo." />
   <meta name="twitter:image" content="/outloud/logo.png" />
   <meta name="theme-color" content="#ffffff" />
   <link rel="canonical" href="/outloud/" />
@@ -23,346 +23,280 @@
   <link rel="stylesheet" href="/outloud/styles.css" />
 </head>
 <body>
-  <header class="nav" id="nav">
-    <div class="container nav-inner">
-      <a href="https://bluecolumn.ai" class="brand" title="Back to BlueColumn">
-        <img src="/outloud/logo.svg" alt="BlueColumn" class="brand-logo" />
-        <span class="brand-name">BlueColumn</span>
-        <span class="brand-badge">OutLoud</span>
-      </a>
-      <nav class="nav-links" id="navLinks">
-        <a class="nav-back" href="https://bluecolumn.ai">← BlueColumn</a>
-        <a href="#leaks">Where leads leak</a>
-        <a href="#compare">Compare</a>
-        <a href="#industries">See it live</a>
-        <a href="#how">How it works</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-      <a href="/signup" class="btn btn-primary nav-cta">Build your OutLoud site</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+  <!-- marina-agent plumbing (agent boots from these IDs; Simli is unused here) -->
+  <button id="bot-fab" aria-hidden="true" tabindex="-1">Hidden launcher</button>
+  <div id="bot-panel" role="dialog" aria-label="Buddy live assistant">
+    <div id="bot-video-wrap" aria-hidden="true">
+      <video id="bot-video-el" autoplay playsinline muted></video>
+      <audio id="bot-simli-audio" autoplay></audio>
     </div>
+    <div id="bot-log" aria-hidden="true"></div>
+    <div class="bot-input">
+      <input id="bot-in" placeholder="Ask Buddy anything" aria-label="Message Buddy">
+      <button id="bot-send" type="button">Send</button>
+    </div>
+  </div>
+  <div id="bot-avatar" aria-hidden="true" hidden></div>
+
+  <header class="topline">
+    <div class="topline-brand">
+      <img src="/outloud/logo.svg" alt="BlueColumn" class="brand-logo" />
+      <span class="brand-name">BlueColumn</span>
+      <span class="brand-badge">OutLoud</span>
+    </div>
+    <p class="topline-line"><strong>This page is OutLoud.</strong> Ask it. · <a href="/signup">Build yours →</a></p>
   </header>
 
-  <section class="hero" id="top">
-    <div class="hero-glow" aria-hidden="true"></div>
-    <div class="container hero-inner">
-      <div class="hero-copy">
-        <p class="eyebrow mono">AlwaysOn Conversational Websites — Powered by BlueColumn</p>
-        <h1 class="hero-title">
-          You don't have a traffic problem.
-          <span class="hero-title-accent serif">You have a response problem.</span>
-        </h1>
-        <p class="hero-sub">
-          Visitors arrive ready to buy, hit a form or voicemail, and hand the job to the next
-          business that actually answers. An OutLoud site talks with every visitor the moment
-          they land — answering questions, quoting work, and booking the appointment.
-          In seconds. 24/7. By design.
-        </p>
-        <div class="hero-cta">
-          <a href="#industries" class="btn btn-primary btn-lg">See a demo →</a>
-          <a href="#leaks" class="btn btn-ghost btn-lg">What the silence costs ↓</a>
-        </div>
-        <p class="hero-note mono">Arcadia Fence booked +40% jobs in month one · Live in ~30 days · We build, run, and manage it</p>
-      </div>
-
-      <div class="widget" id="demoWidget" aria-label="OutLoud chat widget demo">
-        <div class="widget-head">
-          <span class="widget-status" aria-hidden="true"></span>
-          <span class="widget-url mono">arcadiafence.com / chat</span>
-          <span class="widget-badges">
-            <span class="widget-badge mono">Response time · 3.8s</span>
-            <span class="widget-badge widget-badge-booked mono">Booked ✓</span>
-          </span>
-        </div>
-        <div class="widget-body" id="widgetBody">
-          <div class="msg msg-in" style="--d:0s"><p>Hi — do you handle tile roof repairs in Chandler? Wind took a few tiles off last night.</p></div>
-          <div class="msg msg-out" style="--d:.9s"><p>We do — tile repair is one of our most common East Valley calls. For a roof like that, repairs typically run $450–$900. Want me to hold the next open estimate slot for you?</p></div>
-          <div class="msg msg-in" style="--d:1.8s"><p>Thursday morning if possible. Do you also do the insurance photos?</p></div>
-          <div class="msg msg-out" style="--d:2.7s"><p>Yes — the estimator documents everything for your claim. Thursday 9:00 AM is open. Name and address and it's yours.</p></div>
-          <div class="msg msg-in" style="--d:3.6s"><p>Sarah M. — 4521 N 7th St.</p></div>
-          <div class="msg msg-out msg-booked" style="--d:4.5s"><p>Booked ✓ Thursday 9:00 AM. Confirmation texted to you, estimate prep started for the crew. See you then.</p></div>
-        </div>
-        <div class="widget-foot">
-          <span class="mono">Scenario · Roofing estimate</span>
-          <button class="widget-replay mono" id="replayBtn" type="button">↻ Replay</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="stats-strip" id="stats">
-    <div class="container stats-grid">
-      <div class="stat">
-        <span class="stat-num serif">+40%</span>
-        <span class="stat-label mono">booked jobs — Arcadia Fence &amp; Gate, month one</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num serif">24/7</span>
-        <span class="stat-label mono">answering, quoting, and booking — no off hours</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num serif">~30 days</span>
-        <span class="stat-label mono">from kickoff to a live OutLoud site</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="section leaks" id="leaks">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">Where leads leak</p>
-        <h2 class="section-title">You paid for the click.<br /><span class="serif">The leak is in the reply.</span></h2>
-        <p class="section-sub">Four places local businesses lose jobs they already won. Each one has the same fix.</p>
-      </div>
-      <div class="leak-grid">
-        <article class="leak-card">
-          <span class="leak-num serif">42 min</span>
-          <h3>The first reply decides the job</h3>
-          <p>Industry research puts the average lead response time near 42 minutes — long after the visitor has opened a second tab. An OutLoud site answers in seconds, at any hour, before the comparison shopping even starts.</p>
-          <a class="leak-fix mono" href="#compare">Fix →</a>
-        </article>
-        <article class="leak-card">
-          <span class="leak-num serif">80%</span>
-          <h3>Voicemail is where jobs go quiet</h3>
-          <p>Industry research consistently finds most callers hang up on voicemail without leaving a message, and nights and weekends are exactly when homeowners search. OutLoud answers with a real conversation on every hour of every channel.</p>
-          <a class="leak-fix mono" href="#how">Fix →</a>
-        </article>
-        <article class="leak-card">
-          <span class="leak-num serif">98%</span>
-          <h3>Forms ask visitors to do the work</h3>
-          <p>Industry research on contact forms shows nearly all visitors who reach one leave without submitting. OutLoud replaces the form wall with a conversation that asks the right questions and moves straight to the calendar.</p>
-          <a class="leak-fix mono" href="#industries">Fix →</a>
-        </article>
-        <article class="leak-card">
-          <span class="leak-num serif">5–8</span>
-          <h3>Buyers need touches, not one try</h3>
-          <p>Industry research on buying cycles finds most buyers need five to eight touches before they commit, while most small businesses manage one. The Lead Engine plan follows up by text and email until the answer is yes, no, or booked.</p>
-          <a class="leak-fix mono" href="#pricing">Fix →</a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section versus" id="compare">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">Two websites, same visitor</p>
-        <h2 class="section-title">One hands them a form.<br /><span class="serif">One hands them a calendar.</span></h2>
-      </div>
-      <div class="versus-grid">
-        <div class="vs-panel vs-panel-generic">
-          <p class="vs-label mono">Generic chatbot</p>
-          <div class="vs-chat">
-            <div class="msg msg-in"><p>Do you replace pool pumps? Mine died and the pool turns green fast.</p></div>
-            <div class="msg msg-out msg-flat"><p>Thanks for your interest. A team member will reach out within 1 business day. Meanwhile, please fill out our contact form or call the number on the site.</p></div>
-            <div class="vs-after mono">Visitor leaves · calls the next result · job gone</div>
+  <main>
+    <!-- ============ AVATAR STAGE — the product ============ -->
+    <section class="stage" id="stage" aria-label="Live OutLoud demo stage">
+      <div class="stage-grid">
+        <div class="mascot-frame">
+          <div class="mascot-breathe">
+            <div class="mascot" id="mascot" role="img" aria-label="Buddy, the OutLoud mascot, lip-synced live"></div>
+          </div>
+          <div class="status-chip" id="status-chip">
+            <span class="status-dot"></span><span id="status-text">Tap to meet OutLoud</span>
           </div>
         </div>
-        <div class="vs-panel vs-panel-outloud">
-          <p class="vs-label mono">OutLoud</p>
-          <div class="vs-chat">
-            <div class="msg msg-in"><p>Do you replace pool pumps? Mine died and the pool turns green fast.</p></div>
-            <div class="msg msg-out"><p>We do — same-day replacements are usually possible. A standard single-speed swap runs $650–$950 installed. I have a tech slot tomorrow at 8:00 AM. Want it?</p></div>
-            <div class="msg msg-in"><p>Yes. 412 E Cedar Ln.</p></div>
-            <div class="msg msg-out msg-booked"><p>Booked ✓ Tomorrow 8:00 AM. Tech assigned, confirmation texted with the arrival window.</p></div>
+
+        <div class="screen" aria-label="Live transcript and controls">
+          <div class="screen-head">
+            <span class="screen-dot" aria-hidden="true"></span>
+            <div>
+              <div class="screen-title">Buddy <span class="mono screen-tag">OutLoud agent</span></div>
+              <div class="screen-sub">Speaks out loud · answers from a live BlueColumn brain</div>
+            </div>
+          </div>
+          <div class="screen-body" id="screen-body" aria-live="polite">
+            <div class="tr-msg tr-bot">Tap the stage and I will say hello out loud. Then ask me anything — the mic works too.</div>
+          </div>
+          <div class="screen-foot">
+            <div class="chip-row" id="chip-row" role="group" aria-label="Suggested questions">
+              <button type="button" class="chip" data-chip="what" data-ask="What is OutLoud">What is OutLoud</button>
+              <button type="button" class="chip" data-chip="cost" data-ask="What does it cost">What does it cost</button>
+              <button type="button" class="chip" data-chip="demos" data-ask="See client demos">See client demos</button>
+              <button type="button" class="chip" data-chip="book" data-ask="Book a demo">Book a demo</button>
+            </div>
+            <div class="control-row">
+              <button type="button" id="bot-mute" class="icon-btn" aria-label="Toggle speaker">
+                <svg class="ico-on" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                <svg class="ico-off" viewBox="0 0 24 24" style="display:none"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>
+              </button>
+              <button type="button" id="bot-video" class="icon-btn" aria-label="Toggle video" hidden tabindex="-1">
+                <svg viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+              </button>
+              <button type="button" id="bot-mic" class="icon-btn" aria-label="Toggle microphone">
+                <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+              </button>
+              <div class="input-shell">
+                <input id="live-input" type="text" placeholder="Ask Buddy anything, or just talk" aria-label="Ask Buddy">
+                <button type="button" id="send-live" class="send-btn" aria-label="Send message">
+                  <svg viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2z"/></svg>
+                </button>
+              </div>
+            </div>
+            <p class="helper-text">Say <strong>book a demo</strong> and Buddy collects your name, business, and phone.</p>
           </div>
         </div>
       </div>
-      <p class="versus-note mono">Illustrative conversations, shown to demonstrate the difference in flow. Not transcripts of real chats.</p>
-    </div>
-  </section>
 
-  <section class="section baseline" id="baseline">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">The gap</p>
-        <h2 class="section-title">Industry baseline<br /><span class="serif">vs. with OutLoud</span></h2>
-      </div>
-      <div class="table-wrap">
-        <table class="cmp-table">
-          <thead>
-            <tr>
-              <th scope="col">Moment</th>
-              <th scope="col">Industry baseline</th>
-              <th scope="col">With OutLoud</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">First response</th>
-              <td>~42 min average lead response time — industry research</td>
-              <td class="td-outloud">Answers in seconds, on chat, text, and email</td>
-            </tr>
-            <tr>
-              <th scope="row">After-hours capture</th>
-              <td>Voicemail and forms queue until the next business day</td>
-              <td class="td-outloud">Full conversation and booking, 24/7</td>
-            </tr>
-            <tr>
-              <th scope="row">Booking outcome</th>
-              <td>A callback promise, often missed while the customer calls competitors</td>
-              <td class="td-outloud">Appointment booked in the chat and confirmed by text</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="cta-note mono" style="margin-top:1.25rem">Baseline figures reflect published industry lead-response research. OutLoud column describes product capability.</p>
-    </div>
-  </section>
+      <button type="button" class="start-gate" id="start-gate">
+        <span class="start-gate-title">Tap to meet OutLoud</span>
+        <span class="start-gate-sub">Buddy greets you out loud — turn your sound on.</span>
+        <span class="start-gate-cta">Start talking</span>
+      </button>
+    </section>
 
-  <section class="section industries" id="industries">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">Built for your trade — see it live</p>
-        <h2 class="section-title">OutLoud sites already talking<br /><span class="serif">to real visitors. Click through.</span></h2>
-      </div>
-      <div class="industry-grid">
-        <article class="industry-card">
-          <p class="industry-label mono">Home services</p>
-          <h3>Fence, roofing, HVAC, plumbing</h3>
-          <p>Estimates quoted, questions answered, and appointments booked while the crew is on a job — not after the voicemail piles up.</p>
-          <div class="industry-links mono">
-            <a href="/fence-craft-hub/">Vulcan Fence →</a>
-            <a href="/homespark/">HomeSpark →</a>
-          </div>
-        </article>
-        <article class="industry-card">
-          <p class="industry-label mono">Marine &amp; rentals</p>
-          <h3>Jet ski, boat &amp; toy rentals</h3>
-          <p>Booking-first conversations that answer pricing and availability and fill the calendar — mornings, nights, and the whole weekend rush.</p>
-          <div class="industry-links mono">
-            <a href="/outloud/star-jetski/">Star Jet Ski →</a>
-          </div>
-        </article>
-        <article class="industry-card">
-          <p class="industry-label mono">Medical</p>
-          <h3>Clinics &amp; practices</h3>
-          <p>Patient questions answered instantly around the clock, appointments routed to staff — a front desk that never puts anyone on hold.</p>
-          <div class="industry-links mono">
-            <a href="/ottomedic/">OttoMedic →</a>
-          </div>
-        </article>
-        <article class="industry-card">
-          <p class="industry-label mono">Clubs &amp; memberships</p>
-          <h3>Membership experiences</h3>
-          <p>A talking, remembering concierge that walks visitors through the club, qualifies them, and signs them up on the spot.</p>
-          <div class="industry-links mono">
-            <a href="/adventure-club/">Adventure Club →</a>
-            <a href="/venture-club/">Venture Club →</a>
-          </div>
-        </article>
-      </div>
-      <p class="cta-note mono" style="margin-top:1.5rem">Every demo page is labeled “Demo built by BlueColumn AI”.</p>
-    </div>
-  </section>
-
-  <section class="section how" id="how">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">How it works</p>
-        <h2 class="section-title">Live in days,<br /><span class="serif">not months.</span></h2>
-      </div>
-      <div class="how-steps">
-        <div class="how-step">
-          <span class="how-num mono">01</span>
-          <h3>We build it</h3>
-          <p>We spin up your OutLoud site — your brand, your services, your phone line and booking calendar connected. Zero technical work for you.</p>
+    <!-- ============ MagicBlocks rhythm, compact ============ -->
+    <section class="stats-strip" id="stats">
+      <div class="container stats-grid">
+        <div class="stat">
+          <span class="stat-num serif">+40%</span>
+          <span class="stat-label mono">booked jobs — Arcadia Fence &amp; Gate, month one</span>
         </div>
-        <div class="how-step">
-          <span class="how-num mono">02</span>
-          <h3>Train it on your business</h3>
-          <p>Feed it your services, pricing, docs, photos, and expertise. It learns how you talk to customers — and talks like you.</p>
+        <div class="stat">
+          <span class="stat-num serif">24/7</span>
+          <span class="stat-label mono">answering, quoting, and booking — no off hours</span>
         </div>
-        <div class="how-step">
-          <span class="how-num mono">03</span>
-          <h3>Start converting immediately</h3>
-          <p>Visitors become conversations, conversations become appointments, and appointments become revenue.</p>
+        <div class="stat">
+          <span class="stat-num serif">~30 days</span>
+          <span class="stat-label mono">from kickoff to a live OutLoud site</span>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section pricing" id="pricing">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">Pricing</p>
-        <h2 class="section-title">Two plans.<br /><span class="serif">We build, run, and manage everything.</span></h2>
+    <section class="section leaks" id="leaks">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow mono">Where leads leak</p>
+          <h2 class="section-title">You paid for the click.<br /><span class="serif">The leak is in the reply.</span></h2>
+        </div>
+        <div class="leak-grid">
+          <article class="leak-card">
+            <span class="leak-num serif">42 min</span>
+            <h3>The first reply decides the job</h3>
+            <p>Industry research puts the average lead response time near 42 minutes — long after the visitor has opened a second tab. An OutLoud site answers in seconds, at any hour.</p>
+            <a class="leak-fix mono" href="#compare">Fix →</a>
+          </article>
+          <article class="leak-card">
+            <span class="leak-num serif">80%</span>
+            <h3>Voicemail is where jobs go quiet</h3>
+            <p>Industry research consistently finds most callers hang up on voicemail without leaving a message, and nights and weekends are exactly when homeowners search. OutLoud answers with a real conversation on every channel.</p>
+            <a class="leak-fix mono" href="#demos">Fix →</a>
+          </article>
+          <article class="leak-card">
+            <span class="leak-num serif">98%</span>
+            <h3>Forms ask visitors to do the work</h3>
+            <p>Industry research on contact forms shows nearly all visitors who reach one leave without submitting. OutLoud replaces the form wall with a conversation that moves straight to the calendar.</p>
+            <a class="leak-fix mono" href="#demos">Fix →</a>
+          </article>
+          <article class="leak-card">
+            <span class="leak-num serif">5–8</span>
+            <h3>Buyers need touches, not one try</h3>
+            <p>Industry research on buying cycles finds most buyers need five to eight touches before they commit, while most small businesses manage one. The Lead Engine plan follows up by text and email until the answer is yes, no, or booked.</p>
+            <a class="leak-fix mono" href="#pricing">Fix →</a>
+          </article>
+        </div>
       </div>
-      <div class="pricing-grid">
-        <article class="price-card">
-          <p class="industry-label mono">AlwaysOn Essential</p>
-          <p class="price-num serif">$497 <span class="price-setup mono">setup</span> · $97<span class="price-setup mono">/mo</span></p>
-          <p>An OutLoud site that answers customer questions, sends info, captures leads, and books appointments on a live calendar — 24/7. We build it, run it, and manage it for you.</p>
-        </article>
-        <article class="price-card price-card-featured">
-          <p class="industry-label mono">AlwaysOn Lead Engine</p>
-          <p class="price-num serif">$997 <span class="price-setup mono">setup</span> · $197<span class="price-setup mono">/mo</span></p>
-          <p>Everything in Essential, plus a managed lead engine: we build and maintain a qualified lead list for your trade and service area, and your OutLoud site works it around the clock. You just show up to the appointments.</p>
-        </article>
-      </div>
-      <p class="cta-note mono" style="margin-top:1.5rem">Setups are one-time. No contracts — month to month. Talk to us: hello@bluecolumn.ai</p>
-    </div>
-  </section>
+    </section>
 
-  <section class="quote">
-    <div class="container">
-      <blockquote class="serif">
-        “Where every visitor becomes a conversation.<br />
-        Where every conversation becomes intelligence.<br />
-        Where intelligence becomes growth.”
-      </blockquote>
-    </div>
-  </section>
+    <section class="section versus" id="compare">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow mono">Two websites, same visitor</p>
+          <h2 class="section-title">One hands them a form.<br /><span class="serif">One hands them a calendar.</span></h2>
+        </div>
+        <div class="versus-grid">
+          <div class="vs-panel vs-panel-generic">
+            <p class="vs-label mono">Generic chatbot</p>
+            <div class="vs-chat">
+              <div class="msg msg-in"><p>Do you replace pool pumps? Mine died and the pool turns green fast.</p></div>
+              <div class="msg msg-out msg-flat"><p>Thanks for your interest. A team member will reach out within 1 business day. Meanwhile, please fill out our contact form or call the number on the site.</p></div>
+              <div class="vs-after mono">Visitor leaves · calls the next result · job gone</div>
+            </div>
+          </div>
+          <div class="vs-panel vs-panel-outloud">
+            <p class="vs-label mono">OutLoud</p>
+            <div class="vs-chat">
+              <div class="msg msg-in"><p>Do you replace pool pumps? Mine died and the pool turns green fast.</p></div>
+              <div class="msg msg-out"><p>We do — same-day replacements are usually possible. A standard single-speed swap runs $650–$950 installed. I have a tech slot tomorrow at 8:00 AM. Want it?</p></div>
+              <div class="msg msg-in"><p>Yes. 412 E Cedar Ln.</p></div>
+              <div class="msg msg-out msg-booked"><p>Booked ✓ Tomorrow 8:00 AM. Tech assigned, confirmation texted with the arrival window.</p></div>
+            </div>
+          </div>
+        </div>
+        <p class="versus-note mono">Illustrative conversations, shown to demonstrate the difference in flow. Not transcripts of real chats.</p>
+      </div>
+    </section>
 
-  <section class="section cta" id="cta">
-    <div class="container cta-inner">
-      <h2 class="cta-title serif">Build your OutLoud site</h2>
-      <p class="cta-sub">Launch in days. Train it on your business. Start converting more visitors immediately.</p>
-      <div class="cta-actions">
-        <a href="/signup" class="btn btn-primary btn-lg">Get started — free</a>
-        <a href="/funnel/" class="btn btn-ghost btn-lg">Prefer we build it? Get a free assessment</a>
+    <section class="section demos" id="demos">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow mono">See it live — client pages</p>
+          <h2 class="section-title">OutLoud sites already talking<br /><span class="serif">to real visitors. Click through.</span></h2>
+        </div>
+        <div class="industry-grid">
+          <article class="industry-card">
+            <p class="industry-label mono">Home services</p>
+            <h3>Fence, roofing, HVAC, plumbing</h3>
+            <p>Estimates quoted, questions answered, and appointments booked while the crew is on a job — not after the voicemail piles up.</p>
+            <div class="industry-links mono">
+              <a href="/fence-craft-hub/">Vulcan Fence →</a>
+              <a href="/homespark/">HomeSpark →</a>
+            </div>
+          </article>
+          <article class="industry-card">
+            <p class="industry-label mono">Marine &amp; rentals</p>
+            <h3>Jet ski, boat &amp; toy rentals</h3>
+            <p>Booking-first conversations that answer pricing and availability and fill the calendar — mornings, nights, and the whole weekend rush.</p>
+            <div class="industry-links mono">
+              <a href="/outloud/star-jetski/">Star Jet Ski →</a>
+            </div>
+          </article>
+          <article class="industry-card">
+            <p class="industry-label mono">Medical</p>
+            <h3>Clinics &amp; practices</h3>
+            <p>Patient questions answered instantly around the clock, appointments routed to staff — a front desk that never puts anyone on hold.</p>
+            <div class="industry-links mono">
+              <a href="/ottomedic/">OttoMedic →</a>
+            </div>
+          </article>
+          <article class="industry-card">
+            <p class="industry-label mono">Clubs &amp; memberships</p>
+            <h3>Membership experiences</h3>
+            <p>A talking, remembering concierge that walks visitors through the club, qualifies them, and signs them up on the spot.</p>
+            <div class="industry-links mono">
+              <a href="/adventure-club/">Adventure Club →</a>
+              <a href="/venture-club/">Venture Club →</a>
+            </div>
+          </article>
+        </div>
+        <p class="versus-note mono">Every demo page is labeled “Demo built by BlueColumn AI”.</p>
       </div>
-      <p class="cta-note mono">One BlueColumn account = one OutLoud site. Free to start, no card required.</p>
-    </div>
-  </section>
+    </section>
 
-  <section class="section faq" id="faq">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow mono">FAQ</p>
-        <h2 class="section-title">Business questions,<br /><span class="serif">straight answers.</span></h2>
+    <section class="section pricing" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow mono">Pricing</p>
+          <h2 class="section-title">Two plans.<br /><span class="serif">We build, run, and manage everything.</span></h2>
+        </div>
+        <div class="pricing-grid">
+          <article class="price-card">
+            <p class="industry-label mono">AlwaysOn Essential</p>
+            <p class="price-num serif">$497 <span class="price-setup mono">setup</span> · $97<span class="price-setup mono">/mo</span></p>
+            <p>An OutLoud site that answers customer questions, sends info, captures leads, and books appointments on a live calendar — 24/7. We build it, run it, and manage it for you.</p>
+          </article>
+          <article class="price-card price-card-featured">
+            <p class="industry-label mono">AlwaysOn Lead Engine</p>
+            <p class="price-num serif">$997 <span class="price-setup mono">setup</span> · $197<span class="price-setup mono">/mo</span></p>
+            <p>Everything in Essential, plus a managed lead engine: we build and maintain a qualified lead list for your trade and service area, and your OutLoud site works it around the clock. You just show up to the appointments.</p>
+          </article>
+        </div>
+        <div class="cta-actions">
+          <a href="/signup" class="btn btn-primary btn-lg">Build your OutLoud site</a>
+          <a href="/funnel/" class="btn btn-ghost btn-lg">Prefer we build it? Free assessment</a>
+        </div>
+        <p class="cta-note mono">Setups are one-time. No contracts — month to month. Talk to us: hello@bluecolumn.ai</p>
       </div>
-      <div class="faq-list">
-        <details class="faq-item">
-          <summary>How does the AI actually work?</summary>
-          <p>Your OutLoud site answers customer questions directly, and if it can't answer something it routes the question to you instantly by phone, email, or SMS — with the full conversation history attached so you know exactly what they asked.</p>
-        </details>
-        <details class="faq-item">
-          <summary>What does setup look like?</summary>
-          <p>Week 1: onboarding. Weeks 2–3: we train the AI on your services, pricing, FAQs, and photos. Week 4: it goes live with monitoring. Most businesses see a 15–40% increase in booked appointments in month one.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Can customers still text, email, or call me directly?</summary>
-          <p>Yes — customers can talk to the AI, text, email, or be routed straight to your phone. All channels flow through one intelligent system, and everything is controlled from a simple dashboard. No technical skills required.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Can I customize how it looks and sounds?</summary>
-          <p>Completely. Choose the avatar (animated character, real person, or voice only), set the tone (professional, friendly, casual), and set priorities — booking, lead qualification, or customer support.</p>
-        </details>
-        <details class="faq-item">
-          <summary>What does it cost?</summary>
-          <p>AlwaysOn Essential is $497 setup + $97/mo. AlwaysOn Lead Engine is $997 setup + $197/mo and adds a managed lead list for your trade and service area. Setup is one-time, no contracts — month to month.</p>
-        </details>
-        <details class="faq-item">
-          <summary>How long until it's live?</summary>
-          <p>About 30 days end to end: onboarding in week one, training in weeks two and three, live with monitoring in week four. We handle the build, run, and management the whole way.</p>
-        </details>
+    </section>
+
+    <section class="section faq" id="faq">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow mono">FAQ</p>
+          <h2 class="section-title">Business questions,<br /><span class="serif">straight answers.</span></h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>How does the AI actually work?</summary>
+            <p>Your OutLoud site answers customer questions directly, and if it can't answer something it routes the question to you instantly by phone, email, or SMS — with the full conversation history attached so you know exactly what they asked.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What does setup look like?</summary>
+            <p>Week 1: onboarding. Weeks 2–3: we train the AI on your services, pricing, FAQs, and photos. Week 4: it goes live with monitoring. Most businesses see a 15–40% increase in booked appointments in month one.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Can customers still text, email, or call me directly?</summary>
+            <p>Yes — customers can talk to the AI, text, email, or be routed straight to your phone. All channels flow through one intelligent system, and everything is controlled from a simple dashboard. No technical skills required.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Can I customize how it looks and sounds?</summary>
+            <p>Completely. Choose the avatar (animated character, real person, or voice only), set the tone (professional, friendly, casual), and set priorities — booking, lead qualification, or customer support.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What does it cost?</summary>
+            <p>AlwaysOn Essential is $497 setup + $97/mo. AlwaysOn Lead Engine is $997 setup + $197/mo and adds a managed lead list for your trade and service area. Setup is one-time, no contracts — month to month.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How long until it's live?</summary>
+            <p>About 30 days end to end: onboarding in week one, training in weeks two and three, live with monitoring in week four. We handle the build, run, and management the whole way.</p>
+          </details>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <footer class="footer">
     <div class="container footer-inner">
@@ -374,77 +308,179 @@
       <div class="footer-links mono">
         <a href="https://bluecolumn.ai" target="_blank" rel="noopener">BlueColumn AI</a>
         <a href="https://github.com/bluecolumnconsulting-lgtm" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/" rel="noopener">API</a>
       </div>
       <p class="footer-legal mono">© 2026 BlueColumn. OutLoud is a product of BlueColumn.</p>
     </div>
   </footer>
 
   <script>
-    // Nav background on scroll
-    const nav = document.getElementById("nav");
-    const onScroll = () => {
-      if (window.scrollY > 10) nav.classList.add("scrolled");
-      else nav.classList.remove("scrolled");
+    /* ---------- BOT_CFG: Buddy, the OutLoud demo agent ---------- */
+    var GREETING = "Hey, I am OutLoud — this page is me. Ask me anything: what OutLoud does, what it costs, how it works, or say book a demo and I will take your details.";
+    function saveLead(b) {
+      try {
+        var leads = JSON.parse(localStorage.getItem('outloud_leads') || '[]');
+        leads.push({ name: b.name || '', business: b.business || '', phone: b.phone || '', at: new Date().toISOString() });
+        localStorage.setItem('outloud_leads', JSON.stringify(leads));
+      } catch (e) {}
+    }
+    var lead = {}, leadMode = null;
+    window.BOT_CFG = {
+      name: 'Buddy',
+      business: 'OutLoud by BlueColumn',
+      brainPrefix: 'OutLoud by BlueColumn product question: ',
+      greeting: GREETING,
+      suggestions: [],
+      placeholder: 'Ask Buddy anything, or just talk',
+      pre: function (txt) {
+        if (txt === '__greet__') { return { t: GREETING }; }
+        if (leadMode === 'lead-name') {
+          lead.name = txt; leadMode = 'lead-biz';
+          return { t: 'Thanks, ' + txt.split(' ')[0] + '. What business is it for?' };
+        }
+        if (leadMode === 'lead-biz') {
+          lead.business = txt; leadMode = 'lead-phone';
+          return { t: 'Got it. And the best phone number for the walkthrough call?' };
+        }
+        if (leadMode === 'lead-phone') {
+          lead.phone = txt; leadMode = null; saveLead(lead);
+          return { t: 'Saved. Here is what I have: ' + lead.name + ' at ' + lead.business + ', ' + txt + '. A BlueColumn strategist will call to schedule the walkthrough. You can also reach hello@bluecolumn.ai anytime.' };
+        }
+        var low = txt.toLowerCase();
+        if (low.indexOf('book') !== -1 || low.indexOf('schedule') !== -1 || low.indexOf('sign up') !== -1 || low.indexOf('talk to') !== -1) {
+          leadMode = 'lead-name';
+          return { t: 'Let us do it. First — what is your name?' };
+        }
+        return null;
+      },
+      intents: [
+        { k: ['what is outloud', 'what does outloud', 'outloud do', 'tell me about outloud'], t: "OutLoud is BlueColumn's AlwaysOn conversational website. Your site talks with every visitor the moment they land — answering questions, quoting work, and booking appointments — 24/7. This page is the product: I am the demo." },
+        { k: ['price', 'cost', 'how much', 'pricing', 'plans'], t: "AlwaysOn Essential is $497 setup plus $97 per month: an OutLoud site that answers, captures leads, and books on a live calendar. AlwaysOn Lead Engine is $997 setup plus $197 per month and adds a managed lead list for your trade and area. No contracts — month to month." },
+        { k: ['how does it work', 'how it works', 'how do', 'brain'], t: "Every OutLoud page carries an agent like me. A live BlueColumn brain answers from the business's own knowledge, an ElevenLabs voice speaks it, and I move while it talks. Mic in, voice out, calendar connected." },
+        { k: ['walkthrough', 'get started', 'signup'], t: "Happy to set that up. Say book a demo and I will collect your name, business, and phone — a BlueColumn strategist schedules the walkthrough. You can also email hello@bluecolumn.ai." },
+        { k: ['demo', 'client', 'examples', 'live page', 'sites'], t: "There are six live client pages right now: Star Jet Ski Rentals, OttoMedic, Adventure Club, Venture Club, Vulcan Fence, and HomeSpark. The links are on this page below the stage. Or say book a demo and I will take your details." },
+        { k: ['voice', 'avatar', 'mascot', 'lip'], t: "I speak with an ElevenLabs voice, think with a live BlueColumn brain, and move as a sprite-animated mascot. On client pages the same stack runs as a video avatar — like Stella on the Star Jet Ski page." },
+        { k: ['who are you', 'your name'], t: "I am Buddy, the OutLoud demo agent. This page is the product — I am it, running live." },
+        { k: ['hello', 'hi', 'hey'], t: "Hey there. Ask me anything — what OutLoud does, what it costs, or say book a demo." }
+      ],
+      fallback: "I can answer questions about OutLoud — what it does, what it costs, how it works — or book you a live walkthrough. What would you like to know?"
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+  </script>
+  <script src="mascot-rig.js?v=1"></script>
+  <script src="marina-agent.js?v=5"></script>
+  <script>
+    (function () {
+      var gate = document.getElementById('start-gate');
+      var statusChip = document.getElementById('status-chip');
+      var statusText = document.getElementById('status-text');
+      var screenBody = document.getElementById('screen-body');
+      var liveInput = document.getElementById('live-input');
+      var liveSend = document.getElementById('send-live');
+      var chipBtns = [].slice.call(document.querySelectorAll('.chip'));
+      var started = false, pendingAsk = null;
+      var DEMO_RE = /star jet|ottomedic|adventure club|venture club|vulcan|homespark|six live/i;
 
-    // Mobile nav toggle
-    const navToggle = document.getElementById("navToggle");
-    const navLinks = document.getElementById("navLinks");
-    navToggle.addEventListener("click", () => {
-      navToggle.classList.toggle("open");
-      navLinks.classList.toggle("open");
-    });
-    navLinks.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", () => {
-        navToggle.classList.remove("open");
-        navLinks.classList.remove("open");
-      })
-    );
+      function setStatus(kind, text) {
+        statusChip.innerHTML = '<span class="' + (kind === 'waking' ? 'spinner' : 'status-dot') + '"></span><span id="status-text">' + text + '</span>';
+      }
 
-    // Reveal on scroll
-    const revealEls = document.querySelectorAll(".section, .stats-strip, .widget, .quote, .footer");
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      /* ---------- transcript mirror of the hidden bot log ---------- */
+      var lastBotText = null;
+      function addLine(cls, text) {
+        if (!text || text === '__greet__') { return; }
+        var d = document.createElement('div');
+        d.className = 'tr-msg ' + cls;
+        d.textContent = text;
+        if (cls === 'tr-bot') {
+          if (text === lastBotText) { return; }
+          lastBotText = text;
+          if (DEMO_RE.test(text)) {
+            var row = document.createElement('span');
+            row.className = 'tr-links';
+            row.innerHTML = '<a href="/outloud/star-jetski/">Star Jet Ski</a><a href="/ottomedic/">OttoMedic</a><a href="/adventure-club/">Adventure Club</a><a href="/venture-club/">Venture Club</a><a href="/fence-craft-hub/">Vulcan Fence</a><a href="/homespark/">HomeSpark</a>';
+            d.appendChild(row);
+          }
+        }
+        screenBody.appendChild(d);
+        screenBody.scrollTop = screenBody.scrollHeight;
+      }
+      new MutationObserver(function (muts) {
+        muts.forEach(function (m) {
+          [].slice.call(m.addedNodes).forEach(function (n) {
+            if (!n.classList) { return; }
+            if (n.classList.contains('msg') && n.classList.contains('user')) { addLine('tr-user', n.textContent); }
+            else if (n.classList.contains('msg') && n.classList.contains('bot') && !n.classList.contains('bc-typing')) { addLine('tr-bot', n.textContent); }
+          });
+        });
+      }).observe(document.getElementById('bot-log'), { childList: true });
+
+      /* ---------- chip states driven by what Buddy says ---------- */
+      function setActiveChip(key) {
+        chipBtns.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-chip') === key); });
+      }
+      window.onBotSay = function (t) {
+        var low = (t || '').toLowerCase();
+        if (/\$497|\$997|price|cost|per month|pricing/.test(low)) { setActiveChip('cost'); }
+        else if (/book|schedule|phone number|walkthrough|your name|what business/.test(low)) { setActiveChip('book'); }
+        else if (/demo|client page|star jet|ottomedic|adventure club|venture club|vulcan|homespark/.test(low)) { setActiveChip('demos'); }
+        else if (/outloud|avatar|brain|elevenlabs|mascot|how/.test(low)) { setActiveChip('what'); }
+        screenBody.scrollTop = screenBody.scrollHeight;
+      };
+
+      /* ---------- tap-to-start (autoplay policies need a gesture) ---------- */
+      function beginStart(ask) {
+        if (started) { if (ask) { window.botSend(ask); } return; }
+        started = true;
+        gate.classList.add('gone');
+        setTimeout(function () { gate.hidden = true; }, 320);
+        setStatus('waking', 'Waking Buddy…');
+        pendingAsk = ask || null;
+        window.toggleBot();   /* opens the agent; greeting text lands in the transcript */
+        setTimeout(function () {
+          window.botSend(pendingAsk || '__greet__');   /* spoken out loud */
+          pendingAsk = null;
+          setStatus('live', 'Buddy is live — tap the mic and just talk');
+        }, 500);
+      }
+      gate.addEventListener('click', function () { beginStart(); });
+
+      chipBtns.forEach(function (b) {
+        b.addEventListener('click', function () {
+          setActiveChip(b.getAttribute('data-chip'));
+          beginStart(b.getAttribute('data-ask'));
+        });
+      });
+
+      /* ---------- composer forward into the hidden agent input ---------- */
+      function forward() {
+        var v = liveInput.value.trim();
+        if (!v) { return; }
+        document.getElementById('bot-in').value = v;
+        document.getElementById('bot-send').click();
+        liveInput.value = '';
+      }
+      liveSend.addEventListener('click', forward);
+      liveInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); forward(); }
+      });
+
+      /* ---------- mic placeholder sync ---------- */
+      setInterval(function () {
+        var micOn = document.getElementById('bot-mic').classList.contains('on');
+        liveInput.placeholder = micOn ? 'Listening... just talk' : 'Ask Buddy anything, or just talk';
+      }, 400);
+
+      /* ---------- reveal on scroll ---------- */
+      var revealEls = document.querySelectorAll('.section, .stats-strip, .footer');
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("reveal", "visible");
+            entry.target.classList.add('reveal', 'visible');
             io.unobserve(entry.target);
           }
         });
-      },
-      { threshold: 0.08 }
-    );
-    revealEls.forEach((el) => {
-      el.classList.add("reveal");
-      io.observe(el);
-    });
-
-    // Hero widget: play once when scrolled into view; replay button re-runs the sequence
-    const widgetBody = document.getElementById("widgetBody");
-    const replayBtn = document.getElementById("replayBtn");
-    const playSequence = () => {
-      widgetBody.classList.remove("play");
-      void widgetBody.offsetWidth; // restart animations
-      widgetBody.classList.add("play");
-    };
-    if (widgetBody) {
-      const widgetIO = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              widgetBody.classList.add("play");
-              widgetIO.disconnect();
-            }
-          });
-        },
-        { threshold: 0.35 }
-      );
-      widgetIO.observe(widgetBody);
-    }
-    if (replayBtn) replayBtn.addEventListener("click", playSequence);
+      }, { threshold: 0.08 });
+      revealEls.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
+    })();
   </script>
 </body>
 </html>
