@@ -212,7 +212,7 @@ img { max-width: 100%; display: block; }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: var(--nav-height); gap: var(--space-4); }
 
 .brand { display: flex; align-items: center; gap: var(--space-2); }
-.brand-logo { width: 26px; height: 26px; }
+.brand-logo { width: 26px; height: 26px; border-radius: 7px; }
 .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: -0.02em; }
 .brand-badge {
   font-family: var(--font-display);
