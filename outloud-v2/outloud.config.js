@@ -57,7 +57,7 @@
     /* --- Avatar (Avatar Director, sprite adapter) --- */
     /* --- Simli video avatar (Simli Director) — sprite stays as fallback --- */
     simli: {
-      faceId: 'tmp9i8bbq7c',   // stock Simli face, verified via session token 2026-09-21
+      faceId: '7e74d6e7-d559-4394-bd56-4923a3ab75ad',   // Joe's face — verified via session token 2026-09-21
       maxSessionLength: 600,
       maxIdleTime: 180
     },
