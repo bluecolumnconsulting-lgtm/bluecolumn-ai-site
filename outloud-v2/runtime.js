@@ -91,7 +91,6 @@
     if (gateEl && gateEl.parentNode) { gateEl.parentNode.removeChild(gateEl); }
     gateEl = null;
   }
-  simli.attach(F('ol-avatar-stage'));
   function showGate() {
     var stage = F('ol-avatar-stage');
     if (!stage || stage.querySelector('.ol-tap-gate')) { return; }
@@ -166,7 +165,12 @@
   if (textIn) { textIn.addEventListener('keydown', function (e) { if (e.key === 'Enter') { sendTyped(); } }); }
 
   /* ---------- boot sequence (spec: session lifecycle) ---------- */
+  /* ORDER MATTERS: avatar.attach rebuilds the stage via innerHTML, so
+     Simli's video/audio elements must be injected AFTER the sprite
+     DOM exists — video rides inside #mascot-gaze. (Fixed 2026-09-21:
+     simli.attach ran first and avatar.attach wiped its elements.) */
   avatar.attach(F('ol-avatar-stage'));
+  simli.attach(F('ol-avatar-stage'));
   content.mount();
   orch.sessionStart();
   /* Greeting runs through the full pipeline as a validated plan turn
