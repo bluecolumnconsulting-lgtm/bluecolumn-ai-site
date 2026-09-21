@@ -104,7 +104,7 @@
         if (ok) {
           addMsg('outloud', 'Video avatar is live — watch me talk.');
         } else {
-          addMsg('outloud', 'Video could not connect (' + (simli.lastError || 'unknown') + '). Voice mode still works.');
+          addMsg('outloud', 'Video could not connect (' + (simli.lastError || 'unknown') + '). Voice mode still works. If this is an in-app browser (Telegram etc.), copy this link and open it in Safari or Chrome.');
         }
         /* Greeting goes through whichever channel is now active. */
         bus.publish('transcript.final', { text: 'hello', internal: true });
