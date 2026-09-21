@@ -16,8 +16,8 @@
   /* ============ ⚠️ SECRETS — MOVE TO EDGE PROXY ⚠️ ============ */
   var SECRETS = {
     blueColumnKey: 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy',
-    elevenLabsKey: 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843'
-    // NOTE: Simli key intentionally NOT carried into 2.0 — video avatar is a later phase.
+    elevenLabsKey: 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843',
+    simliKey: '5e2ucmvyrlmkapwg4hzyf'   // verified live 2026-09-21 (session token issued)
   };
 
   var CONFIG = {
@@ -55,6 +55,13 @@
     },
 
     /* --- Avatar (Avatar Director, sprite adapter) --- */
+    /* --- Simli video avatar (Simli Director) — sprite stays as fallback --- */
+    simli: {
+      faceId: 'tmp9i8bbq7c',   // stock Simli face, verified via session token 2026-09-21
+      maxSessionLength: 600,
+      maxIdleTime: 180
+    },
+
     avatar: {
       sprite: 'mascot-sprites.png',
       cols: 4,

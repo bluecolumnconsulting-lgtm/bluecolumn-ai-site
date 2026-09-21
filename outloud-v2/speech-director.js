@@ -28,6 +28,7 @@
     this.onChunkStart = null;  // runtime hook (transcript ticker)
     this.onDone = null;
     this.muted = false;
+    this.sink = null;       // optional video sink (SimliDirector) — takes blobs when live
   }
 
   SpeechDirector.prototype.ttsFetch = function (text) {
@@ -152,6 +153,9 @@
         if (!blob) { /* provider failed mid-plan → finish via browser TTS */
           self.speakFallback(chunks.slice(ci).join(' '));
           return;
+        }
+        if (self.sink && typeof self.sink.ready === 'function' && self.sink.ready()) {
+          return self.sink.playBlob(blob, chunks[ci]).then(next);
         }
         return self.playBlob(blob, chunks[ci]).then(next);
       }).catch(function () {

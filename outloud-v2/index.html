@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=2" />
-  <link rel="stylesheet" href="runtime.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="runtime.css?v=3" />
 </head>
 <body>
 
@@ -72,18 +72,20 @@
   <p class="sr-status mono" id="ol-sr-status" role="status" aria-live="polite"></p>
 
   <!-- Layers, in boot order. No build step; plain script tags.
-       ?v=2 = improved brain pass 2026-09-20 (bump on every deploy). -->
-  <script src="outloud.config.js?v=2"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
-  <script src="event-bus.js?v=2"></script>           <!-- OutLoudEvent envelope + pub/sub -->
-  <script src="business-knowledge.js?v=2"></script>  <!-- Context 1: business knowledge (RAG) -->
-  <script src="customer-memory.js?v=2"></script>     <!-- Context 2: customer/session memory -->
-  <script src="plan-validator.js?v=2"></script>      <!-- plan validation + graceful repair -->
-  <script src="response-planner.js?v=2"></script>    <!-- Context 3: reasoning → Response Plan -->
-  <script src="realtime-input.js?v=2"></script>      <!-- mic, VAD, streaming transcript, barge-in -->
-  <script src="speech-director.js?v=2"></script>     <!-- ElevenLabs TTS + chunk streaming -->
-  <script src="avatar-director.js?v=2"></script>     <!-- sprite adapter: face/gaze/gesture channels -->
-  <script src="content-director.js?v=2"></script>    <!-- Content Registry + Action Registry -->
-  <script src="session-orchestrator.js?v=2"></script><!-- state machine + event routing -->
-  <script src="runtime.js?v=2"></script>             <!-- bootstrap + page chrome -->
+       ?v=3 = Simli live video avatar (tap gate, sprite fallback) 2026-09-21. -->
+  <script src="outloud.config.js?v=3"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
+  <script src="event-bus.js?v=3"></script>           <!-- OutLoudEvent envelope + pub/sub -->
+  <script src="business-knowledge.js?v=3"></script>  <!-- Context 1: business knowledge (RAG) -->
+  <script src="customer-memory.js?v=3"></script>     <!-- Context 2: customer/session memory -->
+  <script src="plan-validator.js?v=3"></script>      <!-- plan validation + graceful repair -->
+  <script src="response-planner.js?v=3"></script>    <!-- Context 3: reasoning → Response Plan -->
+  <script src="realtime-input.js?v=3"></script>      <!-- mic, VAD, streaming transcript, barge-in -->
+  <script src="speech-director.js?v=3"></script>     <!-- ElevenLabs TTS + chunk streaming -->
+  <script src="vendor/simli-client.js?v=3"></script> <!-- SimliLib bundle (WebRTC talking head) -->
+  <script src="simli-director.js?v=3"></script>      <!-- live video avatar + PCM16 feed -->
+  <script src="avatar-director.js?v=3"></script>     <!-- sprite adapter: face/gaze/gesture channels (fallback) -->
+  <script src="content-director.js?v=3"></script>    <!-- Content Registry + Action Registry -->
+  <script src="session-orchestrator.js?v=3"></script><!-- state machine + event routing -->
+  <script src="runtime.js?v=3"></script>             <!-- bootstrap + page chrome -->
 </body>
 </html>

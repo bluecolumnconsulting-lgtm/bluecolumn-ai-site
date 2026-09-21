@@ -18,10 +18,12 @@
   var memory = new O.SessionMemory();
   var input = new O.RealtimeInput(bus);
   var speech = new O.SpeechDirector(bus);
+  var simli = new O.SimliDirector(bus);
   var avatar = new O.AvatarDirector(bus, O.CONFIG.avatar);
   var content = new O.ContentDirector(bus);
   var planner = new O.ResponsePlanner(bus, memory);
   var orch = new O.Orchestrator(bus, { input: input, speech: speech, avatar: avatar, content: content, memory: memory, planner: planner });
+  speech.sink = simli;   // when Simli is live, speech blobs stream into the video session
 
   /* ---------- DOM ---------- */
   function F(id) { return document.getElementById(id); }
@@ -78,6 +80,44 @@
   bus.on('state.change', function (env) {
     if (stateChip) { stateChip.textContent = env.payload.state; stateChip.setAttribute('data-state', env.payload.state); }
   });
+
+  /* ---------- Simli video avatar ----------
+     Browsers block autoplay audio/video — the gate requires a real
+     gesture. On tap: Simli session starts, gate goes away, and the
+     greeting runs through the video face. If Simli cannot start,
+     the sprite stage stays and the greeting speaks through it. */
+  var gateEl = null;
+  function removeGate() {
+    if (gateEl && gateEl.parentNode) { gateEl.parentNode.removeChild(gateEl); }
+    gateEl = null;
+  }
+  simli.attach(F('ol-avatar-stage'));
+  function showGate() {
+    var stage = F('ol-avatar-stage');
+    if (!stage || stage.querySelector('.ol-tap-gate')) { return; }
+    gateEl = document.createElement('button');
+    gateEl.type = 'button';
+    gateEl.className = 'ol-tap-gate';
+    gateEl.innerHTML = '<span class="ol-gate-word">Tap to meet OutLoud</span><span class="ol-gate-sub mono">live video agent · voice + answers</span>';
+    gateEl.addEventListener('click', function () {
+      removeGate();
+      simli.start().then(function (ok) {
+        if (ok) {
+          addMsg('outloud', 'Video avatar is live — watch me talk.');
+        } else {
+          addMsg('outloud', 'Video could not connect (' + (simli.lastError || 'unknown') + '). Voice mode still works.');
+        }
+        /* Greeting goes through whichever channel is now active. */
+        bus.publish('transcript.final', { text: 'hello', internal: true });
+      });
+    });
+    stage.appendChild(gateEl);
+  }
+  bus.on('simli.failed', function (env) {
+    console.info('[outloud] simli failed:', env.payload.message);
+  });
+  /* Barge-in / sound-off clears the active Simli feed instantly. */
+  bus.on('speech.cancelled', function () { simli.cancelFeed(); });
   bus.on('error', function (env) { addMsg('outloud', env.payload.message); });
   bus.on('plan.validated', function (env) {
     if (env.payload.repairs && env.payload.repairs.length) {
@@ -132,10 +172,18 @@
   /* Greeting runs through the full pipeline as a validated plan turn
      (internal=true keeps the trigger off the transcript). The reply
      lands on the transcript via the speech chunk walk, so voice and
-     text can never disagree or double up. */
-  setTimeout(function () {
-    bus.publish('transcript.final', { text: 'hello', internal: true });
-  }, 600);
+     text can never disagree or double up.
+     With the Simli video path, the greeting waits for the tap gate:
+     a gesture is required before any audio may play. */
+  showGate();
+  /* Typed input (or mic) before tapping the gate still works — the
+     gate leaves and the reply runs on whichever path is live. */
+  bus.on('transcript.final', function onceStart(env) {
+    if (!env.payload.internal) {
+      removeGate();
+      bus.off('transcript.final', onceStart);
+    }
+  });
 
   window.OutLoudRuntime = { bus: bus, orch: orch, memory: memory, planner: planner, content: content, avatar: avatar, speech: speech, input: input };
 })();

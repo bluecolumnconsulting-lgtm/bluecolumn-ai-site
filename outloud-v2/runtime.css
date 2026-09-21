@@ -285,3 +285,52 @@
   .ol-msg { grid-template-columns: 1fr; gap: 2px; }
   .ol-avatar-stage { width: 168px; height: 186px; }
 }
+
+/* ---------- Simli video avatar (2026-09-21) ---------- */
+/* Video rides inside #mascot-gaze so gesture/gaze transforms still
+   lean the live face. Hidden until the session is actually up. */
+.ol-simli-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  background: #0d1420;
+  display: none;
+}
+.ol-simli-audio { display: none; }
+
+.ol-avatar-stage.video-mode {
+  width: 280px;
+  height: 316px;
+}
+.ol-avatar-stage.video-mode .ol-avatar-face { opacity: 0; }
+.ol-avatar-stage.video-mode .ol-simli-video { display: block; }
+.ol-avatar-stage.video-mode .ol-avatar-glow { display: none; }
+
+/* Tap-to-start gate — browsers block autoplay without a gesture. */
+.ol-tap-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--irid-rim, rgba(120, 160, 210, 0.5));
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(20, 30, 48, 0.92), rgba(30, 42, 66, 0.86));
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.ol-tap-gate:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(20, 40, 80, 0.35); }
+.ol-gate-word { font-weight: 700; font-size: 1rem; letter-spacing: 0.01em; }
+.ol-gate-sub { font-size: 0.68rem; opacity: 0.72; }
+
+@media (max-width: 640px) {
+  .ol-avatar-stage.video-mode { width: 236px; height: 268px; }
+}
