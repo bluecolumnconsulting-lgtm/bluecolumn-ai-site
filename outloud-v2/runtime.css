@@ -440,3 +440,39 @@
   transition: transform 140ms ease, box-shadow 140ms ease;
 }
 .ol-book-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(255, 122, 40, 0.45); }
+
+/* ---------- Ambient screen deck (screen-director.js) ----------
+   The screen never sits empty: six validated cards rotate between
+   plan-driven panels. Every card is one tap from a conversation. */
+.ol-screen-cards { position: absolute; inset: 0; padding: 10px 14px 14px; }
+.ol-screen-card {
+  position: absolute;
+  inset: 10px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 420ms ease, transform 420ms ease;
+  pointer-events: none;
+}
+.ol-screen-card.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.ol-card-kicker { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: #7fa4d8; }
+.ol-card-title { font: 800 1.05rem/1.25 Manrope, sans-serif; color: #e8f0ff; }
+.ol-card-body { font: 500 0.8rem/1.45 Manrope, sans-serif; color: #b9cbe8; }
+.ol-card-ask {
+  margin-top: 8px;
+  align-self: flex-start;
+  border: 1px solid rgba(120, 160, 210, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+  color: #dce8ff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: 600 0.72rem/1 Manrope, sans-serif;
+  cursor: pointer;
+  transition: background 140ms ease, transform 140ms ease;
+}
+.ol-card-ask:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-1px); }
+.ol-screen.panel-live .ol-screen-cards { opacity: 0; pointer-events: none; }
+.ol-standby-dim { opacity: 0; }

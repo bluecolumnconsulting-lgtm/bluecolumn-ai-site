@@ -19,6 +19,7 @@
   var input = new O.RealtimeInput(bus);
   var speech = new O.SpeechDirector(bus);
   var simli = new O.SimliDirector(bus);
+  var screen = new O.ScreenDirector(bus);   // ambient card rotation on the branded screen
   var avatar = new O.AvatarDirector(bus, O.CONFIG.avatar);
   var content = new O.ContentDirector(bus);
   var planner = new O.ResponsePlanner(bus, memory);
@@ -88,6 +89,16 @@
   Array.prototype.forEach.call(document.querySelectorAll('.ol-chip'), function (chip) {
     chip.addEventListener('click', function () { input.type(chip.textContent.trim()); });
   });
+  /* Ambient screen deck starts once the gate interaction lands the
+     visitor (tap/typed) — the screen then never sits empty. */
+  bus.on('transcript.final', function onceScreenStart() {
+    screen.start();
+    bus.off('transcript.final', onceScreenStart);
+  });
+  var gateEl0 = document.querySelector('.ol-tap-gate');
+  if (gateEl0) {
+    gateEl0.addEventListener('click', function () { setTimeout(function () { screen.start(); }, 1200); }, { once: true });
+  }
   /* Persistent Book a Demo CTA — every path into lead capture. */
   var bookCta = document.getElementById('ol-book-cta');
   if (bookCta) {
