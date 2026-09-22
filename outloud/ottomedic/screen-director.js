@@ -1,17 +1,23 @@
 /* ===============================================================
-   OutLoud for AUTOMATTIC — SCREEN DIRECTOR (ambient content rotation)
-   Cloned from outloud-v2/screen-director.js. Same rules as the
-   parent build:
-     • Plan-driven panels always win; the deck steps aside and
-       resumes after the panel is gone.
+   OutLoud for OTTOMEDIC — SCREEN DIRECTOR (ambient content rotation)
+   Implements the screen-content spec recovered from the BlueColumn
+   note (sess_3swhnp08…sess_mbm25jkc, 2026-09-21):
+
+     "Content must constantly be visible on the screen… useful
+      content even before users ask questions…"
+
+   Rules:
+     • Plan-driven panels always win: when the orchestrator presents
+       a panel, the deck steps aside and resumes after it is gone.
      • Every card carries a one-tap question.
      • Rotation pauses while OutLoud speaks.
 
-   The deck content is AUTOMATTIC-SPECIFIC — every claim mirrors
-   the page's own catalog (sourced from automattic.com, 2026-09-21):
-     1. What is Automattic       2. The products
-     3. WordPress.com            4. Open source / Five for the Future
-     5. Fully distributed        6. This page is an OutLoud demo
+   The deck content is OTTOMEDIC-SPECIFIC — every claim mirrors the
+   existing OttoMedic landing page in this repo (Marina's INTENTS +
+   the landing bundle, showcase/project-home-spark/):
+     1. What is OttoMedic        2. How it works (mechanical)
+     3. What it prevents         4. Models & pricing
+     5. Proof (2,000+ keepers)   6. This page is an OutLoud demo
    =============================================================== */
 (function () {
   'use strict';
@@ -20,43 +26,43 @@
     {
       id: 'what-is',
       kicker: 'This page is the product',
-      title: 'Automattic, out loud',
-      body: 'The company behind WordPress.com — powering over 40% of all websites — answering questions out loud through an OutLoud agent.',
-      ask: 'What is Automattic?'
+      title: 'The only skimmer that thinks for itself',
+      body: 'OttoMedic continuously monitors and adjusts to maintain optimal foam height. Set your target once — never touch it again.',
+      ask: 'What is OttoMedic?'
     },
     {
-      id: 'products',
-      kicker: 'What Automattic makes',
-      title: 'One company, the open web',
-      body: 'WordPress.com, WooCommerce, Jetpack, Tumblr, Beeper, Day One, Pocket Casts, Gravatar, Akismet, Longreads, Newspack, WordPress VIP.',
-      ask: 'Which products do you make?'
+      id: 'how-it-works',
+      kicker: 'Patented valve technology',
+      title: 'Mechanical, not electronic',
+      body: 'No sensors to calibrate, no controllers to tune. The purely mechanical valve works identically on day 1 and day 1,000.',
+      ask: 'How does it work?'
     },
     {
-      id: 'wordpress',
-      kicker: 'The founding product',
-      title: 'WordPress.com',
-      body: 'Your blog or website has a home on the web. The open-source WordPress project behind it powers over 40% of the web.',
-      ask: 'What is WordPress.com?'
+      id: 'prevents',
+      kicker: 'What\u2019s at stake',
+      title: 'Three disasters, eliminated',
+      body: 'Skimmate on your floor. A pump running dry. Corals too stressed to grow. OttoMedic prevents all three — before they happen.',
+      ask: 'What problems does it prevent?'
     },
     {
-      id: 'open-source',
-      kicker: 'We make it for freedom',
-      title: 'Open source, contributed back',
-      body: 'WordPress.org, BuddyPress, bbPress, WordCamps — sponsored through Five for the Future. “We don’t make software for free, we make it for freedom.”',
-      ask: 'Tell me about open source'
+      id: 'models',
+      kicker: 'Pick your model',
+      title: 'EVO 5000Z1 · 7000Z1 · 9000Z1',
+      body: '100–200 gallons $899 · 200–400 gallons $1,149 · 400–600 gallons $1,399. 60-day performance guarantee on every model.',
+      ask: 'What does it cost?'
     },
     {
-      id: 'distributed',
-      kicker: 'No headquarters',
-      title: 'A fully distributed company',
-      body: 'Founded in 2005 by Matt Mullenweg. More than 1,400 people working from over 80 countries — a company that works on, and for, the web.',
-      ask: 'How does the team work?'
+      id: 'proof',
+      kicker: 'Real systems, real results',
+      title: '2,000+ reef keepers',
+      body: 'Livestock worth $40K+ protected. Zero daily adjustments. 24/7 consistent performance. 5-year warranty, made in Germany.',
+      ask: 'Who uses OttoMedic?'
     },
     {
       id: 'outloud-demo',
       kicker: 'Your business, out loud',
       title: 'Imagine this with your logo on it',
-      body: 'This whole page is OutLoud by BlueColumn: an agent that greets, answers, and books — from the business’s own knowledge. Book a walkthrough.',
+      body: 'This whole page is OutLoud by BlueColumn: an agent that greets, answers, and books — from the business\u2019s own knowledge. Book a walkthrough.',
       ask: 'Book a demo'
     }
   ];

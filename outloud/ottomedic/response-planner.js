@@ -56,15 +56,15 @@
 
   /* Phrase pools: rotate so repeated turns never repeat verbatim. */
   var GREETINGS = [
-    "Hey there{NAME}. Ask me anything about Automattic — the products, the team, the open-source work. Or say book a demo and I'll take your details.",
-    "Hi{NAME}, good to see you. I can cover WordPress.com, WooCommerce, Tumblr, the distributed team, or what this page itself can do. What's on your mind?",
-    "Hello{NAME}. I'm the OutLoud agent on this page, here to talk Automattic. Fire away with questions, or say book a walkthrough."
+    "Hey there{NAME}. Otto here — ask me anything about OttoMedic: how the skimmer works, what it prevents, models, specs, or setup. Or say book a demo and I'll take your details.",
+    "Hi{NAME}, good to see you. I can cover the patented mechanical valve, which EVO model fits your tank, or what 2,000-plus reef keepers already know. What's on your mind?",
+    "Hello{NAME}. I'm Otto, the OutLoud agent on this page, and I know OttoMedic inside out — straight from the business's own knowledge. Fire away, or say book a walkthrough."
   ];
   var FOLLOWUPS = [
     "Want me to line up a walkthrough for your business?",
     "Happy to go deeper on any of that.",
     "Anything there you want me to expand on?",
-    "Want to hear about a specific product — WooCommerce, Tumblr, WordPress VIP?",
+    "Tell me your tank size and I'll point you at the right model.",
     "Curious what this page would look like with your logo on it?"
   ];
 
@@ -255,7 +255,7 @@
         break;
       }
       case 'contact': {
-        speech = "Easiest path: hello@bluecolumn.ai, or leave your name and number here and a strategist calls you. Which do you prefer?";
+        speech = "For OttoMedic itself: support@ottomedic.com or 1-800-OTTOMEDIC — they answer Monday to Friday, 9 to 6 Eastern, from Hamburg, Germany. And if you want a page like this for your business: hello@bluecolumn.ai, or leave your name and number here and a strategist calls you. Which do you prefer?";
         expressions.push({ name: 'friendly', intensity: 0.7, at: 0 });
         gaze.push({ target: 'panel:booking-panel', transitionMs: 260, holdMs: 2200, returnTarget: 'user', at: 300 });
         content.push({ action: 'show', target: 'booking-panel', data: {}, at: 400 });
@@ -285,7 +285,7 @@
         break;
       }
       case 'avatars': {
-        speech = "Three ways to pick a face on OutLoud. Animated characters — like me, the orange mascot — come with every plan. Stock video faces are real-time talking heads on the Pro tier. Or a custom face of your own. The screen has the breakdown.";
+        speech = "Three ways to pick a face on OutLoud. Animated characters — like me, Otto the orange mascot — come with every plan. Stock video faces are real-time talking heads on the Pro tier. Or a custom face of your own. The screen has the breakdown.";
         expressions.push({ name: 'friendly', intensity: 0.7, at: 0 });
         gaze.push({ target: 'panel:avatars-panel', transitionMs: 260, holdMs: 2600, returnTarget: 'user', at: 300 });
         gestures.push({ name: 'present_center', intensity: 0.62, entryMs: 260, holdMs: 1100, releaseMs: 380, at: 300 });
@@ -300,7 +300,7 @@
         gaze.push({ target: 'panel:pricing-panel', transitionMs: 260, holdMs: 2600, returnTarget: 'user', at: 300 });
         gestures.push({ name: 'present_right', intensity: 0.62, entryMs: 260, holdMs: 1100, releaseMs: 380, at: 300 });
         content.push({ action: 'show', target: 'pricing-panel', data: {}, at: 400 });
-        content.push({ action: 'highlight', target: 'pricing-panel', data: { lines: ['essential', 'engine'] }, at: 900 });
+        content.push({ action: 'highlight', target: 'pricing-panel', data: { lines: ['evo5000', 'evo9000'] }, at: 900 });
         break;
       }
       case 'live-sites': {

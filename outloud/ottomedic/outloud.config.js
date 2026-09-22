@@ -1,15 +1,24 @@
 /* ===============================================================
-   OutLoud for AUTOMATTIC — RUNTIME CONFIG (load FIRST, before any layer)
-   Prospect demo build, 2026-09-21. Cloned from outloud-v2 (spec
-   sess_q6q730f3) and re-branded for Automatic.com → Automattic.
+   OutLoud for OTTOMEDIC — RUNTIME CONFIG (load FIRST, before any layer)
+   Client demo build, 2026-09-21. Cloned from outloud-v2 (spec
+   sess_q6q730f3), re-branded for OttoMedic per Joe's direction:
+   "look up the landing page you already built and use all of the
+   information/content from that existing page as the source material."
+
+   Source material (in-repo):
+     • showcase/project-home-spark/ — the OttoMedic Lovable landing
+       page bundle (models, specs, guarantees, testimonials) and
+       Marina's widget agent (widget/site-avatar.js INTENTS).
+     • Live BlueColumn brain: "OttoMedic product knowledge base v2 —
+       Marina brain" namespace — verified answering live 2026-09-21.
 
    Differences from the OutLoud product page:
      • Avatar = the orange mascot (sprite viseme rig), sprite-only —
-       no Simli video session on this page.
-     • Live RAG is OFF: the BlueColumn namespace holds OutLoud
-       product knowledge, not Automattic knowledge. The Automattic
-       catalog below (sourced from automattic.com, 2026-09-21) is
-       the single knowledge source, so answers stay accurate.
+       no Simli video session on this page. Mascot persona: Otto.
+     • Voice = the same OutLoud/client-page voice (iLVmqjz…, Antonio),
+       matching the Arcadia client page convention.
+     • Live RAG ON: brainPrefix targets the OttoMedic namespace;
+       the OttoMedic catalog below is the instant fallback.
 
    ⚠️ SECRETS BLOCK — same edge-proxy TODO as outloud-v2.
    =============================================================== */
@@ -19,7 +28,7 @@
   /* ============ ⚠️ SECRETS — MOVE TO EDGE PROXY ⚠️ ============ */
   var SECRETS = {
     blueColumnKey: 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy',
-    elevenLabsKey: 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843'
+    elevenLabsKey: 'sk_6b9…c843'
   };
 
   var CONFIG = {
@@ -34,24 +43,24 @@
     voice: {
       provider: 'elevenlabs',
       model: 'eleven_flash_v2_5',
-      voiceId: 'iLVmqjzCGGvqtMCk6vVQ', // same verified OutLoud voice
+      voiceId: 'iLVmqjzCGGvqtMCk6vVQ', // same voice as the Arcadia client page + OutLoud
       outputFormat: 'mp3_44100_128',
       streamChunks: true
     },
 
-    /* --- Live RAG — DISABLED on this page (see header note).
-         The catalog is the brain. --- */
+    /* --- Live RAG (BlueColumn /recall) is the PRIMARY brain —
+         the namespace holds the OttoMedic "Marina brain" doc
+         (verified live 2026-09-21). Catalog = instant fallback. --- */
     rag: {
-      disabled: true,
       timeoutMs: 650,
       minAnswerChars: 8,
       notInContext: /not in available context/i
     },
 
-    /* --- Business identity (Context 1 prefix) --- */
+    /* --- Business identity (Context 1 prefix for RAG) --- */
     business: {
-      name: 'OutLoud for Automattic',
-      ragPrefix: 'Automattic company and product question: '
+      name: 'OutLoud for OttoMedic',
+      ragPrefix: 'OttoMedic customer question: '
     },
 
     /* --- Avatar: the orange mascot, sprite-only (no Simli) --- */
@@ -78,7 +87,7 @@
     vad: { rmsThreshold: 0.035, hangoverMs: 700 },
 
     /* --- Session --- */
-    session: { storageKey: 'outloud20-session-automatic' }
+    session: { storageKey: 'outloud20-session-ottomedic' }
   };
 
   window.OUTLOUD = window.OUTLOUD || {};

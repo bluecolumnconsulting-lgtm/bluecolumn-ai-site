@@ -132,7 +132,7 @@
     /* --- Speech must always survive validation --- */
     if (!out.speech || typeof out.speech.text !== 'string' || !out.speech.text.trim()) {
       repairs.push('plan had no speech → fallback line injected');
-      out.speech = { text: "Let me put that another way. What would you like to know about Automattic?", streamHint: false, chunks: [] };
+      out.speech = { text: "Let me put that another way. What would you like to know about OttoMedic?", streamHint: false, chunks: [] };
     }
 
     return { plan: out, repairs: repairs, ok: repairs.length === 0 };

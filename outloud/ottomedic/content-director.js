@@ -37,50 +37,42 @@
     this.host = document.querySelector(CONFIG.content.host);
     if (!this.host) { return; }
 
-    /* --- pricing panel --- */
+    /* --- models & pricing panel (OttoMedic EVO lineup) --- */
     this.register('pricing-panel', function () {
       var p = el('div', 'ol-panel');
-      p.appendChild(el('h3', 'ol-panel-title', 'OutLoud plans'));
+      p.appendChild(el('h3', 'ol-panel-title', 'EVO models'));
       var rows = el('div', 'ol-panel-rows');
       [
-        { id: 'starter', name: 'Starter', desc: 'Animated avatar, self-serve setup, lead capture, booking, and a bluecolumn.ai subdomain.', price: '$49/mo' },
-        { id: 'pro', name: 'Pro', desc: 'Video avatar with 200 included video minutes, domain connect, and priority support.', price: '$149/mo' },
-        { id: 'team', name: 'Team', desc: 'Everything in Pro plus 5 seats, 600 pooled video minutes, lead routing, and analytics.', price: '$349/mo' },
-        { id: 'personal', name: 'Personal', desc: 'A personal OutLoud page for a person, portfolio, or gift account using the same runtime.', price: '$19/mo' }
+        { id: 'evo5000', name: 'EVO 5000Z1', desc: '100–200 gallons, heavily stocked. External or in-sump, 12"×8"×24" footprint.', price: '$899' },
+        { id: 'evo7000', name: 'EVO 7000Z1', desc: '200–400 gallons, heavily stocked. Same patented self-regulating valve.', price: '$1,149' },
+        { id: 'evo9000', name: 'EVO 9000Z1', desc: '400–600 gallons, heavily stocked. 25–45W needle wheel impeller pump.', price: '$1,399' }
       ].forEach(function (r) {
-        var row = el('button', 'ol-panel-row', '<span class="ol-row-name">' + r.name + '</span><span class="ol-row-price mono">' + r.price + '</span><span class="ol-row-desc">' + r.desc + '</span>');
-        row.type = 'button';
+        var row = el('div', 'ol-panel-row ol-row-static', '<span class="ol-row-name">' + r.name + '</span><span class="ol-row-price mono">' + r.price + '</span><span class="ol-row-desc">' + r.desc + '</span>');
         row.setAttribute('data-row', r.id);
-        row.addEventListener('click', function () {
-          self.emitAction('plan.select', { plan: r.id, label: r.name });
-          p.setAttribute('data-selected', r.id);
-          [].forEach.call(p.querySelectorAll('.ol-panel-row'), function (n) { n.classList.remove('sel'); });
-          row.classList.add('sel');
-        });
         rows.appendChild(row);
       });
       p.appendChild(rows);
-      p.appendChild(el('p', 'ol-panel-note mono', 'Setups are one-time. No contracts, month to month.'));
+      p.appendChild(el('p', 'ol-panel-note mono', '60-day performance guarantee · 5-year warranty · Made in Germany.'));
       return p;
     });
 
-    /* --- live client sites panel --- */
+    /* --- proof panel (OttoMedic numbers + OutLoud client proof) --- */
     this.register('sites-panel', function () {
       var p = el('div', 'ol-panel');
-      p.appendChild(el('h3', 'ol-panel-title', 'Live on OutLoud'));
+      p.appendChild(el('h3', 'ol-panel-title', 'Real systems, real results'));
       var rows = el('div', 'ol-panel-rows');
       [
-        { name: 'Star Jet Ski Rentals' },
-        { name: 'Vulcan Fence' },
-        { name: 'HomeSpark' },
-        { name: 'OttoMedic' },
-        { name: 'Adventure Club' },
-        { name: 'Venture Club' }
+        { name: '2,000+ reef keepers run OttoMedic' },
+        { name: '$40K+ livestock value protected' },
+        { name: 'Zero daily adjustments needed' },
+        { name: '24/7 consistent performance' },
+        { name: '60-day performance guarantee' },
+        { name: '5-year limited warranty, ISO 9001' }
       ].forEach(function (r) {
         rows.appendChild(el('div', 'ol-panel-row ol-row-static', '<span class="ol-row-name">' + r.name + '</span>'));
       });
       p.appendChild(rows);
-      p.appendChild(el('p', 'ol-panel-note mono', 'At Arcadia Fence and Gate, booked jobs went up 40% in the first month.'));
+      p.appendChild(el('p', 'ol-panel-note mono', 'At Arcadia Fence and Gate on OutLoud, booked jobs went up 40% in the first month.'));
       return p;
     });
 
@@ -90,7 +82,7 @@
       p.appendChild(el('h3', 'ol-panel-title', 'Pick your face'));
       var rows = el('div', 'ol-panel-rows');
       [
-        { id: 'animated', name: 'Animated character', desc: 'A custom mascot with live lip-sync, gestures, and gaze. Included with every plan — the orange one on this page is an example.', price: 'Included' },
+        { id: 'animated', name: 'Animated character', desc: 'A custom mascot with live lip-sync, gestures, and gaze. Included with every plan — Otto, the orange one on this page, is an example.', price: 'Included' },
         { id: 'stock', name: 'Stock video faces', desc: 'Real-time talking heads from the Simli library — pick one, it speaks live with your voice.', price: 'Pro plan' },
         { id: 'custom', name: 'Custom face', desc: 'Your face (or a brand character we build) as a real-time video face.', price: 'Premium add-on' }
       ].forEach(function (r) {

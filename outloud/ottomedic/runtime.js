@@ -125,7 +125,7 @@
     gateEl = document.createElement('button');
     gateEl.type = 'button';
     gateEl.className = 'ol-tap-gate';
-    gateEl.innerHTML = '<span class="ol-gate-word">Tap to meet Automattic</span><span class="ol-gate-sub mono">OutLoud agent · voice + answers</span>';
+    gateEl.innerHTML = '<span class="ol-gate-word">Tap to meet Otto</span><span class="ol-gate-sub mono">OttoMedic specialist · voice + answers</span>';
     gateEl.addEventListener('click', function () {
       removeGate();
       bus.publish('transcript.final', { text: 'hello', internal: true });
@@ -145,7 +145,7 @@
       micBtn.setAttribute('aria-pressed', String(on));
       micBtn.querySelector('.ol-btn-label').textContent = on ? 'Listening' : 'Talk';
     }
-    if (textIn) { textIn.placeholder = on ? 'Listening… just talk, or type' : 'Ask me anything about Automattic, or press Talk'; }
+    if (textIn) { textIn.placeholder = on ? 'Listening… just talk, or type' : 'Ask Otto anything about OttoMedic, or press Talk'; }
   }
   if (micBtn) {
     micBtn.addEventListener('click', function () {
