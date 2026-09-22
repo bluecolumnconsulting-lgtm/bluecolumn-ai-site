@@ -1,0 +1,484 @@
+/* ============================================================
+   OutLoud 2.0 — runtime chrome (frosted-glass language from styles.css)
+   Layers on top of the token system in styles.css; adds the avatar
+   stage, conversation rail, and content-panel host.
+   ============================================================ */
+
+.ol-main { max-width: 880px; margin: 20px auto 0; }
+
+/* ---------- hero panel with the avatar stage ---------- */
+.ol-stage-panel {
+  position: relative;
+  overflow: hidden;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft), inset 0 1px 0 var(--inner-hi);
+  padding: 36px 28px 26px;
+  text-align: center;
+}
+
+.ol-kicker {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.ol-title {
+  font-size: clamp(24px, 4.4vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+.ol-title em {
+  font-style: normal;
+  background: var(--irid-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- avatar channels: nested so each owns ONE property ---------- */
+.ol-avatar-stage {
+  position: relative;
+  width: 210px;
+  height: 232px;
+  margin: 22px auto 8px;
+  filter: drop-shadow(0 10px 16px rgba(70, 100, 145, 0.18));
+}
+
+.ol-avatar-gesture {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.ol-avatar-gaze {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.ol-avatar-face {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  will-change: background-position, filter;
+  transition: filter 400ms ease;
+}
+
+.ol-avatar-face.speaking { transform-origin: 50% 85%; }
+
+/* Prismatic "present" glow — the one accent slot, per the anchor. */
+.ol-avatar-glow {
+  position: absolute;
+  top: 30%;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--irid-rim);
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+.ol-glow-right { right: -26px; }
+.ol-glow-left { left: -26px; }
+.ol-glow-center { left: 50%; margin-left: -17px; top: 22%; }
+
+.ol-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.ol-state {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  border: 1px solid var(--edge-soft);
+  border-radius: 999px;
+  padding: 4px 12px;
+  background: var(--glass-faint);
+}
+.ol-state[data-state="RESPONDING"] {
+  color: #2379A8;
+  background: rgba(158, 216, 236, 0.28);
+  border-color: transparent;
+}
+.ol-state[data-state="LISTENING"] { color: var(--blue); }
+
+.ol-hint {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+/* ---------- conversation console ---------- */
+.ol-console {
+  margin-top: 18px;
+}
+
+.ol-log {
+  list-style: none;
+  max-height: 320px;
+  min-height: 180px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 2px;
+}
+
+.ol-msg { display: grid; grid-template-columns: 92px 1fr; gap: 10px; align-items: baseline; }
+.ol-stamp { font-size: 10px; color: var(--muted); letter-spacing: 0.05em; }
+.ol-who { font-size: 10px; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; }
+.ol-talk { font-size: 15px; line-height: 1.55; color: var(--body-ink); }
+.ol-visitor .ol-talk { color: var(--visitor-ink); }
+.ol-visitor .ol-who { color: var(--visitor-ink); }
+.ol-outloud .ol-who { color: #2379A8; }
+.ol-msg.ghost .ol-talk { opacity: 0.5; font-style: italic; }
+.ol-msg.ghost .ol-who::after { content: " (speaking…)"; opacity: 0.6; }
+
+.ol-inrow { display: flex; gap: 8px; margin-top: 12px; }
+
+/* Controls in the main view (DB spec upgrade #1): the ask box lives in the
+   hero panel under the chips, not below the fold in the console. */
+.ol-inrow-stage { max-width: 640px; margin: 12px auto 0; }
+
+.ol-text {
+  flex: 1;
+  min-width: 0;
+  background: var(--glass-faint);
+  border: 1px solid var(--edge);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  min-height: 46px;
+}
+.ol-text::placeholder { color: var(--muted); }
+.ol-text:focus { outline: none; border-color: var(--blue-bright); background: var(--glass-strong); }
+
+.ol-send, .ol-mic, .ol-sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--glass-faint);
+  border: 1px solid var(--edge);
+  border-radius: 12px;
+  padding: 9px 14px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 44px;
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+  transition: border-color 180ms, color 180ms, background 180ms;
+}
+.ol-send { color: var(--blue); }
+.ol-send:hover { background: var(--glass-strong); color: var(--ink); }
+.ol-mic.on {
+  color: #2379A8;
+  background: rgba(158, 216, 236, 0.32);
+  border-color: transparent;
+}
+.ol-sound[aria-pressed="false"] { color: var(--muted); background: transparent; box-shadow: none; border-color: var(--edge-soft); }
+
+/* ---------- content panel host (SDK config target) ---------- */
+.ol-host { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+
+.ol-panel {
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  backdrop-filter: blur(22px) saturate(1.6);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 14px rgba(70, 100, 145, 0.08), inset 0 1px 0 var(--inner-hi);
+  padding: 20px;
+  text-align: left;
+  animation: ol-panel-in 320ms cubic-bezier(.3,.7,.3,1);
+}
+.ol-hidden { display: none; }
+
+@keyframes ol-panel-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.ol-panel-title { font-size: 20px; font-weight: 800; color: var(--ink); margin-bottom: 12px; }
+.ol-panel-note { font-size: 10.5px; color: var(--muted); margin-top: 10px; letter-spacing: 0.03em; }
+
+.ol-panel-rows { display: flex; flex-direction: column; gap: 10px; }
+
+.ol-panel-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "name price" "desc price";
+  gap: 2px 14px;
+  text-align: left;
+  background: var(--glass-faint);
+  border: 1px solid var(--edge-soft);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font: inherit;
+  transition: border-color 180ms, background 180ms, box-shadow 180ms;
+}
+.ol-panel-row:hover { border-color: var(--edge); background: var(--glass-strong); }
+.ol-panel-row.sel { border-color: var(--blue-bright); }
+.ol-panel-row.pulse { box-shadow: 0 0 0 3px rgba(158, 216, 236, 0.5); }
+.ol-row-name { grid-area: name; font-weight: 700; color: var(--ink); font-size: 16px; }
+.ol-row-price { grid-area: price; align-self: center; font-size: 12px; color: #2379A8; white-space: nowrap; }
+.ol-row-desc { grid-area: desc; font-size: 13.5px; color: var(--muted); line-height: 1.45; }
+
+.ol-form { display: flex; flex-direction: column; gap: 10px; }
+.ol-input {
+  background: var(--glass-faint);
+  border: 1px solid var(--edge);
+  border-radius: 12px;
+  padding: 11px 14px;
+  font: inherit;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.ol-input::placeholder { color: var(--muted); }
+.ol-input:focus { outline: none; border-color: var(--blue-bright); }
+
+.ol-submit {
+  align-self: flex-start;
+  background: var(--glass-strong);
+  border: 1px solid var(--edge);
+  border-radius: 12px;
+  padding: 11px 20px;
+  font: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--blue);
+  min-height: 44px;
+  transition: filter 180ms;
+}
+.ol-submit:hover { filter: brightness(1.03); background: #fff; }
+
+.ol-runtime-note {
+  margin-top: 20px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .ol-msg { grid-template-columns: 1fr; gap: 2px; }
+  .ol-avatar-stage { width: 168px; height: 186px; }
+}
+
+/* ---------- Simli video avatar (2026-09-21) ---------- */
+/* Video rides inside #mascot-gaze so gesture/gaze transforms still
+   lean the live face. Hidden until the session is actually up. */
+.ol-simli-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  background: #0d1420;
+  display: none;
+}
+.ol-simli-audio { display: none; }
+
+.ol-avatar-stage.video-mode {
+  width: 280px;
+  height: 316px;
+}
+.ol-avatar-stage.video-mode .ol-avatar-face { opacity: 0; }
+.ol-avatar-stage.video-mode .ol-simli-video { display: block; }
+.ol-avatar-stage.video-mode .ol-avatar-glow { display: none; }
+
+/* Tap-to-start gate — browsers block autoplay without a gesture. */
+.ol-tap-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--irid-rim, rgba(120, 160, 210, 0.5));
+  border-radius: 20px;
+  background: linear-gradient(160deg, #141e30, #1e2a42);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.ol-tap-gate:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(20, 40, 80, 0.35); }
+.ol-gate-word { font-weight: 700; font-size: 1rem; letter-spacing: 0.01em; }
+.ol-gate-sub { font-size: 0.68rem; opacity: 0.72; }
+
+@media (max-width: 640px) {
+  .ol-avatar-stage.video-mode { width: 236px; height: 268px; }
+}
+
+/* Connecting state: sprite hidden the instant the visitor taps —
+   the stage reads as "waking up", never as the old mascot. */
+.ol-avatar-stage.connecting .ol-avatar-face { opacity: 0; }
+.ol-avatar-stage.connecting .ol-avatar-glow { opacity: 0; }
+
+/* ---------- avatar + presentation screen (2026-09-21) ----------
+   The OutLoud sign: live video avatar on one side, a branded
+   screen on the other. While the avatar talks it presents pricing,
+   demos, booking — content-director renders into the screen body. */
+.ol-stage-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 22px auto 8px;
+}
+.ol-stage-row .ol-avatar-stage { margin: 0; }
+
+.ol-screen {
+  flex: 1 1 300px;
+  max-width: 380px;
+  min-height: 248px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(120, 160, 210, 0.35);
+  border-radius: 18px;
+  background: linear-gradient(170deg, #101826, #16223a);
+  box-shadow: 0 10px 22px rgba(20, 40, 80, 0.22);
+  overflow: hidden;
+}
+.ol-screen-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.ol-screen-brand { font-weight: 800; letter-spacing: 0.14em; color: #dce8ff; font-size: 0.8rem; }
+.ol-screen-url { color: #7fa4d8; font-size: 0.68rem; }
+.ol-screen-body { position: relative; flex: 1; padding: 10px 14px 14px; }
+
+.ol-screen-standby {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  padding: 0 12px;
+  transition: opacity 300ms ease;
+}
+.ol-standby-word {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #e8f0ff;
+  text-shadow: 0 0 24px rgba(110, 160, 255, 0.35);
+}
+.ol-standby-sub { font-size: 0.72rem; color: #9db8e0; }
+.ol-standby-note { font-size: 0.62rem; color: #6f88ad; margin-top: 6px; }
+.ol-screen.panel-live .ol-screen-standby { opacity: 0; pointer-events: none; }
+.ol-host-screen { min-height: 200px; }
+
+@media (max-width: 760px) {
+  .ol-stage-row { gap: 14px; }
+  .ol-screen { min-height: 190px; max-width: none; }
+  .ol-host-screen { min-height: 150px; }
+}
+
+/* ---------- upgrade pass (2026-09-21, per DB note) ---------- */
+/* 1. Suggested-question chips under the avatar — conversation starts in one tap. */
+.ol-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 4px 0 10px; }
+.ol-chip {
+  border: 1px solid rgba(120, 160, 210, 0.45);
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font: 600 0.82rem/1.2 Manrope, sans-serif;
+  color: #24324a;
+  cursor: pointer;
+  transition: transform 140ms ease, background 140ms ease;
+}
+.ol-chip:hover { transform: translateY(-1px); background: #fff; }
+/* 2. Transcript: comfortable reading width; stamps are secondary. */
+.ol-log { max-width: 660px; margin: 0 auto; }
+.ol-stamp { font-size: 0.6rem; opacity: 0.5; }
+
+/* ---------- Book a Demo persistent CTA ---------- */
+.ol-book-cta {
+  border: none;
+  border-radius: 999px;
+  padding: 9px 18px;
+  background: linear-gradient(135deg, #ff8a3d, #ff6a2b);
+  color: #fff;
+  font: 700 0.86rem/1 Manrope, sans-serif;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 122, 40, 0.35);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+.ol-book-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(255, 122, 40, 0.45); }
+
+/* ---------- Ambient screen deck (screen-director.js) ----------
+   The screen never sits empty: six validated cards rotate between
+   plan-driven panels. Every card is one tap from a conversation. */
+.ol-screen-cards { position: absolute; inset: 0; padding: 10px 14px 14px; }
+.ol-screen-card {
+  position: absolute;
+  inset: 10px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 420ms ease, transform 420ms ease;
+  pointer-events: none;
+}
+.ol-screen-card.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.ol-card-kicker { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: #7fa4d8; }
+.ol-card-title { font: 800 1.15rem/1.25 Manrope, sans-serif; color: #e8f0ff; }
+.ol-card-body { font: 500 0.85rem/1.45 Manrope, sans-serif; color: #b9cbe8; }
+.ol-card-ask {
+  margin-top: 8px;
+  align-self: flex-start;
+  border: 1px solid rgba(120, 160, 210, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+  color: #dce8ff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: 600 0.72rem/1 Manrope, sans-serif;
+  cursor: pointer;
+  transition: background 140ms ease, transform 140ms ease;
+}
+.ol-card-ask:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-1px); }
+.ol-screen.panel-live .ol-screen-cards { opacity: 0; pointer-events: none; }
+.ol-standby-dim { opacity: 0; }
+
+/* ---------- visual polish pass (2026-09-21, DB spec item 5) ----------
+   Rainbow stays in ONE accent slot (hero title em). Fewer gaps and
+   softer shadows; panel typography up a step. */
+.ol-host { gap: 10px; }
+
+@media (min-width: 761px) {
+  .ol-stage-row { align-items: flex-end; }
+}
