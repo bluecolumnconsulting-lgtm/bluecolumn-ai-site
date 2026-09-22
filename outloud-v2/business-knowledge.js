@@ -128,8 +128,8 @@
       body: JSON.stringify({ q: query }),
       signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) {
-      if (res.status === 402 || res.status === 429 || res.status === 403) {
-        try { sessionStorage.setItem('ol-rag-down-until', String(Date.now() + 10 * 60 * 1000)); } catch (e) {}
+      if (res.status === 401 || res.status === 402 || res.status === 429 || res.status === 403) {
+        try { sessionStorage.setItem('ol-rag-down-until', String(Date.now() + 60 * 60 * 1000)); } catch (e) {}
         return null;
       }
       return res.json();
@@ -162,7 +162,7 @@
        • Repeats hit the session cache instantly.
      When /recall latency drops (edge proxy), raise STRONG to 999
      and the brain takes back every question. */
-  var STRONG = 8;
+  var STRONG = 4;
 
   window.OUTLOUD.knowledge = {
     retrieve: function (query) {
