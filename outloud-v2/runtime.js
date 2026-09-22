@@ -190,11 +190,13 @@
      With the Simli video path, the greeting waits for the tap gate:
      a gesture is required before any audio may play. */
   showGate();
-  /* Typed input (or mic) before tapping the gate still works — the
-     gate leaves and the reply runs on whichever path is live. */
+  /* Typed input (or mic) before tapping the gate still works — and
+     a real click IS a valid user gesture, so the Simli video starts
+     here too. The sprite only ever shows if video cannot start. */
   bus.on('transcript.final', function onceStart(env) {
     if (!env.payload.internal) {
       removeGate();
+      simli.start();
       bus.off('transcript.final', onceStart);
     }
   });
