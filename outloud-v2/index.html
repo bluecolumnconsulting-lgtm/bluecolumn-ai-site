@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=16" />
-  <link rel="stylesheet" href="runtime.css?v=17" />
+  <link rel="stylesheet" href="runtime.css?v=18" />
 </head>
 <body>
 
@@ -96,20 +96,20 @@
 
   <!-- Layers, in boot order. No build step; plain script tags.
        ?v=16 = Simli live video avatar (tap gate, sprite fallback) 2026-09-21. -->
-  <script src="outloud.config.js?v=16"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
-  <script src="event-bus.js?v=16"></script>           <!-- OutLoudEvent envelope + pub/sub -->
-  <script src="business-knowledge.js?v=17"></script>  <!-- Context 1: business knowledge (RAG) -->
-  <script src="customer-memory.js?v=16"></script>     <!-- Context 2: customer/session memory -->
-  <script src="plan-validator.js?v=16"></script>      <!-- plan validation + graceful repair -->
-  <script src="response-planner.js?v=17"></script>    <!-- Context 3: reasoning → Response Plan -->
-  <script src="realtime-input.js?v=16"></script>      <!-- mic, VAD, streaming transcript, barge-in -->
-  <script src="speech-director.js?v=16"></script>     <!-- ElevenLabs TTS + chunk streaming -->
-  <script src="vendor/simli-client.js?v=16"></script> <!-- SimliLib bundle (WebRTC talking head) -->
-  <script src="simli-director.js?v=16"></script>      <!-- live video avatar + PCM16 feed -->
-  <script src="avatar-director.js?v=16"></script>     <!-- sprite adapter: face/gaze/gesture channels (fallback) -->
-  <script src="content-director.js?v=17"></script>
-  <script src="screen-director.js?v=16"></script>  <!-- ambient branded card rotation -->    <!-- Content Registry + Action Registry -->
-  <script src="session-orchestrator.js?v=16"></script><!-- state machine + event routing -->
-  <script src="runtime.js?v=16"></script>             <!-- bootstrap + page chrome -->
+  <script src="outloud.config.js?v=18"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
+  <script src="event-bus.js?v=18"></script>           <!-- OutLoudEvent envelope + pub/sub -->
+  <script src="business-knowledge.js?v=18"></script>  <!-- Context 1: business knowledge (RAG) -->
+  <script src="customer-memory.js?v=18"></script>     <!-- Context 2: customer/session memory -->
+  <script src="plan-validator.js?v=18"></script>      <!-- plan validation + graceful repair -->
+  <script src="response-planner.js?v=18"></script>    <!-- Context 3: reasoning → Response Plan -->
+  <script src="realtime-input.js?v=18"></script>      <!-- mic, VAD, streaming transcript, barge-in -->
+  <script src="speech-director.js?v=18"></script>     <!-- ElevenLabs TTS + chunk streaming -->
+  <script src="vendor/simli-client.js?v=18"></script> <!-- SimliLib bundle (WebRTC talking head) -->
+  <script src="simli-director.js?v=18"></script>      <!-- live video avatar + PCM16 feed -->
+  <script src="avatar-director.js?v=18"></script>     <!-- sprite adapter: face/gaze/gesture channels (fallback) -->
+  <script src="content-director.js?v=18"></script>
+  <script src="screen-director.js?v=18"></script>  <!-- ambient branded card rotation -->    <!-- Content Registry + Action Registry -->
+  <script src="session-orchestrator.js?v=18"></script><!-- state machine + event routing -->
+  <script src="runtime.js?v=18"></script>             <!-- bootstrap + page chrome -->
 </body>
 </html>

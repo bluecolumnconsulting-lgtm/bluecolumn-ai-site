@@ -34,6 +34,8 @@
     this.starting = false;
     this.feed = null;          /* { iv, doneTimer, done } active feed */
     this.lastError = null;
+    this.remoteSpeaking = false;
+    this._bindClientEvents = null;
   }
 
   SimliDirector.prototype.ready = function () {
@@ -81,11 +83,36 @@
     this.bus.publish('simli.starting', {});
     if (this.stage) { this.stage.classList.add('connecting'); }  /* hide sprite during handshake */
 
+    function bindClientEvents(client) {
+      if (!client || typeof client.on !== 'function') { return; }
+      client.on('speaking', function () {
+        self.remoteSpeaking = true;
+        self.bus.publish('simli.speaking', {});
+      });
+      client.on('silent', function () {
+        self.remoteSpeaking = false;
+        self.bus.publish('simli.silent', {});
+      });
+      client.on('stop', function () {
+        self.remoteSpeaking = false;
+        self.bus.publish('simli.remoteStop', {});
+      });
+      client.on('error', function (message) {
+        self.remoteSpeaking = false;
+        self.bus.publish('simli.remoteError', { message: message || 'Simli remote error' });
+      });
+      client.on('ack', function () {
+        self.bus.publish('simli.ack', {});
+      });
+    }
+
     function makeClient(token, ice, transport) {
-      return new SimliLib.SimliClient(
+      var c = new SimliLib.SimliClient(
         token, self.videoEl, self.audioEl, ice,
         SimliLib.LogLevel ? SimliLib.LogLevel.WARN : undefined, transport
       );
+      bindClientEvents(c);
+      return c;
     }
 
     return fetch('https://api.simli.ai/startAudioToVideoSession', {
@@ -181,29 +208,57 @@
             pcm[i] = v < 0 ? v * 32768 : v * 32767;
           }
           var bytes = new Uint8Array(pcm.buffer);
-          var CHUNK = 6000, pos = 0;
-          var feed = { iv: null, doneTimer: null, done: null, active: true };
+          var CHUNK = 12000, pos = 0;
+          var feed = { iv: null, doneTimer: null, done: null, active: true, sentAll: false, settleStarted: false };
           self.feed = feed;
+          self.remoteSpeaking = false;
           var p = new Promise(function (resolve) { feed.done = resolve; });
+
+          function finishFeed() {
+            if (self.feed === feed) { self.feed = null; }
+            feed.active = false;
+            if (feed.iv) { clearInterval(feed.iv); feed.iv = null; }
+            if (feed.doneTimer) { clearTimeout(feed.doneTimer); feed.doneTimer = null; }
+            if (feed.done) { feed.done(); }
+          }
+
+          function armSettleTimer(ms) {
+            if (feed.settleStarted) { return; }
+            feed.settleStarted = true;
+            feed.doneTimer = setTimeout(finishFeed, ms);
+          }
+
           var iv = setInterval(function () {
             if (self.feed !== feed || !feed.active) { clearInterval(iv); return; }
             if (!self.live) { clearInterval(iv); self.cancelFeed(); return; }
-            if (pos >= bytes.length) { clearInterval(iv); return; }
-            var end = Math.min(pos + CHUNK, bytes.length);
-            try { self.client.sendAudioData(bytes.slice(pos, end)); }
-            catch (e) { clearInterval(iv); self.cancelFeed(); return; }
-            pos = end;
-          }, 175);
-          feed.iv = iv;
-          /* completion: full duration + a settle buffer, like marina. */
-          feed.doneTimer = setTimeout(function () {
-            if (self.feed === feed) {
+            if (pos >= bytes.length) {
               clearInterval(iv);
-              self.feed = null;
+              feed.iv = null;
+              feed.sentAll = true;
+              armSettleTimer(self.remoteSpeaking ? 450 : 180);
+              return;
             }
-            feed.active = false;
-            if (feed.done) { feed.done(); }
-          }, durMs + 900);
+            var end = Math.min(pos + CHUNK, bytes.length);
+            try {
+              if (pos === 0 && typeof self.client.sendAudioDataImmediate === 'function') {
+                self.client.sendAudioDataImmediate(bytes.slice(pos, end));
+              } else {
+                self.client.sendAudioData(bytes.slice(pos, end));
+              }
+            } catch (e) { clearInterval(iv); self.cancelFeed(); return; }
+            pos = end;
+          }, 85);
+          feed.iv = iv;
+          self.bus.on('simli.silent', function () {
+            if (self.feed === feed && feed.sentAll) { finishFeed(); }
+          });
+          self.bus.on('simli.remoteStop', function () {
+            if (self.feed === feed) { finishFeed(); }
+          });
+          self.bus.on('simli.remoteError', function () {
+            if (self.feed === feed) { finishFeed(); }
+          });
+          armSettleTimer(Math.min(durMs + 300, 2200));
           return p;
         });
       }, function (e) { decodeCtx.close && decodeCtx.close(); throw e; });
