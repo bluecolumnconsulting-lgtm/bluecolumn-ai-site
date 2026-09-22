@@ -402,6 +402,7 @@
     if (!started) {
       started = true;
       botSay(CFG.greeting);
+      playReply({ t: CFG.greeting });
       if (CFG.suggestions && CFG.suggestions.length) { opts(CFG.suggestions); }
     }
     setModeUI();

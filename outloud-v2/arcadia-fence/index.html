@@ -196,10 +196,11 @@ a{color:inherit}
 }
 /* caption pill (what Buddy says) */
 .caption{
-  width:min(760px,94%);margin:-8px auto 0;
-  background:#fff;border:1px solid var(--line);border-radius:999px;
-  padding:11px 18px;box-shadow:var(--shadow);
+  width:auto;margin:0;
+  background:rgba(255,255,255,.94);border:none;border-radius:14px;
+  padding:9px 13px;box-shadow:var(--shadow);
 }
+.screen-body .caption{position:absolute;left:14px;right:14px;bottom:12px;z-index:6}
 .caption-label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--terra-deep);margin-bottom:2px}
 #caption-text{display:block;font-size:13.5px;line-height:1.5;min-height:1.5em;color:var(--ink)}
 
@@ -209,14 +210,9 @@ a{color:inherit}
   background:#fff;border:1px solid var(--line);border-radius:22px;
   box-shadow:var(--shadow);padding:12px;
 }
-.chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.chip{
-  border:1px solid var(--line);background:var(--sand);color:var(--slate);
-  border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;
-  transition:all .15s ease;
-}
-.chip:hover{border-color:var(--terra);color:var(--terra-deep);background:var(--terra-soft)}
-.chip.accent{border-color:rgba(217,111,61,.5);background:var(--terra-soft);color:var(--terra-deep)}
+/* talking pulse — guaranteed visible movement while Buddy speaks */
+.mascot.speaking{animation:ol-buddy-talk .3s ease-in-out infinite alternate}
+@keyframes ol-buddy-talk{from{transform:translateY(0) scale(1)}to{transform:translateY(-6px) scale(1.04)}}
 .control-row{display:flex;gap:10px;align-items:center}
 .icon-btn{
   border:none;width:44px;height:44px;border-radius:50%;
@@ -238,7 +234,7 @@ a{color:inherit}
   display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;
 }
 .send-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.helper-text{margin:9px 4px 0;font-size:11.5px;color:var(--muted)}
+
 
 /* start gate removed — avatar is visible on load */
   position:absolute;inset:0;z-index:8;border:none;cursor:pointer;
@@ -312,21 +308,20 @@ footer.foot{
 
 /* ---------- responsive ---------- */
 @media (max-width:920px){
-  .stage-grid{grid-template-columns:1fr;gap:20px}
-  .mascot{width:min(300px,66vw)}
-  .screen{min-height:480px}
-  .svc-cards,.steps,.quotes{grid-template-columns:1fr 1fr}
+  .stage-grid{grid-template-columns:1fr;gap:14px}
+  .mascot{width:min(230px,52vw)}
+  .screen{min-height:420px}
 }
 @media (max-width:620px){
-  .topline{padding-top:12px}
-  .topline-meta{display:none}
-  .stage{padding-top:6px}
-  .mascot{width:min(250px,60vw)}
-  .screen{min-height:440px}
-  .stats-strip,.svc-cards,.steps,.quotes{grid-template-columns:1fr}
+  .topline{padding:10px 14px}
+  .stage{padding:4px 10px 12px}
+  .mascot{width:min(190px,48vw)}
+  .screen{min-height:380px}
   .fact-row{grid-template-columns:1fr 1fr}
   .control-row{flex-wrap:wrap}
-  .input-shell{min-width:100%;order:-1}
+  .input-shell{min-width:100%;order:-1;min-height:48px}
+  #live-input{font-size:16px}
+  .controls{margin-top:10px;padding:10px}
 }
 </style>
 </head>
@@ -351,10 +346,6 @@ footer.foot{
   <header class="topline">
     <div class="topline-brand">
       <span>Arcadia Fence & Gate — Talk to Buddy</span>
-    </div>
-    <div class="topline-meta">
-      <span class="live"><span class="live-dot"></span>Buddy is on this page</span>
-      <span>ROC 337481 · Valley-Wide · Since 2018</span>
     </div>
   </header>
 
@@ -442,24 +433,17 @@ footer.foot{
             <h3>Real humans, fast answers.</h3>
             <p>Call <a href="tel:4809069605" style="color:#ffb896">(480) 906-9605</a> · email <a href="mailto:arcadiafencegate@gmail.com" style="color:#ffb896">arcadiafencegate@gmail.com</a><br>Or tell Buddy your number and Arcadia calls you.</p>
           </div>
+
+          <div class="caption" aria-live="polite">
+            <span class="caption-label">Buddy</span>
+            <span id="caption-text">Say hi — Buddy answers out loud, 24/7.</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="caption" aria-live="polite">
-      <span class="caption-label">Buddy · Arcadia's live agent</span>
-      <span id="caption-text">Say hi — Buddy answers out loud, 24/7.</span>
-    </div>
 
     <div class="controls">
-      <div class="chip-row" role="group" aria-label="Suggested questions">
-        <button type="button" class="chip accent" data-ask="Start my free quote">Get my free quote</button>
-        <button type="button" class="chip" data-ask="What do you build?">What do you build?</button>
-        <button type="button" class="chip" data-ask="Tell me about financing">Financing</button>
-        <button type="button" class="chip" data-ask="Do you serve my area?">Service area</button>
-        <button type="button" class="chip" data-ask="Are you licensed and insured?">Licensed &amp; insured</button>
-        <button type="button" class="chip" data-ask="Show me recent work">Recent work</button>
-      </div>
       <div class="control-row">
         <button type="button" id="bot-mute" class="icon-btn" aria-label="Toggle speaker">
           <svg class="ico-on" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
@@ -475,15 +459,13 @@ footer.foot{
           </button>
         </div>
       </div>
-      <p class="helper-text">Say <strong>quote</strong> and Buddy collects fence type, address, and phone — Arcadia calls you back. Mic works hands-free; barge in anytime.</p>
     </div>
 
   </section>
 
 
   <footer class="foot">
-    <span>© 2026 Arcadia Fence &amp; Gate · ROC 337481 · Licensed &amp; Insured · arcadiafenceaz.com</span>
-    <span>Live agent by <a href="https://bluecolumn.ai">BlueColumn AI</a></span>
+    <span>© 2026 Arcadia Fence &amp; Gate · ROC 337481 · arcadiafenceaz.com</span>
   </footer>
 </div>
 
@@ -661,13 +643,6 @@ window.BOT_CFG={
     if(!window.botSend){return;}
     window.botSend(text);
   }
-  /* suggestion chips (static + rebuilt rows) — event delegation */
-  document.querySelector('.chip-row').addEventListener('click',function(e){
-    var chip=e.target.closest('.chip');
-    if(!chip){return;}
-    var q=chip.getAttribute('data-ask')||chip.textContent;
-    ask(q);
-  });
   function sendLive(){
     var v=liveInput.value.trim();if(!v){return;}
     startBuddy();
