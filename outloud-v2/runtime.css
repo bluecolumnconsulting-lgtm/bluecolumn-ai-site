@@ -425,3 +425,18 @@
 /* 2. Transcript: comfortable reading width; stamps are secondary. */
 .ol-log { max-width: 660px; margin: 0 auto; }
 .ol-stamp { font-size: 0.6rem; opacity: 0.5; }
+
+/* ---------- Book a Demo persistent CTA ---------- */
+.ol-book-cta {
+  border: none;
+  border-radius: 999px;
+  padding: 9px 18px;
+  background: linear-gradient(135deg, #ff8a3d, #ff6a2b);
+  color: #fff;
+  font: 700 0.86rem/1 Manrope, sans-serif;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 122, 40, 0.35);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+.ol-book-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(255, 122, 40, 0.45); }

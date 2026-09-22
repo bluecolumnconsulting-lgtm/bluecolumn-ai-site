@@ -87,6 +87,7 @@
     if (/^(hi|hey|hello|yo|good (morning|afternoon|evening)|what'?s up|sup)\b/.test(low) && words <= 3) { return 'greet'; }
     if (/(book|demo|walkthrough|schedule|sign ?up|get started|talk to)/.test(low)) { return 'book'; }
     if (/(price|pricing|cost|how much|plans?\b|fee|expensive|budget)/.test(low)) { return 'pricing'; }
+    if (/(avatar|presenter|character|which faces|pick a face|faces can i)/.test(low)) { return 'avatars'; }
     if (/(how does it work|how it works|how do|what can you|what do you do|capab|under the hood|built|stack|brain|tech)/.test(low)) { return 'how-it-works'; }
     if (/(client|example|live page|who uses|sites|references|portfolio|proof|results)/.test(low)) { return 'live-sites'; }
     if (/(how long|timeline|when can|how fast|turnaround|launch)/.test(low)) { return 'timeline'; }
@@ -281,6 +282,14 @@
         gaze.push({ target: 'panel:booking-panel', transitionMs: 260, holdMs: 2200, returnTarget: 'user', at: 300 });
         gestures.push({ name: 'present_center', intensity: 0.62, entryMs: 260, holdMs: 1100, releaseMs: 380, at: 300 });
         content.push({ action: 'show', target: 'booking-panel', data: {}, at: 400 });
+        break;
+      }
+      case 'avatars': {
+        speech = "Three ways to pick a face. Animated characters come with every plan. Stock video faces are real-time talking heads on the Lead Engine tier. Or a custom face — the one you're looking at right now is custom. The screen has the breakdown.";
+        expressions.push({ name: 'friendly', intensity: 0.7, at: 0 });
+        gaze.push({ target: 'panel:avatars-panel', transitionMs: 260, holdMs: 2600, returnTarget: 'user', at: 300 });
+        gestures.push({ name: 'present_center', intensity: 0.62, entryMs: 260, holdMs: 1100, releaseMs: 380, at: 300 });
+        content.push({ action: 'show', target: 'avatars-panel', data: {}, at: 400 });
         break;
       }
       case 'pricing': {

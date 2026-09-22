@@ -82,6 +82,24 @@
       return p;
     });
 
+    /* --- avatar catalog panel (the tier model, shown on-screen) --- */
+    this.register('avatars-panel', function () {
+      var p = el('div', 'ol-panel');
+      p.appendChild(el('h3', 'ol-panel-title', 'Pick your face'));
+      var rows = el('div', 'ol-panel-rows');
+      [
+        { id: 'animated', name: 'Animated character', desc: 'A custom mascot with live lip-sync, gestures, and gaze. Included with every plan.', price: 'Included' },
+        { id: 'stock', name: 'Stock video faces', desc: 'Real-time talking heads from the Simli library — pick one, it speaks live with your voice.', price: 'Lead Engine tier' },
+        { id: 'custom', name: 'Custom face', desc: 'Your face (or a brand character we build). The one on this page is a real custom face.', price: 'Premium add-on' }
+      ].forEach(function (r) {
+        rows.appendChild(el('div', 'ol-panel-row ol-row-static',
+          '<span class="ol-row-name">' + r.name + '</span><span class="ol-row-price mono">' + r.price + '</span><span class="ol-row-desc">' + r.desc + '</span>'));
+      });
+      p.appendChild(rows);
+      p.appendChild(el('p', 'ol-panel-note mono', 'Every avatar speaks with your business knowledge and books on your calendar.'));
+      return p;
+    });
+
     /* --- booking panel (lead capture form) --- */
     this.register('booking-panel', function () {
       var f = el('form', 'ol-panel ol-form');

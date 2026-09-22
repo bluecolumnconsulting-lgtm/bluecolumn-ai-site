@@ -88,6 +88,11 @@
   Array.prototype.forEach.call(document.querySelectorAll('.ol-chip'), function (chip) {
     chip.addEventListener('click', function () { input.type(chip.textContent.trim()); });
   });
+  /* Persistent Book a Demo CTA — every path into lead capture. */
+  var bookCta = document.getElementById('ol-book-cta');
+  if (bookCta) {
+    bookCta.addEventListener('click', function () { input.type('book a demo'); });
+  }
 
   /* ---------- Simli video avatar ----------
      Browsers block autoplay audio/video — the gate requires a real
