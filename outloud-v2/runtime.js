@@ -172,6 +172,16 @@
   avatar.attach(F('ol-avatar-stage'));
   simli.attach(F('ol-avatar-stage'));
   content.mount();
+  /* Presentation screen: standby sign shows when no panel is live. */
+  var screenEl = document.getElementById('ol-screen');
+  if (screenEl && typeof MutationObserver === 'function') {
+    var panelHost = document.getElementById('outloud-content-panel');
+    if (panelHost) {
+      new MutationObserver(function () {
+        screenEl.classList.toggle('panel-live', panelHost.childElementCount > 0);
+      }).observe(panelHost, { childList: true });
+    }
+  }
   orch.sessionStart();
   /* Greeting runs through the full pipeline as a validated plan turn
      (internal=true keeps the trigger off the transcript). The reply
