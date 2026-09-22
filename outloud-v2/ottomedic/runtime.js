@@ -213,14 +213,25 @@
      text can never disagree or double up.
      With the Simli video path, the greeting waits for the tap gate:
      a gesture is required before any audio may play. */
-  showGate();
-  /* Typed input (or mic) before tapping the gate still works — and
-     a real click IS a valid user gesture, so the Simli video starts
-     here too. The sprite only ever shows if video cannot start. */
+  /* Avatar is visible on load — no tap gate. The first tap anywhere
+     (a valid user gesture) starts the live video avatar and the
+     spoken greeting; typed input starts it just the same. */
+  var liveStarted = false;
+  function ensureLive() {
+    if (liveStarted) { return; }
+    liveStarted = true;
+    simli.start().then(function (ok) {
+      if (ok) { addMsg('outloud', 'Video avatar is live — watch me talk.'); }
+    });
+  }
+  function firstTouch() {
+    ensureLive();
+    bus.publish('transcript.final', { text: 'hello', internal: true });
+  }
+  document.addEventListener('pointerdown', firstTouch, { once: true, capture: true });
   bus.on('transcript.final', function onceStart(env) {
     if (!env.payload.internal) {
-      removeGate();
-      simli.start();
+      ensureLive();
       bus.off('transcript.final', onceStart);
     }
   });

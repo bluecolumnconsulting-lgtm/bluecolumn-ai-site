@@ -240,8 +240,7 @@ a{color:inherit}
 .send-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .helper-text{margin:9px 4px 0;font-size:11.5px;color:var(--muted)}
 
-/* start gate */
-.start-gate{
+/* start gate removed — avatar is visible on load */
   position:absolute;inset:0;z-index:8;border:none;cursor:pointer;
   background:linear-gradient(180deg,rgba(250,246,239,.985),rgba(243,236,221,.99));
   backdrop-filter:blur(6px);
@@ -249,13 +248,6 @@ a{color:inherit}
   text-align:center;padding:24px;border-radius:24px;transition:opacity .4s ease;
 }
 .start-gate.gone{opacity:0;pointer-events:none}
-.start-gate-title{font-size:clamp(24px,3.4vw,32px);font-weight:800;color:var(--slate)}
-.start-gate-sub{color:var(--muted);font-size:14.5px;margin:0;max-width:440px;line-height:1.5}
-.start-gate-cta{
-  margin-top:10px;background:var(--terra);color:#fff;border-radius:999px;
-  padding:14px 30px;font-weight:800;font-size:15px;box-shadow:0 12px 30px rgba(217,111,61,.4);
-}
-.start-gate-note{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px}
 
 /* ---------- supporting sections ---------- */
 main.sections{width:min(1120px,100%);margin:0 auto;padding:0 clamp(16px,4vw,36px) 30px}
@@ -373,7 +365,7 @@ footer.foot{
           <div class="mascot" id="mascot" role="img" aria-label="Buddy, Arcadia.s live mascot, lip-synced"></div>
         </div>
         <div class="mascot-shadow" aria-hidden="true"></div>
-        <div class="mascot-status" id="mascot-status"><span class="live-dot"></span><span id="status-text">Tap to meet Buddy</span></div>
+        <div class="mascot-status" id="mascot-status"><span class="live-dot"></span><span id="status-text">Buddy is here — say hi</span></div>
       </div>
 
       <div class="screen" id="screen" aria-label="Arcadia Fence & Gate presentation screen">
@@ -456,7 +448,7 @@ footer.foot{
 
     <div class="caption" aria-live="polite">
       <span class="caption-label">Buddy · Arcadia's live agent</span>
-      <span id="caption-text">Tap the stage and Buddy will say hello out loud — then ask him anything.</span>
+      <span id="caption-text">Say hi — Buddy answers out loud, 24/7.</span>
     </div>
 
     <div class="controls">
@@ -486,71 +478,8 @@ footer.foot{
       <p class="helper-text">Say <strong>quote</strong> and Buddy collects fence type, address, and phone — Arcadia calls you back. Mic works hands-free; barge in anytime.</p>
     </div>
 
-    <button type="button" class="start-gate" id="start-gate">
-      <span class="start-gate-title">Meet Buddy 👋</span>
-      <span class="start-gate-sub">Buddy answers out loud about fences, gates, pricing, and scheduling — 24/7. He can even start your free estimate.</span>
-      <span class="start-gate-cta">Start talking</span>
-      <span class="start-gate-note mono">Turn your sound on · mic works too</span>
-    </button>
   </section>
 
-  <main class="sections">
-    <div class="stats-strip">
-      <div class="stat"><span class="stat-num">Free</span><span class="stat-label">Estimates — no pressure, no fees</span></div>
-      <div class="stat"><span class="stat-num">ROC 337481</span><span class="stat-label">Licensed &amp; insured since 2018</span></div>
-      <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Buddy answers, quotes, and books</span></div>
-    </div>
-
-    <section class="section" id="services">
-      <div class="section-head">
-        <p class="eyebrow mono">What we build</p>
-        <h2 class="section-title">Five ways Arcadia fences Arizona.<br>Custom, not cookie-cutter.</h2>
-      </div>
-      <div class="svc-cards">
-        <article class="svc-card"><h3>Block Walls</h3><p>Privacy. Security. Quiet. Decorative caps &amp; toppers, HOA height options, reinforced for long-term stability.</p></article>
-        <article class="svc-card"><h3>Steel View Fencing</h3><p>Modern lines. Zero warp. Maximum sightlines — powder-coated and low-maintenance for perimeter, pool, and patio.</p></article>
-        <article class="svc-card"><h3>Wood Fencing</h3><p>Cedar &amp; treated lumber, horizontal or vertical slats — warm, timeless, and done right for our climate.</p></article>
-        <article class="svc-card"><h3>Vinyl Fencing</h3><p>Looks great, shrugs off the sun, never needs repainting. Privacy, picket, and ranch-rail profiles.</p></article>
-        <article class="svc-card"><h3>Custom Gates</h3><p>Manual &amp; automated. Keypads, remotes, smart access, heavy-duty hardware — matched to your fence.</p></article>
-        <article class="svc-card"><h3>Chain Link &amp; Iron</h3><p>Galvanized or coated chain link and ornamental iron — commercial-grade installs across the Valley.</p></article>
-      </div>
-    </section>
-
-    <section class="section" id="how">
-      <div class="section-head">
-        <p class="eyebrow mono">How it works</p>
-        <h2 class="section-title">Three steps. No drama.</h2>
-      </div>
-      <div class="steps">
-        <div class="step"><span class="step-num">1</span><h3>Free design call</h3><p>Tell us what you need. We map the property and answer HOA and permit questions.</p></div>
-        <div class="step"><span class="step-num">2</span><h3>Transparent quote</h3><p>Clear scope, clear timeline. No mystery fees — financing options if you want them.</p></div>
-        <div class="step"><span class="step-num">3</span><h3>Pro install</h3><p>Licensed crew, daily updates, spotless site, solid warranty.</p></div>
-      </div>
-    </section>
-
-    <section class="section" id="reviews">
-      <div class="section-head">
-        <p class="eyebrow mono">Proof</p>
-        <h2 class="section-title">Trusted since 2018 by Arizona homeowners.</h2>
-      </div>
-      <div class="quotes">
-        <div class="quote-card"><div class="stars">★★★★★</div><p>"What a great experience with Joe and his workers. Joe pays very close attention to my plans, budget and needs. Extremely personable, professional and friendly. He's quick to respond!! We'd highly recommend."</p><cite>DJ "Darlene" Marshall · Local Guide</cite></div>
-        <div class="quote-card"><div class="stars">★★★★★</div><p>"They did a great job creating the fencing I was looking for without much to go on."</p><cite>Wendy Skree · Verified Customer</cite></div>
-        <div class="quote-card"><div class="stars">★★★★★</div><p>"Great communication and follow up from the start. Very responsive to my needs and timeline. Did an excellent job from beginning to end."</p><cite>Erin Umerley · Verified Customer</cite></div>
-      </div>
-    </section>
-
-    <section class="contact-band" id="contact">
-      <div>
-        <h2>Protect your people. Protect your pets.</h2>
-        <p>Get a fast, free estimate today — Buddy can start it right now, or reach Arcadia directly.</p>
-      </div>
-      <div class="c-actions">
-        <a class="c-btn primary" href="tel:4809069605">(480) 906-9605</a>
-        <button type="button" class="c-btn ghost" id="ask-buddy-btn">Ask Buddy instead</button>
-      </div>
-    </section>
-  </main>
 
   <footer class="foot">
     <span>© 2026 Arcadia Fence &amp; Gate · ROC 337481 · Licensed &amp; Insured · arcadiafenceaz.com</span>
@@ -617,7 +546,7 @@ window.BOT_CFG={
 (function(){
   'use strict';
   var F=function(id){return document.getElementById(id);};
-  var gate=F('start-gate'), statusText=F('status-text'), captionText=F('caption-text');
+  var statusText=F('status-text'), captionText=F('caption-text');
   var liveInput=F('live-input'), liveSend=F('send-live');
   var hiddenInput=F('bot-in'), hiddenSend=F('bot-send');
   var standby=F('standby'), screenEl=F('screen');
@@ -728,6 +657,7 @@ window.BOT_CFG={
 
   /* ---------- input wiring ---------- */
   function ask(text){
+    startBuddy();
     if(!window.botSend){return;}
     window.botSend(text);
   }
@@ -740,24 +670,24 @@ window.BOT_CFG={
   });
   function sendLive(){
     var v=liveInput.value.trim();if(!v){return;}
+    startBuddy();
     hiddenInput.value=v;hiddenSend.click();liveInput.value='';renderFlow();
   }
   liveSend.addEventListener('click',sendLive);
   liveInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();sendLive();}});
-  F('ask-buddy-btn').addEventListener('click',function(){
-    window.scrollTo({top:0,behavior:'smooth'});
-    setTimeout(function(){liveInput.focus();},450);
-  });
-
-  /* ---------- start gate ---------- */
-  gate.addEventListener('click',function(){
-    gate.classList.add('gone');
+  /* ---------- Buddy starts on first interaction (avatar visible on load) ---------- */
+  var started=false;
+  function startBuddy(){
+    if(started){return;}
+    started=true;
     setStatus('Connecting Buddy…');
     if(window.toggleBot){window.toggleBot();}
     setTimeout(function(){
-      if(/Tap to meet/.test(statusText.textContent)){setStatus('Buddy is live — just talk');}
+      if(/Connecting|is here/.test(statusText.textContent)){setStatus('Buddy is live — just talk');}
     },6000);
-  });
+  }
+  F('mascot').addEventListener('click',startBuddy);
+  F('bot-mic').addEventListener('click',startBuddy);
 })();
 </script>
 </body>
