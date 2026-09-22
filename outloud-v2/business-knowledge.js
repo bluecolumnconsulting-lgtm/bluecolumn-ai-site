@@ -174,7 +174,7 @@
         if (r) { return r; }
         if (local) { return { text: local.text, source: 'catalog', knowledgeId: local.knowledgeId }; }
         return {
-          text: "I don't have that one yet. I can answer questions about OutLoud, like what it does, what it costs, or how it works. If it's something specific to your business, leave your email and a strategist will follow up. What else can I help with?",
+          text: "Here’s the quick version. OutLoud is a talking website that answers questions, captures leads, and can book appointments. Plans start at $49 a month, video starts at $149, and I can also show pricing, live demos, avatars, or how setup works.",
           source: 'fallback'
         };
       });
