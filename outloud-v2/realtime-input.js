@@ -54,6 +54,12 @@
       self.buf = new Uint8Array(self.analyser.frequencyBinCount);
       var tick = function () {
         if (!self.micOn) { return; }
+        self.raf = requestAnimationFrame(tick);
+        /* Anti-echo: while OutLoud speaks (suspended), the mic hears the
+           avatar's own voice through the speakers — a VAD trigger here
+           barge-ins the runtime against ITSELF and cancels every answer
+           mid-sentence. Swallow VAD events while suspended. */
+        if (self.suspended) { self.speaking = false; return; }
         self.analyser.getByteTimeDomainData(self.buf);
         var sum = 0, i, v;
         for (i = 0; i < self.buf.length; i++) { v = (self.buf[i] - 128) / 128; sum += v * v; }
@@ -69,7 +75,6 @@
           self.speaking = false;
           self.bus.publish('vad.speechEnd', {});
         }
-        self.raf = requestAnimationFrame(tick);
       };
       self.micOn = true;
       self.raf = requestAnimationFrame(tick);
@@ -115,7 +120,9 @@
     };
     r.onend = function () {
       if (self.wantMic && !self.suspended) {
-        setTimeout(function () { try { r.start(); } catch (e) {} }, 300);
+        /* Fast re-arm: recognition restarts in 200ms (was 300ms) so the
+           mic is back live almost immediately after each answer. */
+        setTimeout(function () { try { r.start(); } catch (e) {} }, 200);
       }
     };
     self.recog = r;
@@ -151,7 +158,9 @@
     var self = this;
     this.suspended = false;
     if (self.wantMic && self.SR) {
-      setTimeout(function () { try { self.startTranscription(); } catch (e) {} }, 350);
+      /* Fast resume: 200ms (was 350ms) — the mic is back quickly after
+         each answer so the next thing you say is heard immediately. */
+      setTimeout(function () { try { self.startTranscription(); } catch (e) {} }, 200);
     }
   };
 
