@@ -158,7 +158,8 @@
     var self = this;
     if (!this.live || !this.client) { return Promise.reject(new Error('simli not live')); }
     if (this.feed) { this.cancelFeed(); }
-    this.bus.publish('speech.chunk.start', { text: chunkText || '', simli: true });
+    /* Transcript walk is owned by SpeechDirector (it calls the hook
+       before delegating here) — this method only feeds audio. */
     return blob.arrayBuffer().then(function (ab) {
       var AC = window.AudioContext || window.webkitAudioContext;
       var decodeCtx = new AC();

@@ -155,7 +155,11 @@
           return;
         }
         if (self.sink && typeof self.sink.ready === 'function' && self.sink.ready()) {
-          return self.sink.playBlob(blob, chunks[ci]).then(next);
+          /* Sink path still walks the transcript — the rail must show
+             the reply while the video face speaks it. */
+          self.bus.publish('speech.chunk.start', { text: chunks[ci] || '' });
+          if (self.onChunkStart) { self.onChunkStart(chunks[ci] || ''); }
+          return self.sink.playBlob(blob, '').then(next);
         }
         return self.playBlob(blob, chunks[ci]).then(next);
       }).catch(function () {

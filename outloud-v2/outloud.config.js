@@ -43,7 +43,7 @@
          Catalog below is the instant fallback when the brain has no
          grounded answer or the network is down. --- */
     rag: {
-      timeoutMs: 6500,          // recall takes ~4s; long-tail questions wait for the brain
+      timeoutMs: 2500,          // quota-aware: brain down → instant catalog fallback, not a 6.5s hang
       minAnswerChars: 8,        // shorter = junk
       notInContext: /not in available context/i
     },

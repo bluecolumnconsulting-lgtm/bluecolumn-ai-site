@@ -30,7 +30,7 @@
   var CATALOG = [
     {
       id: 'what-is',
-      k: ['what is outloud', 'what does outloud', 'outloud do', 'tell me about', 'who are you', 'what is this'],
+      k: ['what is outloud', 'outloud do', 'tell me about', 'who are you', 'what is this'],
       t: "OutLoud is BlueColumn's AlwaysOn conversational website. Your site talks with every visitor the moment they land, answering questions, quoting work, and booking appointments around the clock. This page is the product: the agent you're talking to is the demo."
     },
     {
@@ -74,7 +74,9 @@
   }
 
   function fromCatalog(text) {
-    var low = String(text || '').toLowerCase();
+    /* Speech writes "out loud" (two words); the brand is "outloud".
+     Normalize so spoken queries hit the catalog like typed ones. */
+    var low = String(text || '').toLowerCase().replace(/out[ ]+loud/g, 'outloud');
     var best = null, bestS = 0, i, s;
     for (i = 0; i < CATALOG.length; i++) {
       s = score(low, CATALOG[i]);
@@ -99,6 +101,13 @@
   }
 
   function ragFetch(query) {
+    /* Quota-aware short-circuit: when the brain is unreachable (quota
+       exhausted, network down), skip the wire entirely for a while so
+       catalog answers land instantly instead of waiting on timeouts. */
+    try {
+      var downUntil = Number(sessionStorage.getItem('ol-rag-down-until') || 0);
+      if (downUntil && Date.now() < downUntil) { return Promise.resolve(null); }
+    } catch (e) {}
     /* Repeat questions answer from the session cache instantly. */
     try {
       var cached = sessionStorage.getItem('ol-rag:' + query);
@@ -118,13 +127,25 @@
       },
       body: JSON.stringify({ q: query }),
       signal: ctrl ? ctrl.signal : undefined
-    }).then(function (res) { return res.json(); }).then(function (d) {
+    }).then(function (res) {
+      if (res.status === 402 || res.status === 429 || res.status === 403) {
+        try { sessionStorage.setItem('ol-rag-down-until', String(Date.now() + 10 * 60 * 1000)); } catch (e) {}
+        return null;
+      }
+      return res.json();
+    }).then(function (d) {
       clearTimeout(timer);
+      if (!d) { return null; }
       var a = (d && d.answer ? String(d.answer) : '').trim();
       if (!a || RAG.notInContext.test(a) || a.length < RAG.minAnswerChars) { return null; }
       try { sessionStorage.setItem('ol-rag:' + query, JSON.stringify({ text: a })); } catch (e) {}
       return { text: a, source: 'rag', knowledgeId: 'rag:' + Date.now() };
-    }).catch(function () { clearTimeout(timer); return null; });
+    }).catch(function () {
+      clearTimeout(timer);
+      /* Network failure/timeout: treat the brain as down briefly. */
+      try { sessionStorage.setItem('ol-rag-down-until', String(Date.now() + 2 * 60 * 1000)); } catch (e) {}
+      return null;
+    });
   }
 
   /* Public API (Context 1 boundary — callers only ever see answers).
