@@ -43,8 +43,10 @@
       p.appendChild(el('h3', 'ol-panel-title', 'AlwaysOn plans'));
       var rows = el('div', 'ol-panel-rows');
       [
-        { id: 'essential', name: 'AlwaysOn Essential', desc: 'Answers customer questions, captures leads, and books on a live calendar, 24/7. We build it, run it, and manage it.', price: '$497 setup · $97/mo' },
-        { id: 'engine', name: 'AlwaysOn Lead Engine', desc: 'Everything in Essential, plus a managed lead list for your trade and service area, worked around the clock.', price: '$997 setup · $197/mo' }
+        { id: 'starter', name: 'Starter', desc: 'Animated avatar, self-serve setup, lead capture, booking, and a bluecolumn.ai subdomain.', price: '$49/mo' },
+        { id: 'pro', name: 'Pro', desc: 'Video avatar with 200 included video minutes, domain connect, and priority support.', price: '$149/mo' },
+        { id: 'team', name: 'Team', desc: 'Everything in Pro plus 5 seats, 600 pooled video minutes, lead routing, and analytics.', price: '$349/mo' },
+        { id: 'personal', name: 'Personal', desc: 'A personal OutLoud page for a person, portfolio, or gift account using the same runtime.', price: '$19/mo' }
       ].forEach(function (r) {
         var row = el('button', 'ol-panel-row', '<span class="ol-row-name">' + r.name + '</span><span class="ol-row-price mono">' + r.price + '</span><span class="ol-row-desc">' + r.desc + '</span>');
         row.type = 'button';
@@ -89,7 +91,7 @@
       var rows = el('div', 'ol-panel-rows');
       [
         { id: 'animated', name: 'Animated character', desc: 'A custom mascot with live lip-sync, gestures, and gaze. Included with every plan.', price: 'Included' },
-        { id: 'stock', name: 'Stock video faces', desc: 'Real-time talking heads from the Simli library — pick one, it speaks live with your voice.', price: 'Lead Engine tier' },
+        { id: 'stock', name: 'Stock video faces', desc: 'Real-time talking heads from the Simli library — pick one, it speaks live with your voice.', price: 'Pro plan' },
         { id: 'custom', name: 'Custom face', desc: 'Your face (or a brand character we build). The one on this page is a real custom face.', price: 'Premium add-on' }
       ].forEach(function (r) {
         rows.appendChild(el('div', 'ol-panel-row ol-row-static',

@@ -36,7 +36,7 @@
     {
       id: 'pricing',
       k: ['price', 'cost', 'how much', 'plans', 'fee', 'expensive', 'budget'],
-      t: "AlwaysOn Essential is $497 setup plus $97 per month: an OutLoud site that answers customer questions, captures leads, and books on a live calendar. AlwaysOn Lead Engine is $997 setup plus $197 per month and adds a managed lead list for your trade and service area. Setups are one-time; no contracts, month to month."
+      t: "OutLoud Starter is $49 per month with an animated avatar, self-serve setup, lead capture, booking, and a bluecolumn.ai subdomain. OutLoud Pro is $149 per month with a video avatar, 200 included video minutes, and domain connect. OutLoud Team is $349 per month with 5 seats, 600 pooled video minutes, and lead routing. Personal is $19 per month, and white-glove onboarding is an optional $500 one-time add-on."
     },
     {
       id: 'how-it-works',

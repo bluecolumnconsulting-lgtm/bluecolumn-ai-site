@@ -285,7 +285,7 @@
         break;
       }
       case 'avatars': {
-        speech = "Three ways to pick a face. Animated characters come with every plan. Stock video faces are real-time talking heads on the Lead Engine tier. Or a custom face — the one you're looking at right now is custom. The screen has the breakdown.";
+        speech = "Three ways to pick a face. Animated characters come with every plan. Stock video faces are real-time talking heads on the Pro tier. Or a custom face — the one you're looking at right now is custom. The screen has the breakdown.";
         expressions.push({ name: 'friendly', intensity: 0.7, at: 0 });
         gaze.push({ target: 'panel:avatars-panel', transitionMs: 260, holdMs: 2600, returnTarget: 'user', at: 300 });
         gestures.push({ name: 'present_center', intensity: 0.62, entryMs: 260, holdMs: 1100, releaseMs: 380, at: 300 });
