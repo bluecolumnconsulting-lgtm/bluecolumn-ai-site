@@ -34,7 +34,7 @@
     voice: {
       provider: 'elevenlabs',
       model: 'eleven_flash_v2_5',
-      voiceId: 'iLVmqjzCGGvqtMCk6vVQ', // verified working 2026-08-24
+      voiceId: 'EXAVITQu4vr4xnSDxMaL', // Marina's voice — same as the OttoMedic landing page widget
       outputFormat: 'mp3_44100_128',
       streamChunks: true   // plan-level chunk streaming; true token streaming is TODO(edge-proxy)
     },
@@ -57,15 +57,15 @@
     /* --- Avatar (Avatar Director, sprite adapter) --- */
     /* --- Simli video avatar (Simli Director) — sprite stays as fallback --- */
     simli: {
-      faceId: '7e74d6e7-d559-4394-bd56-4923a3ab75ad',   // Joe's face — verified via session token 2026-09-21
+      faceId: '5fc23ea5-8175-4a82-aaaf-cdd8c88543dc',   // Marina's video face — same as the OttoMedic landing page avatar
       maxSessionLength: 600,
       maxIdleTime: 180
     },
 
     avatar: {
-      sprite: 'mascot-sprites.png',
-      cols: 4,
-      rows: 3,
+      sprite: 'marina.png',
+      cols: 1,
+      rows: 1,
       baseline: { emotion: 'friendly', energy: 0.55, posture: 'idle', initialGaze: 'user' },
       constraints: {
         allowGestures: ['present_right', 'present_left', 'present_center', 'nod', 'lean_in'],

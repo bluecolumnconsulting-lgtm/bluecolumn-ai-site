@@ -64,49 +64,11 @@
       return p;
     });
 
-    /* --- live client sites panel --- */
-    this.register('sites-panel', function () {
-      var p = el('div', 'ol-panel');
-      p.appendChild(el('h3', 'ol-panel-title', 'Live on OutLoud'));
-      var rows = el('div', 'ol-panel-rows');
-      [
-        { name: 'Star Jet Ski Rentals' },
-        { name: 'Vulcan Fence' },
-        { name: 'HomeSpark' },
-        { name: 'OttoMedic' },
-        { name: 'Adventure Club' },
-        { name: 'Venture Club' }
-      ].forEach(function (r) {
-        rows.appendChild(el('div', 'ol-panel-row ol-row-static', '<span class="ol-row-name">' + r.name + '</span>'));
-      });
-      p.appendChild(rows);
-      p.appendChild(el('p', 'ol-panel-note mono', 'At Arcadia Fence and Gate, booked jobs went up 40% in the first month.'));
-      return p;
-    });
-
-    /* --- avatar catalog panel (the tier model, shown on-screen) --- */
-    this.register('avatars-panel', function () {
-      var p = el('div', 'ol-panel');
-      p.appendChild(el('h3', 'ol-panel-title', 'Pick your face'));
-      var rows = el('div', 'ol-panel-rows');
-      [
-        { id: 'animated', name: 'Animated character', desc: 'A custom mascot with live lip-sync, gestures, and gaze. Included with every plan.', price: 'Included' },
-        { id: 'stock', name: 'Stock video faces', desc: 'Real-time talking heads from the Simli library — pick one, it speaks live with your voice.', price: 'Pro plan' },
-        { id: 'custom', name: 'Custom face', desc: 'Your face (or a brand character we build). The one on this page is a real custom face.', price: 'Premium add-on' }
-      ].forEach(function (r) {
-        rows.appendChild(el('div', 'ol-panel-row ol-row-static',
-          '<span class="ol-row-name">' + r.name + '</span><span class="ol-row-price mono">' + r.price + '</span><span class="ol-row-desc">' + r.desc + '</span>'));
-      });
-      p.appendChild(rows);
-      p.appendChild(el('p', 'ol-panel-note mono', 'Every avatar speaks with your business knowledge and books on your calendar.'));
-      return p;
-    });
-
     /* --- booking panel (lead capture form) --- */
     this.register('booking-panel', function () {
       var f = el('form', 'ol-panel ol-form');
       f.setAttribute('data-stub', 'booking: server-side validation + calendar write TODO');
-      f.appendChild(el('h3', 'ol-panel-title', 'Book a walkthrough'));
+      f.appendChild(el('h3', 'ol-panel-title', 'Talk to the OttoMedic team'));
       [['name', 'text', 'Your name'], ['business', 'text', 'Business (or "none")'], ['phone', 'tel', 'Best phone number']].forEach(function (pair) {
         var input = el('input', 'ol-input');
         input.type = pair[1];
@@ -115,7 +77,7 @@
         input.autocomplete = 'off';
         f.appendChild(input);
       });
-      var note = el('p', 'ol-panel-note mono', 'A BlueColumn strategist schedules the walkthrough from these details.');
+      var note = el('p', 'ol-panel-note mono', 'The OttoMedic team follows up from these details.');
       var submit = el('button', 'ol-submit', 'Send it');
       submit.type = 'submit';
       f.appendChild(submit);
@@ -131,7 +93,7 @@
         if (!data.name) { missing.push('name'); f.querySelector('[name=name]').classList.add('ol-missing'); }
         if (!data.phone || data.phone.replace(/\D/g, '').length < 7) { missing.push('phone'); f.querySelector('[name=phone]').classList.add('ol-missing'); }
         if (missing.length) {
-          note.textContent = 'Need a ' + missing.join(' and a ') + ' so the strategist can actually call you.';
+          note.textContent = 'Need a ' + missing.join(' and a ') + ' so the OttoMedic team can actually call you.';
           return;
         }
         self.emitAction('booking.submit', data);
@@ -186,7 +148,7 @@
         /* Captured lead: swap the form for a confirmation summary. */
         if (d.leadCaptured) {
           var title = r.el.querySelector('.ol-panel-title');
-          if (title) { title.textContent = 'Walkthrough request captured'; }
+          if (title) { title.textContent = 'Quote request captured'; }
           [].forEach.call(r.el.querySelectorAll('input, .ol-submit'), function (n) {
             n.classList.add('ol-hidden');
             if (n.tagName === 'BUTTON') { n.disabled = true; }
@@ -197,7 +159,7 @@
             r.el.insertBefore(sum, r.el.querySelector('.ol-panel-note'));
           }
           sum.textContent = 'Captured: ' + (d.leadName || '') + (d.leadBusiness ? ' at ' + d.leadBusiness : '') +
-            (d.leadPhone ? ', ' + d.leadPhone : '') + '. A strategist will call to schedule.';
+            (d.leadPhone ? ', ' + d.leadPhone : '') + '. The OttoMedic team will call to follow up.';
         }
       }
       self.bus.publish('content.action', { action: action.action, target: action.target });

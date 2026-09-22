@@ -199,7 +199,7 @@
     m.setLeadState('captured');
     return {
       speech: "Saved. Here's what I have: " + f['lead.name'] + " at " + f['lead.business'] +
-        ", " + pretty + ". A BlueColumn strategist will call to schedule the walkthrough.",
+        ", " + pretty + ". The OttoMedic team will call to follow up the walkthrough.",
       content: [{
         action: 'update', target: 'booking-panel',
         data: { leadCaptured: true, leadName: f['lead.name'], leadBusiness: f['lead.business'], leadPhone: pretty },
@@ -265,7 +265,7 @@
         var rf = turn.memory.facts;
         if (turn.memory.leadState === 'captured' && rf['lead.name'] && rf['lead.phone']) {
           speech = "You're already on the list" + (rf['lead.name'] ? ", " + rf['lead.name'] : "") +
-            ". A BlueColumn strategist will call " + rf['lead.phone'] +
+            ". The OttoMedic team will call " + rf['lead.phone'] +
             " to schedule the walkthrough. Anything else I can answer first?";
           expressions.push({ name: 'warm', intensity: 0.8, at: 0 });
           gestures.push({ name: 'nod', intensity: 0.5, entryMs: 240, holdMs: 500, releaseMs: 320, at: 200 });
@@ -276,7 +276,7 @@
           });
           break;
         }
-        speech = "Let's do it. I'll take your name, business, and best phone number, and a BlueColumn strategist schedules the walkthrough from there. First: what's your name?";
+        speech = "Let's do it. I'll take your name, business, and best phone number, and the OttoMedic team follows up from there. First: what's your name?";
         follow = 'capturing';
         expressions.push({ name: 'alert', intensity: 0.6, at: 0 });
         gaze.push({ target: 'panel:booking-panel', transitionMs: 260, holdMs: 2200, returnTarget: 'user', at: 300 });
@@ -285,11 +285,9 @@
         break;
       }
       case 'avatars': {
-        speech = "Three ways to pick a face. Animated characters come with every plan. Stock video faces are real-time talking heads on the Pro tier. Or a custom face — the one you're looking at right now is custom. The screen has the breakdown.";
+        speech = "I'm the same Marina you see on the OttoMedic site — a real-time talking specialist. Anything else about the skimmer I can answer?";
         expressions.push({ name: 'friendly', intensity: 0.7, at: 0 });
-        gaze.push({ target: 'panel:avatars-panel', transitionMs: 260, holdMs: 2600, returnTarget: 'user', at: 300 });
-        gestures.push({ name: 'present_center', intensity: 0.62, entryMs: 260, holdMs: 1100, releaseMs: 380, at: 300 });
-        content.push({ action: 'show', target: 'avatars-panel', data: {}, at: 400 });
+        gestures.push({ name: 'present_center', intensity: 0.5, entryMs: 260, holdMs: 1100, releaseMs: 380, at: 300 });
         break;
       }
       case 'pricing': {
@@ -304,12 +302,10 @@
         break;
       }
       case 'live-sites': {
-        speech = k.text;
+        speech = "OttoMedic runs on over 2,000 reef systems — keepers protecting livestock worth 40,000 dollars and up. Ask me about the models, specs, or the guarantee.";
         if (k.source === 'rag' || k.source === 'catalog') { speech += ' ' + this._followUp(intent); }
         expressions.push({ name: 'friendly', intensity: 0.7, at: 0 });
-        gaze.push({ target: 'panel:sites-panel', transitionMs: 260, holdMs: 2600, returnTarget: 'user', at: 300 });
-        gestures.push({ name: 'present_right', intensity: 0.6, entryMs: 260, holdMs: 1100, releaseMs: 380, at: 300 });
-        content.push({ action: 'show', target: 'sites-panel', data: {}, at: 400 });
+        gestures.push({ name: 'present_right', intensity: 0.5, entryMs: 260, holdMs: 1100, releaseMs: 380, at: 300 });
         break;
       }
       case 'how-it-works': {

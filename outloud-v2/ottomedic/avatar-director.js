@@ -34,7 +34,7 @@
      0 rest/closed   1 closed seam (M/B/P)  2 big open, tongue   3 EH spread
      4 wide grin     5 tiny O (OO)         6 small O (OH)       7 mid-open grin
      8 tall open (L/TH) 9 ER mid oval     10 clenched S        11 W pucker */
-  var COLS = 4, ROWS = 3;
+  var A = (window.OUTLOUD.CONFIG || {}).avatar || {}; var COLS = A.cols || 4, ROWS = A.rows || 3;
 
   function AvatarDirector(bus, opts) {
     this.bus = bus;
@@ -89,6 +89,7 @@
 
   /* ---------- FACE channel (visemes / lip-sync) ---------- */
   AvatarDirector.prototype.setFrame = function (i) {
+    if (COLS < 2 || ROWS < 2) { return; } /* static fallback image: no rig grid */
     if (i === this.cur || !this.mascot) { return; }
     this.cur = i;
     var x = (i % COLS) / (COLS - 1) * 100;

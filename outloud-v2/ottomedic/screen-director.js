@@ -12,7 +12,7 @@
    Six VALIDATED cards only — every claim mirrors the page's own
    catalog copy (no unverified claims, per spec). The deck rotates
    on the branded screen between answers:
-     1. What is OutLoud          2. Simple monthly plans
+     1. What is OttoMedic        2. EVO models
      3. Proof (live clients)     4. Timeline (30 days)
      5. Pick your face (tiers)   6. Your business (the walkthrough)
 
@@ -22,7 +22,7 @@
        resumes after the panel is gone.
      • Every card carries a one-tap question — the screen is itself
        a conversation starter, not a billboard.
-     • Rotation pauses while OutLoud speaks so the face + screen
+     • Rotation pauses while Marina speaks so the face + screen
        stay in sync; resumes when the runtime goes idle.
    =============================================================== */
 (function () {
@@ -66,10 +66,10 @@
     },
     {
       id: 'your-business',
-      kicker: 'This page is OutLoud',
-      title: 'A site that talks to every visitor',
-      body: 'This page is the product demo — answering, quoting, and booking around the clock. We build one with your business on it.',
-      ask: 'Book a demo'
+      kicker: 'Talk to Marina',
+      title: 'Answers every visitor, out loud',
+      body: 'Marina answers questions about the skimmer around the clock — how it works, models, specs, setup.',
+      ask: 'How does it work?'
     }
   ];
 

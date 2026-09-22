@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OutLoud for OttoMedic · The skimmer that thinks for itself, talking</title>
-  <meta name="description" content="A live OutLoud page for OttoMedic — the self-regulating protein skimmer. Ask the agent anything: how it works, what it prevents, models, specs. It answers out loud and shows its work." />
+  <title>OttoMedic — Talk to Marina, Live</title>
+  <meta name="description" content="A live talking page for OttoMedic — the self-regulating protein skimmer. Ask Marina anything: how it works, what it prevents, models, specs. She answers and shows her work." />
   <meta name="theme-color" content="#F2F6FC" />
   <meta name="robots" content="noindex" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,11 +17,11 @@
 
   <header class="top">
     <div class="brand">
-      <span class="brand-word">OutLoud</span>
-      <span class="brand-sub mono">for OttoMedic · client demo</span>
+      <span class="brand-word">OttoMedic</span>
+      <span class="brand-sub mono">ottomedic.com · live agent</span>
     </div>
     <div style="display:flex; gap:8px;">
-      <button type="button" id="ol-book-cta" class="ol-book-cta">Book a Demo</button>
+      <button type="button" id="ol-book-cta" class="ol-book-cta">Get a Quote</button>
       <button type="button" id="ol-mic" class="ol-mic" aria-pressed="false">
         <span class="ol-btn-label">Talk</span>
       </button>
@@ -34,15 +34,15 @@
   <main class="ol-main">
 
     <!-- ============ AVATAR STAGE ============ -->
-    <section class="ol-stage-panel" aria-label="OutLoud agent stage for OttoMedic">
-      <p class="ol-kicker mono">OttoMedic, out loud. Speak or type — get a spoken answer with helpful visuals.</p>
-      <h1 class="ol-title">Ask this page about OttoMedic.<br /><em>It answers out loud, and shows its work.</em></h1>
+    <section class="ol-stage-panel" aria-label="OttoMedic live agent stage">
+      <p class="ol-kicker mono">OttoMedic, talking. Speak or type — get a spoken answer with helpful visuals.</p>
+      <h1 class="ol-title">Ask Marina about OttoMedic.<br /><em>She answers live, and shows her work.</em></h1>
 
       <div class="ol-stage-row">
-        <div id="ol-avatar-stage" class="ol-avatar-stage" aria-label="OutLoud mascot"></div>
-        <div class="ol-screen" id="ol-screen" aria-label="OutLoud presentation screen">
+        <div id="ol-avatar-stage" class="ol-avatar-stage" aria-label="OttoMedic avatar"></div>
+        <div class="ol-screen" id="ol-screen" aria-label="OttoMedic presentation screen">
           <div class="ol-screen-topbar mono">
-            <span class="ol-screen-brand">OUTLOUD</span>
+            <span class="ol-screen-brand">OTTOMEDIC</span>
             <span class="ol-screen-url">ottomedic.com</span>
           </div>
           <div class="ol-screen-body">
@@ -52,7 +52,7 @@
               <div class="ol-standby-note mono">ask me how it works, models, specs, or setup</div>
             </div>
             <!-- SDK content.host — panels render here while the avatar presents -->
-            <div id="outloud-content-panel" class="ol-host ol-host-screen" aria-label="Content shown by OutLoud"></div>
+            <div id="outloud-content-panel" class="ol-host ol-host-screen" aria-label="Content shown by Marina"></div>
           </div>
         </div>
       </div>
@@ -66,31 +66,30 @@
         <button type="button" class="ol-chip">How does it work?</button>
         <button type="button" class="ol-chip">What problems does it prevent?</button>
         <button type="button" class="ol-chip">What does it cost?</button>
-        <button type="button" class="ol-chip">Book a demo</button>
+        <button type="button" class="ol-chip">Talk to the team</button>
       </div>
       <!-- Controls in the main view: ask from the hero itself -->
       <div class="ol-inrow ol-inrow-stage">
         <input id="ol-text-in" class="ol-text" type="text" autocomplete="off"
-               placeholder="Ask Otto anything about OttoMedic, or press Talk" aria-label="Message OutLoud" />
+               placeholder="Ask Marina anything about OttoMedic, or press Talk" aria-label="Message Marina" />
         <button type="button" id="ol-send" class="ol-send">Send</button>
       </div>
     </section>
 
     <!-- ============ CONVERSATION ============ -->
-    <section class="ol-console" aria-label="Conversation with OutLoud">
+    <section class="ol-console" aria-label="Conversation with Marina">
       <ol id="ol-log" class="ol-log" aria-live="polite"></ol>
     </section>
 
     <p class="ol-runtime-note mono">
-      OutLoud client demo for OttoMedic · knowledge from the OttoMedic Marina brain + live BlueColumn recall ·
-      sprite + video avatar runtime · page by BlueColumn
+      Live talking page for OttoMedic · knowledge from the OttoMedic Marina brain + live BlueColumn recall · page by BlueColumn
     </p>
 
   </main>
 
   <footer class="foot mono">
-    <span>© 2026 BlueColumn. OutLoud agent demo — OttoMedic content © OttoMedic GmbH.</span>
-    <span>OutLoud demo build · 2026-09-22</span>
+    <span>© 2026 OttoMedic GmbH · ottomedic.com</span>
+    <span>Live agent by <a href="https://bluecolumn.ai">BlueColumn AI</a></span>
   </footer>
 
   <p class="sr-status mono" id="ol-sr-status" role="status" aria-live="polite"></p>

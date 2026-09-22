@@ -52,7 +52,7 @@
       self.submit(env.payload.text, env.payload.typed);
     });
 
-    /* VAD-only barge-in (voice while OutLoud speaks). */
+    /* VAD-only barge-in (voice while Marina speaks). */
     this.bus.on('vad.speechStart', function () {
       if (self.state === 'RESPONDING') { self.bargeIn(null); }
     });

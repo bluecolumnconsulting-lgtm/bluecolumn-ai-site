@@ -93,17 +93,17 @@
     {
       id: 'outloud',
       k: ['outloud', 'out loud', 'this page', 'what is this page', 'bluecolumn', 'blue column', 'who built this'],
-      t: "This page itself is OutLoud — BlueColumn's conversational website agent, shown here answering questions about OttoMedic. An OutLoud page greets every visitor, answers out loud from the business's own knowledge, and shows its work on the screen beside the avatar. Plans start at $49 a month at bluecolumn.ai."
+      t: "I'm Marina, OttoMedic's live talking specialist. I answer every visitor out loud — how the skimmer works, models, specs, setup. The live-agent stack behind me is built by BlueColumn."
     },
     {
       id: 'booking-flow',
       k: ['book', 'demo', 'walkthrough', 'schedule', 'sign up', 'talk to someone', 'get started', 'contact', 'email', 'phone', 'buy', 'where'],
-      t: "Easy. For OttoMedic itself: support@ottomedic.com or 1-800-OTTOMEDIC, Hamburg Germany, Monday to Friday 9 to 6 Eastern. And if you want a page like this one for your business, I'll take your name, business, and best phone number, and a BlueColumn strategist schedules the walkthrough."
+      t: "Easy. For OttoMedic itself: support@ottomedic.com or 1-800-OTTOMEDIC, Hamburg Germany, Monday to Friday 9 to 6 Eastern. And if you want a page like this one for your business, I'll take your name, business, and best phone number, and the team that built this page can walk you through it."
     },
     {
       id: 'voice-avatar',
       k: ['voice', 'avatar', 'mascot', 'lip', 'speak', 'robot', 'animation', 'orange', 'marina', 'who are you', 'your name'],
-      t: "I'm Otto, the OutLoud mascot for this page. I speak with an ElevenLabs voice, answer from OttoMedic's own knowledge — the same brain that powers Marina, the reef technology advisor on the main site — and move as a sprite-animated character whose lip-sync runs independently of my gestures. On client pages the same stack also runs as a real-time video avatar."
+      t: "I'm Marina, OttoMedic's talking specialist. I speak with an ElevenLabs voice, answer from OttoMedic's own knowledge, and appear as a real-time video avatar — the same Marina who lives on the OttoMedic site."
     }
   ];
 

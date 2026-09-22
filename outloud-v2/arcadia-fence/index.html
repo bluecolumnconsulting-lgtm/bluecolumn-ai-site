@@ -1,116 +1,764 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OutLoud for Arcadia Fence & Gate · Fences, gates, and free estimates — talking</title>
-  <meta name="description" content="A live OutLoud page for Arcadia Fence & Gate — block walls, steel view fencing, wood, vinyl, and custom gates across the Phoenix Metro. Ask the agent anything: materials, gates, pricing, financing. It answers out loud and shows its work." />
-  <meta name="theme-color" content="#F2F6FC" />
-  <meta name="robots" content="noindex" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=16" />
-  <link rel="stylesheet" href="runtime.css?v=18" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arcadia Fence & Gate — Talk to Buddy, Live</title>
+<meta name="description" content="Ask Buddy anything about Arcadia Fence & Gate: block walls, steel view fencing, wood, vinyl, custom gates, free estimates, financing, and service area. He answers out loud — 24/7.">
+<meta name="theme-color" content="#22333b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2322333b'/%3E%3Cpath d='M8 44V20m12 24V20m12 24V20m12 24V20m12 24V20M4 24h56M4 40h56' stroke='%23d96f3d' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sand:#faf6ef;
+  --sand-2:#f3ecdd;
+  --ink:#25313a;
+  --muted:#5d6b74;
+  --terra:#d96f3d;
+  --terra-deep:#b85a2e;
+  --terra-soft:rgba(217,111,61,.14);
+  --slate:#22333b;
+  --slate-2:#2c414c;
+  --slate-line:rgba(255,255,255,.10);
+  --line:rgba(37,49,58,.13);
+  --green:#3f8f5f;
+  --shadow:0 18px 48px rgba(34,51,59,.14);
+  --radius:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0}
+body{
+  font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:
+    radial-gradient(900px 420px at 12% -60px, rgba(217,111,61,.10), transparent 62%),
+    radial-gradient(900px 420px at 88% -60px, rgba(63,143,95,.08), transparent 62%),
+    var(--sand);
+  color:var(--ink);
+  min-height:100vh;
+}
+button,input{font:inherit}
+a{color:inherit}
+.mono{font-family:'Spline Sans Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+
+/* ---------- marina-agent plumbing (hidden stubs the agent boots from) ---------- */
+#bot-fab{display:none}
+#bot-panel{position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden}
+#bot-log{display:none}
+.bot-input{position:absolute;width:1px;height:1px;overflow:hidden}
+#bot-simli-audio{display:none}
+#bot-avatar{display:none}
+
+/* ---------- topline ---------- */
+.page{min-height:100vh;display:flex;flex-direction:column}
+.topline{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:16px clamp(16px,4vw,36px) 6px;flex-wrap:wrap;
+}
+.topline-brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--slate)}
+.topline-brand .ol-badge{
+  background:var(--slate);color:#fff;border-radius:9px;padding:4px 9px;
+  font-size:12px;letter-spacing:.06em;
+}
+.topline-brand .sep{color:var(--muted);font-weight:400}
+.topline-meta{
+  color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+}
+.topline-meta .live{display:inline-flex;align-items:center;gap:7px;font-weight:700;color:var(--green)}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(63,143,95,.18)}
+
+/* ---------- stage: mascot + branded screen ---------- */
+.stage{
+  position:relative;
+  width:min(1120px,100%);
+  margin:8px auto 0;
+  padding:14px clamp(14px,3.5vw,32px) 26px;
+}
+.stage-grid{
+  display:grid;grid-template-columns:minmax(300px,1fr) 1.18fr;
+  gap:clamp(18px,3vw,40px);align-items:center;
+}
+.mascot-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;position:relative}
+.mascot-float{animation:mascotFloat 5.5s ease-in-out infinite}
+@keyframes mascotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.mascot{
+  width:min(380px,74vw);
+  aspect-ratio:125/250;
+  background-image:url("mascot-sprite.png");
+  background-size:400% 200%;
+  background-repeat:no-repeat;
+  background-position:0% 0%;
+  border-radius:28px;
+  will-change:transform,background-position;
+  filter:drop-shadow(0 26px 44px rgba(34,51,59,.18));
+  transition:background-position .06s linear;
+}
+.mascot-shadow{width:46%;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(34,51,59,.22),transparent 70%);margin-top:-4px}
+.mascot-status{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+
+/* branded screen */
+.screen{
+  position:relative;
+  background:linear-gradient(180deg,#1b2a32,#15222a);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:24px;
+  box-shadow:0 30px 70px rgba(21,34,42,.38), inset 0 1px 0 rgba(255,255,255,.08);
+  display:flex;flex-direction:column;
+  min-height:min(560px,74vh);
+  overflow:hidden;
+}
+.screen-topbar{
+  display:flex;align-items:center;gap:10px;
+  padding:13px 18px;border-bottom:1px solid var(--slate-line);
+  color:#e9eef1;background:rgba(255,255,255,.03);
+}
+.screen-topbar .dot{width:9px;height:9px;border-radius:50%;background:#6dd6a5;box-shadow:0 0 0 3px rgba(109,214,165,.16)}
+.screen-topbar .brandline{font-weight:800;letter-spacing:.14em;font-size:12px}
+.screen-topbar .url{margin-left:auto;font-size:11px;color:rgba(255,255,255,.55);letter-spacing:.05em}
+.screen-body{
+  position:relative;flex:1;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+/* watermark behind the deck */
+.watermark{
+  position:absolute;top:clamp(16px,3vh,34px);left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:.13;pointer-events:none;
+}
+.watermark .wm-word{font-size:15px;letter-spacing:.42em;color:#e9eef1;font-weight:600;padding-left:.42em}
+/* standby sign */
+.standby{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;text-align:center;color:#e9eef1;transition:opacity .5s ease;
+}
+.standby.dim{opacity:0;pointer-events:none}
+.standby-word{
+  font-weight:800;font-size:clamp(22px,3vw,30px);letter-spacing:.18em;color:#fff;
+}
+.standby-word .accent{color:var(--terra)}
+.standby-sub{font-size:12px;color:rgba(255,255,255,.62);letter-spacing:.08em}
+.standby-note{font-size:11px;color:rgba(255,255,255,.42);letter-spacing:.06em;margin-top:8px}
+/* rotating cards */
+.deck{position:absolute;inset:0;padding:clamp(14px,2.4vw,26px);display:flex;flex-direction:column;justify-content:flex-end;gap:12px;pointer-events:none}
+.deck-card{
+  position:absolute;left:clamp(14px,2.4vw,26px);right:clamp(14px,2.4vw,26px);bottom:clamp(14px,2.4vw,26px);
+  background:rgba(255,255,255,.055);
+  border:1px solid var(--slate-line);
+  border-radius:18px;padding:18px 20px;
+  color:#e9eef1;opacity:0;transform:translateY(10px);
+  transition:opacity .45s ease,transform .45s ease;
+  backdrop-filter:blur(2px);
+}
+.deck-card.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.deck-kicker{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin-bottom:7px;font-weight:600}
+.deck-title{font-weight:800;font-size:clamp(17px,2vw,21px);margin:0 0 6px;color:#fff}
+.deck-body{font-size:13.5px;line-height:1.55;color:rgba(233,238,241,.82);margin:0 0 12px}
+.deck-ask{
+  border:1px solid rgba(217,111,61,.55);background:rgba(217,111,61,.14);color:#ffb896;
+  border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;
+  transition:all .15s ease;
+}
+.deck-ask:hover{background:var(--terra);border-color:var(--terra);color:#fff}
+.deck-dots{position:absolute;top:14px;right:18px;display:flex;gap:6px}
+.deck-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.22)}
+.deck-dots span.on{background:var(--terra)}
+/* topic panels (win over deck while live) */
+.tpanel{
+  position:absolute;inset:0;display:none;overflow-y:auto;
+  padding:clamp(16px,2.6vw,26px);color:#e9eef1;
+}
+.tpanel.active{display:block}
+.tpanel h3{margin:0 0 4px;font-size:clamp(18px,2.2vw,22px);color:#fff}
+.tpanel .tp-kicker{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);font-weight:600;margin-bottom:8px}
+.tpanel p{font-size:13.5px;line-height:1.55;color:rgba(255,255,255,.8);margin:0 0 12px}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0 4px}
+.svc{
+  background:rgba(255,255,255,.05);border:1px solid var(--slate-line);border-radius:14px;padding:11px 13px;
+}
+.svc strong{display:block;font-size:13.5px;color:#fff;margin-bottom:2px}
+.svc span{font-size:12px;color:rgba(255,255,255,.62);line-height:1.45}
+.fact-row{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0 4px}
+.fact{background:rgba(255,255,255,.05);border:1px solid var(--slate-line);border-radius:14px;padding:10px 12px;text-align:center}
+.fact strong{display:block;color:#fff;font-size:16px;margin-bottom:2px}
+.fact span{font-size:10.5px;color:rgba(255,255,255,.55);letter-spacing:.05em;text-transform:uppercase}
+.quote-flow{display:grid;gap:9px;margin-top:12px}
+.q-step{display:flex;gap:10px;align-items:flex-start}
+.q-num{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex:0 0 auto}
+.q-step.done .q-num,.q-step.current .q-num{background:var(--terra);color:#fff}
+.q-copy strong{display:block;font-size:13px;color:#fff;margin-bottom:1px}
+.q-copy span{display:block;font-size:12px;color:rgba(255,255,255,.58)}
+.tpanel .tp-cta{
+  display:inline-block;margin-top:6px;background:var(--terra);color:#fff;border:none;border-radius:999px;
+  padding:10px 18px;font-weight:800;font-size:13px;cursor:pointer;text-decoration:none;
+}
+/* caption pill (what Buddy says) */
+.caption{
+  width:min(760px,94%);margin:-8px auto 0;
+  background:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:11px 18px;box-shadow:var(--shadow);
+}
+.caption-label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--terra-deep);margin-bottom:2px}
+#caption-text{display:block;font-size:13.5px;line-height:1.5;min-height:1.5em;color:var(--ink)}
+
+/* controls row */
+.controls{
+  width:min(860px,94%);margin:14px auto 0;
+  background:#fff;border:1px solid var(--line);border-radius:22px;
+  box-shadow:var(--shadow);padding:12px;
+}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.chip{
+  border:1px solid var(--line);background:var(--sand);color:var(--slate);
+  border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;
+  transition:all .15s ease;
+}
+.chip:hover{border-color:var(--terra);color:var(--terra-deep);background:var(--terra-soft)}
+.chip.accent{border-color:rgba(217,111,61,.5);background:var(--terra-soft);color:var(--terra-deep)}
+.control-row{display:flex;gap:10px;align-items:center}
+.icon-btn{
+  border:none;width:44px;height:44px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+  background:var(--sand-2);color:var(--slate);flex:0 0 auto;
+}
+.icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn.on{background:var(--terra);color:#fff}
+.icon-btn:disabled{opacity:.4;cursor:not-allowed}
+.input-shell{
+  flex:1;display:flex;align-items:center;gap:8px;
+  background:var(--sand);border:1px solid var(--line);border-radius:999px;
+  padding:0 5px 0 15px;min-height:52px;
+}
+#live-input{flex:1;border:none;outline:none;background:transparent;color:var(--ink);min-width:0;font-size:14.5px}
+#live-input::placeholder{color:#93a1a9}
+.send-btn{
+  border:none;width:42px;height:42px;border-radius:50%;background:var(--slate);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;
+}
+.send-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.helper-text{margin:9px 4px 0;font-size:11.5px;color:var(--muted)}
+
+/* start gate */
+.start-gate{
+  position:absolute;inset:0;z-index:8;border:none;cursor:pointer;
+  background:linear-gradient(180deg,rgba(250,246,239,.985),rgba(243,236,221,.99));
+  backdrop-filter:blur(6px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  text-align:center;padding:24px;border-radius:24px;transition:opacity .4s ease;
+}
+.start-gate.gone{opacity:0;pointer-events:none}
+.start-gate-title{font-size:clamp(24px,3.4vw,32px);font-weight:800;color:var(--slate)}
+.start-gate-sub{color:var(--muted);font-size:14.5px;margin:0;max-width:440px;line-height:1.5}
+.start-gate-cta{
+  margin-top:10px;background:var(--terra);color:#fff;border-radius:999px;
+  padding:14px 30px;font-weight:800;font-size:15px;box-shadow:0 12px 30px rgba(217,111,61,.4);
+}
+.start-gate-note{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+/* ---------- supporting sections ---------- */
+main.sections{width:min(1120px,100%);margin:0 auto;padding:0 clamp(16px,4vw,36px) 30px}
+.stats-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  margin:26px 0 10px;
+}
+.stat{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px;text-align:center;
+}
+.stat-num{display:block;font-size:26px;font-weight:800;color:var(--terra-deep)}
+.stat-label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+.section{margin:38px 0 0}
+.section-head{text-align:center;margin-bottom:18px}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-deep);font-weight:700;margin:0 0 6px}
+.section-title{font-size:clamp(22px,3.4vw,30px);margin:0;line-height:1.2;color:var(--slate)}
+.svc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.svc-card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px;box-shadow:0 6px 18px rgba(34,51,59,.05);
+}
+.svc-card h3{margin:0 0 5px;font-size:16px;color:var(--slate)}
+.svc-card p{margin:0;font-size:13px;line-height:1.5;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;counter-reset:step}
+.step{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;
+}
+.step-num{
+  width:26px;height:26px;border-radius:50%;background:var(--terra);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;margin-bottom:9px;
+}
+.step h3{margin:0 0 5px;font-size:15.5px;color:var(--slate)}
+.step p{margin:0;font-size:13px;line-height:1.5;color:var(--muted)}
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.quote-card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;
+}
+.quote-card blockquote{margin:0 0 10px;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.quote-card cite{font-style:normal;font-size:12px;color:var(--muted)}
+.quote-card .stars{color:var(--terra);letter-spacing:2px;font-size:13px;margin-bottom:8px}
+.contact-band{
+  margin-top:38px;background:linear-gradient(135deg,var(--slate),#31494f);
+  border-radius:24px;padding:clamp(22px,4vw,36px);color:#fff;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+}
+.contact-band h2{margin:0 0 6px;font-size:clamp(20px,2.8vw,26px)}
+.contact-band p{margin:0;font-size:13.5px;color:rgba(255,255,255,.75)}
+.contact-band .c-actions{display:flex;gap:10px;flex-wrap:wrap}
+.c-btn{
+  border-radius:999px;padding:13px 22px;font-weight:800;font-size:14px;cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;border:none;
+}
+.c-btn.primary{background:var(--terra);color:#fff;box-shadow:0 12px 30px rgba(217,111,61,.35)}
+.c-btn.ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
+footer.foot{
+  width:min(1120px,100%);margin:26px auto 0;padding:18px clamp(16px,4vw,36px) 26px;
+  border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  font-size:11.5px;color:var(--muted);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:920px){
+  .stage-grid{grid-template-columns:1fr;gap:20px}
+  .mascot{width:min(300px,66vw)}
+  .screen{min-height:480px}
+  .svc-cards,.steps,.quotes{grid-template-columns:1fr 1fr}
+}
+@media (max-width:620px){
+  .topline{padding-top:12px}
+  .topline-meta{display:none}
+  .stage{padding-top:6px}
+  .mascot{width:min(250px,60vw)}
+  .screen{min-height:440px}
+  .stats-strip,.svc-cards,.steps,.quotes{grid-template-columns:1fr}
+  .fact-row{grid-template-columns:1fr 1fr}
+  .control-row{flex-wrap:wrap}
+  .input-shell{min-width:100%;order:-1}
+}
+</style>
 </head>
 <body>
+<div class="page">
 
-  <header class="top">
-    <div class="brand">
-      <span class="brand-word">OutLoud</span>
-      <span class="brand-sub mono">for Arcadia Fence &amp; Gate · client demo</span>
+  <!-- marina-agent plumbing: agent boots from these IDs (Simli unused on this page) -->
+  <button id="bot-fab" aria-hidden="true" tabindex="-1">Hidden launcher</button>
+  <div id="bot-panel" role="dialog" aria-label="Buddy live assistant">
+    <div id="bot-video-wrap" aria-hidden="true">
+      <video id="bot-video-el" autoplay playsinline muted></video>
+      <audio id="bot-simli-audio" autoplay></audio>
     </div>
-    <div style="display:flex; gap:8px;">
-      <button type="button" id="ol-book-cta" class="ol-book-cta">Book a Demo</button>
-      <button type="button" id="ol-mic" class="ol-mic" aria-pressed="false">
-        <span class="ol-btn-label">Talk</span>
-      </button>
-      <button type="button" id="ol-sound" class="ol-sound" aria-pressed="true">
-        <span class="ol-btn-label">Sound: on</span>
-      </button>
+    <div id="bot-log" aria-hidden="true"></div>
+    <div class="bot-input">
+      <input id="bot-in" placeholder="Ask Buddy anything" aria-label="Message Buddy">
+      <button id="bot-send" type="button">Send</button>
+    </div>
+  </div>
+  <div id="bot-avatar" aria-hidden="true" hidden></div>
+
+  <header class="topline">
+    <div class="topline-brand">
+      <span>Arcadia Fence & Gate — Talk to Buddy</span>
+    </div>
+    <div class="topline-meta">
+      <span class="live"><span class="live-dot"></span>Buddy is on this page</span>
+      <span>ROC 337481 · Valley-Wide · Since 2018</span>
     </div>
   </header>
 
-  <main class="ol-main">
+  <section class="stage" aria-label="Live stage — Buddy the mascot beside the Arcadia screen">
+    <div class="stage-grid">
+      <div class="mascot-wrap">
+        <div class="mascot-float">
+          <div class="mascot" id="mascot" role="img" aria-label="Buddy, Arcadia.s live mascot, lip-synced"></div>
+        </div>
+        <div class="mascot-shadow" aria-hidden="true"></div>
+        <div class="mascot-status" id="mascot-status"><span class="live-dot"></span><span id="status-text">Tap to meet Buddy</span></div>
+      </div>
 
-    <!-- ============ AVATAR STAGE ============ -->
-    <section class="ol-stage-panel" aria-label="OutLoud agent stage for Arcadia Fence & Gate">
-      <p class="ol-kicker mono">Arcadia Fence &amp; Gate, out loud. Speak or type — get a spoken answer with helpful visuals.</p>
-      <h1 class="ol-title">Ask this page about Arcadia Fence &amp; Gate.<br /><em>It answers out loud, and shows its work.</em></h1>
-
-      <div class="ol-stage-row">
-        <div id="ol-avatar-stage" class="ol-avatar-stage" aria-label="OutLoud mascot"></div>
-        <div class="ol-screen" id="ol-screen" aria-label="OutLoud presentation screen">
-          <div class="ol-screen-topbar mono">
-            <span class="ol-screen-brand">OUTLOUD</span>
-            <span class="ol-screen-url">arcadiafencegate.com</span>
+      <div class="screen" id="screen" aria-label="Arcadia Fence & Gate presentation screen">
+        <div class="screen-topbar mono">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="brandline">ARCADIA FENCE &amp; GATE</span>
+          <span class="url">arcadiafenceaz.com</span>
+        </div>
+        <div class="screen-body" id="screen-body">
+          <div class="watermark" aria-hidden="true">
+            <svg viewBox="0 0 120 70" width="120" height="70"><g stroke="#e9eef1" stroke-width="5" stroke-linecap="round"><line x1="14" y1="10" x2="14" y2="64"/><line x1="40" y1="4" x2="40" y2="64"/><line x1="66" y1="10" x2="66" y2="64"/><line x1="92" y1="4" x2="92" y2="64"/><line x1="4" y1="24" x2="116" y2="24"/><line x1="4" y1="50" x2="116" y2="50"/></g></svg>
+            <span class="wm-word mono">ARCADIA</span>
           </div>
-          <div class="ol-screen-body">
-            <div class="ol-screen-standby" id="ol-screen-standby">
-              <div class="ol-standby-word">ARCADIA</div>
-              <div class="ol-standby-sub mono">arcadiafencegate.com · fences and gates for the Phoenix Metro</div>
-              <div class="ol-standby-note mono">ask me about block walls, steel, gates, or a free estimate</div>
+          <div class="standby" id="standby">
+            <div class="standby-word">ARCADIA<span class="accent"> · </span>FENCE &amp; GATE</div>
+            <div class="standby-sub mono">Block walls · Steel view · Wood · Vinyl · Custom gates</div>
+            <div class="standby-note mono">ask Buddy to show services, pricing, or start your free estimate</div>
+          </div>
+
+          <div class="deck" id="deck" aria-hidden="true">
+            <div class="deck-dots" id="deck-dots"></div>
+          </div>
+
+          <!-- topic panels: Buddy swaps these on-screen as he answers -->
+          <div class="tpanel" id="tp-services" aria-label="Services">
+            <div class="tp-kicker">What we build</div>
+            <h3>Custom built. Arizona-strong.</h3>
+            <div class="svc-grid">
+              <div class="svc"><strong>Block Walls</strong><span>Privacy, security, quiet — decorative caps, HOA heights, reinforced.</span></div>
+              <div class="svc"><strong>Steel View Fencing</strong><span>Modern lines, zero warp, powder-coated. Pool, patio, perimeter.</span></div>
+              <div class="svc"><strong>Wood Fencing</strong><span>Cedar &amp; treated lumber, horizontal or vertical, climate-done-right.</span></div>
+              <div class="svc"><strong>Vinyl Fencing</strong><span>UV-resistant, no repainting. Privacy, picket, ranch-rail.</span></div>
+              <div class="svc"><strong>Custom Gates</strong><span>Manual &amp; automated — keypads, remotes, smart access.</span></div>
+              <div class="svc"><strong>Chain Link &amp; Iron</strong><span>Galvanized or coated chain link, ornamental iron, composite.</span></div>
             </div>
-            <!-- SDK content.host — panels render here while the avatar presents -->
-            <div id="outloud-content-panel" class="ol-host ol-host-screen" aria-label="Content shown by OutLoud"></div>
+          </div>
+
+          <div class="tpanel" id="tp-quote" aria-label="Free estimate">
+            <div class="tp-kicker">Free estimate</div>
+            <h3>Say <em>quote</em> — Buddy walks you through it.</h3>
+            <p>Free design call, transparent quote, pro install. Clear scope and timeline — no mystery fees. Financing available with quick approvals.</p>
+            <div class="fact-row">
+              <div class="fact"><strong>Free</strong><span>Design call &amp; estimate</span></div>
+              <div class="fact"><strong>No fees</strong><span>Transparent quote</span></div>
+              <div class="fact"><strong>Financing</strong><span>Monthly plans</span></div>
+            </div>
+            <div class="quote-flow" id="quote-flow"></div>
+          </div>
+
+          <div class="tpanel" id="tp-trust" aria-label="Why Arcadia">
+            <div class="tp-kicker">Why Arcadia</div>
+            <h3>Licensed, insured, and trusted since 2018.</h3>
+            <div class="fact-row">
+              <div class="fact"><strong>ROC 337481</strong><span>Arizona licensed</span></div>
+              <div class="fact"><strong>Insured</strong><span>Fully covered</span></div>
+              <div class="fact"><strong>2018</strong><span>Serving the Valley</span></div>
+            </div>
+            <p style="margin-top:12px">HomeAdvisor Approved · BBB listed · Owner Joe Pagano runs every job hands-on — from the design call to the final walk-through.</p>
+          </div>
+
+          <div class="tpanel" id="tp-areas" aria-label="Service area and hours">
+            <div class="tp-kicker">Service area</div>
+            <h3>Valley-wide, Arizona.</h3>
+            <p>Phoenix Metro, East Mesa, and surrounding communities — from Arcadia to Apache Junction.</p>
+            <div class="fact-row">
+              <div class="fact"><strong>Mon–Fri</strong><span>7am – 8pm</span></div>
+              <div class="fact"><strong>Sat</strong><span>8am – 4pm</span></div>
+              <div class="fact"><strong>Valley</strong><span>Wide service</span></div>
+            </div>
+          </div>
+
+          <div class="tpanel" id="tp-contact" aria-label="Contact">
+            <div class="tp-kicker">Talk to Arcadia</div>
+            <h3>Real humans, fast answers.</h3>
+            <p>Call <a href="tel:4809069605" style="color:#ffb896">(480) 906-9605</a> · email <a href="mailto:arcadiafencegate@gmail.com" style="color:#ffb896">arcadiafencegate@gmail.com</a><br>Or tell Buddy your number and Arcadia calls you.</p>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="ol-status-row">
-        <span id="ol-state" class="ol-state" data-state="IDLE">Ready when you are</span>
+    <div class="caption" aria-live="polite">
+      <span class="caption-label">Buddy · Arcadia's live agent</span>
+      <span id="caption-text">Tap the stage and Buddy will say hello out loud — then ask him anything.</span>
+    </div>
+
+    <div class="controls">
+      <div class="chip-row" role="group" aria-label="Suggested questions">
+        <button type="button" class="chip accent" data-ask="Start my free quote">Get my free quote</button>
+        <button type="button" class="chip" data-ask="What do you build?">What do you build?</button>
+        <button type="button" class="chip" data-ask="Tell me about financing">Financing</button>
+        <button type="button" class="chip" data-ask="Do you serve my area?">Service area</button>
+        <button type="button" class="chip" data-ask="Are you licensed and insured?">Licensed &amp; insured</button>
+        <button type="button" class="chip" data-ask="Show me recent work">Recent work</button>
       </div>
-      <p class="ol-hint mono">Talk, type, or tap a card on the screen. Barge in anytime while it speaks: it stops and listens.</p>
-      <div class="ol-chips" aria-label="Suggested questions">
-        <button type="button" class="ol-chip">What does Arcadia build?</button>
-        <button type="button" class="ol-chip">What does it cost?</button>
-        <button type="button" class="ol-chip">Is financing available?</button>
-        <button type="button" class="ol-chip">What areas do you serve?</button>
-        <button type="button" class="ol-chip">Book a demo</button>
+      <div class="control-row">
+        <button type="button" id="bot-mute" class="icon-btn" aria-label="Toggle speaker">
+          <svg class="ico-on" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          <svg class="ico-off" viewBox="0 0 24 24" style="display:none"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>
+        </button>
+        <button type="button" id="bot-mic" class="icon-btn" aria-label="Toggle microphone">
+          <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </button>
+        <div class="input-shell">
+          <input id="live-input" type="text" placeholder="Ask about block walls, steel, gates, pricing…" aria-label="Ask Buddy">
+          <button type="button" id="send-live" class="send-btn" aria-label="Send message">
+            <svg viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2z"/></svg>
+          </button>
+        </div>
       </div>
-      <!-- Controls in the main view: ask from the hero itself -->
-      <div class="ol-inrow ol-inrow-stage">
-        <input id="ol-text-in" class="ol-text" type="text" autocomplete="off"
-               placeholder="Ask Buddy anything, or press Talk" aria-label="Message OutLoud" />
-        <button type="button" id="ol-send" class="ol-send">Send</button>
+      <p class="helper-text">Say <strong>quote</strong> and Buddy collects fence type, address, and phone — Arcadia calls you back. Mic works hands-free; barge in anytime.</p>
+    </div>
+
+    <button type="button" class="start-gate" id="start-gate">
+      <span class="start-gate-title">Meet Buddy 👋</span>
+      <span class="start-gate-sub">Buddy answers out loud about fences, gates, pricing, and scheduling — 24/7. He can even start your free estimate.</span>
+      <span class="start-gate-cta">Start talking</span>
+      <span class="start-gate-note mono">Turn your sound on · mic works too</span>
+    </button>
+  </section>
+
+  <main class="sections">
+    <div class="stats-strip">
+      <div class="stat"><span class="stat-num">Free</span><span class="stat-label">Estimates — no pressure, no fees</span></div>
+      <div class="stat"><span class="stat-num">ROC 337481</span><span class="stat-label">Licensed &amp; insured since 2018</span></div>
+      <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Buddy answers, quotes, and books</span></div>
+    </div>
+
+    <section class="section" id="services">
+      <div class="section-head">
+        <p class="eyebrow mono">What we build</p>
+        <h2 class="section-title">Five ways Arcadia fences Arizona.<br>Custom, not cookie-cutter.</h2>
+      </div>
+      <div class="svc-cards">
+        <article class="svc-card"><h3>Block Walls</h3><p>Privacy. Security. Quiet. Decorative caps &amp; toppers, HOA height options, reinforced for long-term stability.</p></article>
+        <article class="svc-card"><h3>Steel View Fencing</h3><p>Modern lines. Zero warp. Maximum sightlines — powder-coated and low-maintenance for perimeter, pool, and patio.</p></article>
+        <article class="svc-card"><h3>Wood Fencing</h3><p>Cedar &amp; treated lumber, horizontal or vertical slats — warm, timeless, and done right for our climate.</p></article>
+        <article class="svc-card"><h3>Vinyl Fencing</h3><p>Looks great, shrugs off the sun, never needs repainting. Privacy, picket, and ranch-rail profiles.</p></article>
+        <article class="svc-card"><h3>Custom Gates</h3><p>Manual &amp; automated. Keypads, remotes, smart access, heavy-duty hardware — matched to your fence.</p></article>
+        <article class="svc-card"><h3>Chain Link &amp; Iron</h3><p>Galvanized or coated chain link and ornamental iron — commercial-grade installs across the Valley.</p></article>
       </div>
     </section>
 
-    <!-- ============ CONVERSATION ============ -->
-    <section class="ol-console" aria-label="Conversation with OutLoud">
-      <ol id="ol-log" class="ol-log" aria-live="polite"></ol>
+    <section class="section" id="how">
+      <div class="section-head">
+        <p class="eyebrow mono">How it works</p>
+        <h2 class="section-title">Three steps. No drama.</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="step-num">1</span><h3>Free design call</h3><p>Tell us what you need. We map the property and answer HOA and permit questions.</p></div>
+        <div class="step"><span class="step-num">2</span><h3>Transparent quote</h3><p>Clear scope, clear timeline. No mystery fees — financing options if you want them.</p></div>
+        <div class="step"><span class="step-num">3</span><h3>Pro install</h3><p>Licensed crew, daily updates, spotless site, solid warranty.</p></div>
+      </div>
     </section>
 
-    <p class="ol-runtime-note mono">
-      OutLoud client demo for Arcadia Fence &amp; Gate · knowledge from the Arcadia client stack + live BlueColumn brain ·
-      sprite + video avatar runtime · page by BlueColumn
-    </p>
+    <section class="section" id="reviews">
+      <div class="section-head">
+        <p class="eyebrow mono">Proof</p>
+        <h2 class="section-title">Trusted since 2018 by Arizona homeowners.</h2>
+      </div>
+      <div class="quotes">
+        <div class="quote-card"><div class="stars">★★★★★</div><p>"What a great experience with Joe and his workers. Joe pays very close attention to my plans, budget and needs. Extremely personable, professional and friendly. He's quick to respond!! We'd highly recommend."</p><cite>DJ "Darlene" Marshall · Local Guide</cite></div>
+        <div class="quote-card"><div class="stars">★★★★★</div><p>"They did a great job creating the fencing I was looking for without much to go on."</p><cite>Wendy Skree · Verified Customer</cite></div>
+        <div class="quote-card"><div class="stars">★★★★★</div><p>"Great communication and follow up from the start. Very responsive to my needs and timeline. Did an excellent job from beginning to end."</p><cite>Erin Umerley · Verified Customer</cite></div>
+      </div>
+    </section>
 
+    <section class="contact-band" id="contact">
+      <div>
+        <h2>Protect your people. Protect your pets.</h2>
+        <p>Get a fast, free estimate today — Buddy can start it right now, or reach Arcadia directly.</p>
+      </div>
+      <div class="c-actions">
+        <a class="c-btn primary" href="tel:4809069605">(480) 906-9605</a>
+        <button type="button" class="c-btn ghost" id="ask-buddy-btn">Ask Buddy instead</button>
+      </div>
+    </section>
   </main>
 
-  <footer class="foot mono">
-    <span>© 2026 BlueColumn. OutLoud agent demo — Arcadia Fence &amp; Gate content © Arcadia Fence &amp; Gate.</span>
-    <span>OutLoud demo build · 2026-09-22</span>
+  <footer class="foot">
+    <span>© 2026 Arcadia Fence &amp; Gate · ROC 337481 · Licensed &amp; Insured · arcadiafenceaz.com</span>
+    <span>Live agent by <a href="https://bluecolumn.ai">BlueColumn AI</a></span>
   </footer>
+</div>
 
-  <p class="sr-status mono" id="ol-sr-status" role="status" aria-live="polite"></p>
+<script>
+/* ================= Arcadia Fence & Gate — BOT_CFG =================
+   Drives arcadia-agent.js (marina-grade stack): live BlueColumn brain,
+   ElevenLabs TTS through the orange mascot sprite rig (mascot-rig.js).
+   Canned intents are the offline fallback; brain answers win. */
+function saveLead(b){var leads=JSON.parse(localStorage.getItem('arcadia_leads')||'[]');leads.push(Object.assign({at:new Date().toISOString()},b));localStorage.setItem('arcadia_leads',JSON.stringify(leads));}
+var booking={};
+var mode=null;
+window.BOT_CFG={
+  name:'Buddy',
+  business:'Arcadia Fence & Gate',
+  brainPrefix:'Arcadia Fence & Gate customer question: ',
+  voiceId:'iLVmqjzCGGvqtMCk6vVQ',
+  greeting:"Hey, this is Buddy from Arcadia Fence and Gate. I can talk you through block walls, steel view fencing, wood, vinyl, or custom gates — or say quote and I'll start your free estimate. Tap the mic and just talk to me.",
+  suggestions:[],
+  placeholder:'Ask Buddy anything…',
+  pre:function(txt){
+    var low=txt.toLowerCase();
+    if(mode==='arc-phone'){booking.phone=txt;mode=null;saveLead(booking);
+      return{t:"Locked in! Here's your request:\n• "+(booking.type||'New fence or gate')+"\n• "+(booking.address||'Address pending')+"\n• "+(booking.name||'')+" · "+txt+"\n\nArcadia will call with your free estimate — usually same day during business hours (Mon–Fri 7–8, Sat 8–4). Anything else I can help with?"};}
+    if(mode==='arc-name'){booking.name=txt;mode='arc-phone';return{t:"Thanks, "+txt.split(' ')[0]+" — last thing: the best phone number for your quote callback?"};}
+    if(mode==='arc-address'){booking.address=txt;mode='arc-name';return{t:"Got it. And your name?"};}
+    if(mode==='arc-type'){booking.type=txt;mode='arc-address';return{t:txt+" — solid choice. What's the property address, or the nearest cross streets?"};}
+    if(/\b(quote|estimate)\b/.test(low)||(low.indexOf('price')!==-1&&/start|get|my|free|want|begin/.test(low))){mode='arc-type';return{t:"Let's get your free estimate started. What are we building — block wall, steel view fence, wood, vinyl, or a custom gate?",opts:['Block wall','Steel view fence','Wood','Vinyl','Custom gate','Not sure yet']};}
+    return null;
+  },
+  intents:[
+    {k:['block','cmu','wall'],t:"Block walls are the desert favorite — privacy, security, and quiet. Arcadia does decorative caps and toppers, height options for privacy or HOA rules, and reinforcement for long-term stability. Want a free estimate? Just say quote."},
+    {k:['steel','view'],t:"Steel view fencing — modern lines, zero warp, maximum sightlines. Powder-coated and low-maintenance, great for perimeters, pools, and patios, with custom panels and gates. Say quote and I'll get your estimate started."},
+    {k:['wood','cedar','lumber'],t:"Arcadia builds wood fencing in cedar and treated lumber — horizontal or vertical slats, privacy or decorative accents, done right for the Arizona climate."},
+    {k:['vinyl'],t:"Vinyl fencing looks great and shrugs off the sun — no repainting. UV-resistant formulations in privacy, picket, and ranch-rail styles."},
+    {k:['gate','automated','automatic','keypad','remote','smart access'],t:"Custom gates, manual or automated — keypads, remotes, and smart access, with heavy-duty hinges and latches, designed to match your fence. Pedestrian or vehicular, Arcadia builds both."},
+    {k:['chain link','iron','wrought','ornamental','composite'],t:"Yes — beyond the main lineup, Arcadia installs chain link (galvanized or coated), ornamental iron, and composite fencing. Recent work includes commercial-grade chain link out in East Mesa."},
+    {k:['price','cost','how much','pricing'],t:"Every estimate is free, and quotes are transparent — clear scope, clear timeline, no mystery fees. Financing is available too if you'd rather do a monthly plan. Say quote and I'll start yours right now."},
+    {k:['financ','payment','monthly','afford','lender'],t:"Financing that fits — flexible monthly plans, multiple lenders, quick approvals, so you don't have to wait on the fence you want. Want me to start a free estimate?"},
+    {k:['hoa','permit','setback','submittal'],t:"Yes — Arcadia guides you on heights, setbacks, and HOA submittals so the paperwork doesn't slow your project down."},
+    {k:['fast','start','soon','timeline','how long','schedule'],t:"Site-ready jobs can start quickly — you get a firm start date in your quote. The flow: free design call, transparent quote, then a licensed crew installs with daily updates and a spotless site."},
+    {k:['area','where','serve','mesa','phoenix','gilbert','chandler','tempe','scottsdale','queen creek','apache'],t:"Arcadia serves the whole Phoenix Metro valley-wide — including East Mesa and surrounding Arizona communities. If you're in the Valley, you're covered."},
+    {k:['hours','open','when are'],t:"Arcadia's hours are Monday through Friday, 7am to 8pm, and Saturday 8am to 4pm. Buddy here answers 24/7."},
+    {k:['phone','call','human','speak','talk to','contact','email','reach'],t:"You can reach Arcadia directly at 480-906-9605 or arcadiafencegate@gmail.com. Mon–Fri 7am–8pm, Sat 8am–4pm — or leave your number here and they'll call you."},
+    {k:['licen','roc','insur','bbb','homeadvisor','trust','legit'],t:"Arcadia Fence and Gate is ROC 337481 — Arizona licensed and fully insured, serving the Valley since 2018. HomeAdvisor Approved and BBB listed."},
+    {k:['review','testimonial','rating','good'],t:"Homeowners say it best: 'What a great experience with Joe and his workers. He pays very close attention to my plans, budget and needs — extremely personable, professional, and quick to respond.' Five stars across Google and HomeAdvisor."},
+    {k:['owner','joe','who owns','who runs'],t:"Arcadia is owned and run by Joe Pagano — he's hands-on from the design call to the final walk-through, and quick to respond."},
+    {k:['warranty','guarantee'],t:"Arcadia installs come with a solid warranty — and the crew keeps the job site spotless with daily updates while they build."},
+    {k:['pool'],t:"Pool barriers are a big part of what Arcadia builds — steel view fencing and self-latching gates around pools and patios, powder-coated and low-maintenance."},
+    {k:['repair','fix','broke','fallen'],t:"Repairs aren't listed on the site — your best move is to call Arcadia directly at 480-906-9605 during business hours (Mon–Fri 7–8, Sat 8–4) and describe what happened. They're quick to respond."},
+    {k:['gallery','photo','picture','recent work','project'],t:"Recent work: a steel view fence framing desert mountain views, black iron courtyard fencing with a matching walk gate, a block wall with decorative cap for privacy and sound, horizontal cedar privacy fencing, and white vinyl picket — plus a 5-foot galvanized chain link install at Arizona Skies Senior Community in East Mesa."},
+    {k:['hello','hi','hey','yo'],t:"Hey! Ask me anything — block walls, steel, wood, vinyl, gates, pricing, scheduling — or say quote to start your free estimate."},
+    {k:['thank'],t:"Anytime. Good luck with the project — and remember, estimates are always free."}
+  ],
+  fallback:"I can help with block walls, steel view fencing, wood, vinyl, custom gates, free estimates, financing, and scheduling. For anything else, call Arcadia at 480-906-9605 — Mon–Fri 7am–8pm, Sat 8am–4pm."
+};
+</script>
+<script src="mascot-rig.js?v=1"></script>
+<script src="arcadia-agent.js?v=1"></script>
+<script>
+(function(){
+  'use strict';
+  var F=function(id){return document.getElementById(id);};
+  var gate=F('start-gate'), statusText=F('status-text'), captionText=F('caption-text');
+  var liveInput=F('live-input'), liveSend=F('send-live');
+  var hiddenInput=F('bot-in'), hiddenSend=F('bot-send');
+  var standby=F('standby'), screenEl=F('screen');
+  var quoteFlow=F('quote-flow');
+  var flowOrder=['arc-type','arc-address','arc-name','arc-phone'];
+  var flowLabels={'arc-type':'Fence type','arc-address':'Address or cross streets','arc-name':'Name','arc-phone':'Phone'};
 
-  <!-- Layers, in boot order. No build step; plain script tags.
-       2.0 runtime: Simli live video avatar (tap gate, sprite fallback) + live BlueColumn brain. -->
-  <script src="outloud.config.js?v=18"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
-  <script src="event-bus.js?v=18"></script>           <!-- OutLoudEvent envelope + pub/sub -->
-  <script src="business-knowledge.js?v=18"></script>  <!-- Context 1: Arcadia Fence & Gate knowledge (RAG) -->
-  <script src="customer-memory.js?v=18"></script>     <!-- Context 2: customer/session memory -->
-  <script src="plan-validator.js?v=18"></script>      <!-- plan validation + graceful repair -->
-  <script src="response-planner.js?v=18"></script>    <!-- Context 3: reasoning → Response Plan -->
-  <script src="realtime-input.js?v=18"></script>      <!-- mic, VAD, streaming transcript, barge-in -->
-  <script src="speech-director.js?v=18"></script>     <!-- ElevenLabs TTS + chunk streaming -->
-  <script src="vendor/simli-client.js?v=18"></script> <!-- SimliLib bundle (WebRTC talking head) -->
-  <script src="simli-director.js?v=18"></script>      <!-- live video avatar + PCM16 feed -->
-  <script src="avatar-director.js?v=18"></script>     <!-- sprite adapter: face/gaze/gesture channels (fallback) -->
-  <script src="content-director.js?v=18"></script>    <!-- Content Registry + Action Registry -->
-  <script src="screen-director.js?v=18"></script>     <!-- ambient branded card rotation -->
-  <script src="session-orchestrator.js?v=18"></script><!-- state machine + event routing -->
-  <script src="runtime.js?v=18"></script>             <!-- bootstrap + page chrome -->
+  /* ---------- screen deck: six validated Arcadia cards ---------- */
+  var CARDS=[
+    {k:'What we build',t:'Block · Steel · Wood · Vinyl · Gates',b:'Custom built, Arizona-strong — block walls, steel view fencing, wood, vinyl, and custom gates, manual or automated.',a:'What do you build?'},
+    {k:'Free estimate',t:'Quotes with no mystery fees',b:'Free design call, transparent quote, pro install by a licensed crew. Say quote and Buddy starts it now.',a:'Start my free quote'},
+    {k:'Why Arcadia',t:'ROC 337481 · since 2018',b:'Licensed, insured, HomeAdvisor Approved, BBB listed — and owner Joe Pagano is on every job.',a:'Are you licensed and insured?'},
+    {k:'Financing',t:'Monthly plans that fit',b:'Flexible payment options, multiple lenders, quick approvals — upgrade now, pay over time.',a:'Tell me about financing'},
+    {k:'Service area',t:'Valley-wide, Arizona',b:'Phoenix Metro, East Mesa, and surrounding communities — Mon–Fri 7am–8pm, Sat 8am–4pm.',a:'Do you serve my area?'},
+    {k:'Recent work',t:'Built across the Valley',b:'Steel view fences, iron courtyard gates, capped block walls, cedar privacy — and commercial chain link in East Mesa.',a:'Show me recent work'}
+  ];
+  var deck=F('deck'), deckDots=F('deck-dots'), deckIdx=-1, deckTimer=0, deckStarted=false;
+  CARDS.forEach(function(c,i){
+    var d=document.createElement('div');
+    d.className='deck-card'+(i===0?' active':'');
+    d.innerHTML='<div class="deck-kicker mono">'+c.k+'</div><h3 class="deck-title">'+c.t+'</h3><p class="deck-body">'+c.b+'</p><button type="button" class="deck-ask" data-ask="'+c.a.replace(/"/g,'&quot;')+'">'+c.a+'</button>';
+    d.querySelector('.deck-ask').addEventListener('click',function(){ask(c.a);});
+    deck.appendChild(d);
+    var dot=document.createElement('span'); if(i===0){dot.className='on';} deckDots.appendChild(dot);
+  });
+  function deckShow(i){
+    var cards=deck.querySelectorAll('.deck-card'), dots=deckDots.children;
+    for(var k=0;k<cards.length;k++){cards[k].classList.toggle('active',k===i);dots[k].classList.toggle('on',k===i);}
+    if(standby){standby.classList.add('dim');}
+  }
+  function deckSchedule(ms){
+    clearTimeout(deckTimer);
+    deckTimer=setTimeout(function(){
+      if(screenEl.querySelector('.tpanel.active')){deckSchedule(6000);return;}
+      deckIdx=(deckIdx+1)%CARDS.length;deckShow(deckIdx);deckSchedule(9000);
+    },ms);
+  }
+  deckSchedule(6000);
+
+  /* ---------- topic panels win while live ---------- */
+  var PANELS=['tp-services','tp-quote','tp-trust','tp-areas','tp-contact'];
+  var panelTimer=0;
+  function showPanel(id,holdMs){
+    PANELS.forEach(function(p){F(p).classList.toggle('active',p===id);});
+    if(standby){standby.classList.add('dim');}
+    clearTimeout(panelTimer);
+    if(id){panelTimer=setTimeout(function(){PANELS.forEach(function(p){F(p).classList.remove('active');});deckSchedule(2500);},holdMs||14000);}
+  }
+  function hidePanels(){PANELS.forEach(function(p){F(p).classList.remove('active');});}
+
+  function topicPanel(text){
+    var low=(text||'').toLowerCase();
+    if(/block|steel|wood|vinyl|gate|chain|iron|composite|what do you build|fence type|not sure/.test(low)){showPanel('tp-services');return;}
+    if(/quote|estimate|financ|payment|monthly|what are we building|address|cross streets|your name|phone number|locked in|design call/.test(low)){showPanel('tp-quote');renderFlow();return;}
+    if(/licen|roc|insur|bbb|homeadvisor|owner|joe|warrant|review|testimonial|trust/.test(low)){showPanel('tp-trust');return;}
+    if(/area|where|serve|mesa|phoenix|valley|hours|mon(-|–)fri/.test(low)){showPanel('tp-areas');return;}
+    if(/phone|call|email|contact|reach|480|9605/.test(low)){showPanel('tp-contact');return;}
+  }
+
+  /* ---------- quote-flow checklist ---------- */
+  function flowMode(){try{return window.eval('mode');}catch(e){return null;}}
+  function flowData(){try{return window.eval('booking')||{};}catch(e){return {};}}
+  function renderFlow(){
+    if(!quoteFlow){return;}
+    var m=flowMode(), d=flowData();
+    var active=flowOrder.indexOf(m);
+    if(active<0&&d.phone){active=flowOrder.length;}
+    var html='';
+    flowOrder.forEach(function(step,i){
+      var key=step.replace('arc-','');
+      var val=d[key]||'';
+      var state=i<active||(step==='arc-phone'&&d.phone&&m===null)?'done':(i===active?'current':'');
+      html+='<div class="q-step '+state+'"><span class="q-num">'+(i+1)+'</span><div class="q-copy"><strong>'+flowLabels[step]+'</strong><span>'+(val?val.replace(/</g,'&lt;'):(state==='current'?'Waiting now':'—'))+'</span></div></div>';
+    });
+    quoteFlow.innerHTML=html;
+  }
+
+  /* ---------- quick options for flow prompts ---------- */
+  function setChipsFor(text){
+    var row=document.querySelector('.chip-row');
+    if(!row){return;}
+    if(/let's get your free estimate started/i.test(text)){
+      row.innerHTML='';
+      [['Block wall','accent'],['Steel view fence','accent'],['Wood','accent'],['Vinyl','accent'],['Custom gate','accent'],['Not sure yet','accent']].forEach(function(pair){
+        var b=document.createElement('button');b.type='button';b.className='chip'+(pair[1]?' '+pair[1]:'');b.textContent=pair[0];
+        row.appendChild(b);
+      });
+    } else if(!row.querySelector('[data-ask]')){
+      /* restore default chips */
+      row.innerHTML='';
+      [['Start my free quote','Get my free quote','accent'],['What do you build?','What do you build?',''],['Tell me about financing','Financing',''],['Do you serve my area?','Service area',''],['Are you licensed and insured?','Licensed & insured',''],['Show me recent work','Recent work','']].forEach(function(triple){
+        var b=document.createElement('button');b.type='button';b.className='chip'+(triple[2]?' '+triple[2]:'');b.textContent=triple[1];b.setAttribute('data-ask',triple[0]);
+        row.appendChild(b);
+      });
+    }
+  }
+
+  /* ---------- Buddy speaks -> page reacts ---------- */
+  window.onBotSay=function(t){
+    captionText.textContent=t;
+    topicPanel(t);
+    setChipsFor(t);
+    renderFlow();
+    if(/hello|hey, this is buddy/i.test(t||'')){setStatus('Buddy is live — just talk');}
+  }
+
+  function setStatus(s){statusText.textContent=s;}
+
+  /* ---------- input wiring ---------- */
+  function ask(text){
+    if(!window.botSend){return;}
+    window.botSend(text);
+  }
+  /* suggestion chips (static + rebuilt rows) — event delegation */
+  document.querySelector('.chip-row').addEventListener('click',function(e){
+    var chip=e.target.closest('.chip');
+    if(!chip){return;}
+    var q=chip.getAttribute('data-ask')||chip.textContent;
+    ask(q);
+  });
+  function sendLive(){
+    var v=liveInput.value.trim();if(!v){return;}
+    hiddenInput.value=v;hiddenSend.click();liveInput.value='';renderFlow();
+  }
+  liveSend.addEventListener('click',sendLive);
+  liveInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();sendLive();}});
+  F('ask-buddy-btn').addEventListener('click',function(){
+    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(function(){liveInput.focus();},450);
+  });
+
+  /* ---------- start gate ---------- */
+  gate.addEventListener('click',function(){
+    gate.classList.add('gone');
+    setStatus('Connecting Buddy…');
+    if(window.toggleBot){window.toggleBot();}
+    setTimeout(function(){
+      if(/Tap to meet/.test(statusText.textContent)){setStatus('Buddy is live — just talk');}
+    },6000);
+  });
+})();
+</script>
 </body>
 </html>
