@@ -57,6 +57,11 @@
     this.timers = [];
     this.currentGesture = null;
     this.pulseTimer = 0;
+    /* viseme state machine (Arcadia port): pose + hold tracking */
+    this.pose = 0;
+    this.poseSince = 0;
+    this.noiseFloor = 0;
+    this.lastDb = undefined;
   }
 
   /* ---------- mount: build the channel-nested DOM ---------- */
@@ -99,15 +104,47 @@
     this.lastTick = t;
 
     if (this.analyser && this.activeEl && !this.activeEl.paused) {
+      /* =========================================================
+         VISEME CLASSIFIER v2 — ported from the Arcadia
+         LipSyncEngine (Web Audio AnalyserNode approach):
+           • RMS envelope in dB above an ADAPTIVE noise floor
+           • low/mid/high spectral band energy for phoneme class
+           • transient (consonant burst) detection
+           • HYSTERESIS + HOLD state machine — the mouth never
+             flickers between adjacent poses on quiet syllables
+         Mapped onto our verified 12-frame viseme rig.
+         ========================================================= */
       this.analyser.getByteFrequencyData(this.freq);
-      var total = this.band(2, 160);
-      if (total < 0.04) { this.setFrame(0); this.frameHoldUntil = 0; return; }
-      if (t < this.frameHoldUntil) { return; }
+
+      /* --- dB envelope with adaptive noise floor --- */
+      var sum2 = 0, i, n = 0, bin;
+      for (i = 2; i < 160; i++) { bin = this.freq[i] / 255; sum2 += bin * bin; n++; }
+      var rms = Math.sqrt(sum2 / Math.max(1, n));
+      var db = 20 * Math.log10(rms + 1e-6);
+      if (!this.noiseFloor) { this.noiseFloor = db - 10; }
+      /* track the floor downward fast, upward slowly — silence pulls
+         it down, residual room tone pulls it up slowly */
+      this.noiseFloor = Math.min(this.noiseFloor + 0.35, Math.max(-60, db));
+      var voiced = db > this.noiseFloor + 6;
+
+      /* --- transient detection: consonant bursts jump instantly --- */
+      var dbDelta = db - (this.lastDb === undefined ? db : this.lastDb);
+      this.lastDb = db;
+      var burst = voiced && dbDelta > 3.5;
+
+      if (!voiced) {
+        if (t - (this.poseSince || 0) > 120) { this.setPose('REST', t); }
+        return;
+      }
+
+      /* --- spectral band classification --- */
       var low = this.band(2, 10), mid = this.band(11, 60), hi = this.band(61, 160);
-      var s = low + mid + hi;
-      if (!s) { return; }
-      this.setFrame(this.pickFrame(total, low / s, hi / s));
-      this.frameHoldUntil = t + 90;
+      var s = low + mid + hi || 1;
+      var lowS = low / s, hiS = hi / s;
+      var cand = burst
+        ? (hiS >= 0.40 ? 10 : 4)                       /* S / wide burst */
+        : this.classify(lowS, hiS, db);
+      this.applyPose(cand, t, burst);
     } else {
       /* text-pulse fallback (browser TTS / muted walk) */
       if (t < this.frameHoldUntil) { return; }
@@ -117,18 +154,37 @@
     }
   };
 
+  /* Phoneme-class → frame, with hysteresis: a pose holds for its
+     minimum duration; a challenger must beat the incumbent by a
+     margin (or arrive as a transient) before the pose switches. */
+  AvatarDirector.prototype.classify = function (lowS, hiS, db) {
+    if (lowS >= 0.55) { return db > -18 ? 2 : (db > -26 ? 6 : 5); }  /* big open / OH / OO */
+    if (hiS >= 0.42) { return db > -24 ? 4 : 1; }                    /* wide grin / closed seam (FV/M) */
+    if (db > -16) { return 8; }                                      /* tall open (L/TH) */
+    if (db > -23) { return 3; }                                      /* EH spread */
+    return 9;                                                        /* ER mid oval */
+  };
+  var POSE_HOLD = { 0: 120, 2: 100, 5: 130, 6: 110, 11: 110 };
+  AvatarDirector.prototype.applyPose = function (cand, t, burst) {
+    if (cand === this.pose) { return; }
+    var held = t - (this.poseSince || 0);
+    var needHold = POSE_HOLD[this.pose] || 90;
+    if (held < needHold && !burst) { return; }   /* incumbent holds */
+    this.pose = cand;
+    this.poseSince = t;
+    this.setFrame(cand);
+  };
+  AvatarDirector.prototype.setPose = function (name, t) {
+    var map = { REST: 0 };
+    this.pose = map[name] !== undefined ? map[name] : this.pose;
+    this.poseSince = t || Date.now();
+    this.setFrame(this.pose);
+  };
+
   AvatarDirector.prototype.band = function (a, b) {
     var s = 0, i;
     for (i = a; i < b; i++) { s += this.freq[i]; }
     return s / (b - a) / 255;
-  };
-
-  AvatarDirector.prototype.pickFrame = function (total, lowS, hiS) {
-    if (lowS >= 0.52) { return total > 0.40 ? 2 : (total > 0.22 ? 6 : 5); }
-    if (hiS >= 0.40) { return total > 0.34 ? 4 : 10; }
-    if (total > 0.42) { return 8; }
-    if (total > 0.28) { return 3; }
-    return 9;
   };
 
   /* Route a speech <audio> element through the rig's analyser.
@@ -168,6 +224,9 @@
   AvatarDirector.prototype.lipSyncStop = function () {
     this.rigOn = false;
     this.activeEl = null;
+    this.pose = 0;
+    this.poseSince = 0;
+    this.noiseFloor = 0;
     if (this.mascot) { this.mascot.classList.remove('speaking'); }
     this.setFrame(4); /* friendly landing grin */
     var self = this;
