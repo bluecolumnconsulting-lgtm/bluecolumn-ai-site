@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=16" />
-  <link rel="stylesheet" href="runtime.css?v=16" />
+  <link rel="stylesheet" href="runtime.css?v=17" />
 </head>
 <body>
 
@@ -67,16 +67,17 @@
         <button type="button" class="ol-chip">Book a demo</button>
         <button type="button" class="ol-chip">Which avatars can I pick?</button>
       </div>
+      <!-- Controls in the main view (DB spec upgrade #1): ask from the hero itself -->
+      <div class="ol-inrow ol-inrow-stage">
+        <input id="ol-text-in" class="ol-text" type="text" autocomplete="off"
+               placeholder="Ask OutLoud anything, or press Talk" aria-label="Message OutLoud" />
+        <button type="button" id="ol-send" class="ol-send">Send</button>
+      </div>
     </section>
 
     <!-- ============ CONVERSATION ============ -->
     <section class="ol-console" aria-label="Conversation with OutLoud">
       <ol id="ol-log" class="ol-log" aria-live="polite"></ol>
-      <div class="ol-inrow">
-        <input id="ol-text-in" class="ol-text" type="text" autocomplete="off"
-               placeholder="Ask OutLoud anything, or press Talk" aria-label="Message OutLoud" />
-        <button type="button" id="ol-send" class="ol-send">Send</button>
-      </div>
     </section>
 
     <p class="ol-runtime-note mono">
