@@ -407,3 +407,21 @@
   .ol-screen { min-height: 190px; max-width: none; }
   .ol-host-screen { min-height: 150px; }
 }
+
+/* ---------- upgrade pass (2026-09-21, per DB note) ---------- */
+/* 1. Suggested-question chips under the avatar — conversation starts in one tap. */
+.ol-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 4px 0 10px; }
+.ol-chip {
+  border: 1px solid rgba(120, 160, 210, 0.45);
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font: 600 0.82rem/1.2 Manrope, sans-serif;
+  color: #24324a;
+  cursor: pointer;
+  transition: transform 140ms ease, background 140ms ease;
+}
+.ol-chip:hover { transform: translateY(-1px); background: #fff; }
+/* 2. Transcript: comfortable reading width; stamps are secondary. */
+.ol-log { max-width: 660px; margin: 0 auto; }
+.ol-stamp { font-size: 0.6rem; opacity: 0.5; }

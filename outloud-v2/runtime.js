@@ -77,8 +77,16 @@
   });
 
   /* ---------- chrome wiring ---------- */
+  var STATE_LABELS = { IDLE: 'Ready when you are', LISTENING: 'Listening…', PROCESSING: 'Thinking…', RESPONDING: 'Speaking…', CANCELLED: 'Stopped' };
   bus.on('state.change', function (env) {
-    if (stateChip) { stateChip.textContent = env.payload.state; stateChip.setAttribute('data-state', env.payload.state); }
+    if (stateChip) {
+      stateChip.textContent = STATE_LABELS[env.payload.state] || env.payload.state;
+      stateChip.setAttribute('data-state', env.payload.state);
+    }
+  });
+  /* Suggested-question chips: one tap sends the question. */
+  Array.prototype.forEach.call(document.querySelectorAll('.ol-chip'), function (chip) {
+    chip.addEventListener('click', function () { input.type(chip.textContent.trim()); });
   });
 
   /* ---------- Simli video avatar ----------

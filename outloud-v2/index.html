@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=10" />
-  <link rel="stylesheet" href="runtime.css?v=10" />
+  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="stylesheet" href="runtime.css?v=11" />
 </head>
 <body>
 
@@ -33,7 +33,7 @@
 
     <!-- ============ AVATAR STAGE ============ -->
     <section class="ol-stage-panel" aria-label="OutLoud agent stage">
-      <p class="ol-kicker mono">One runtime · speech + avatar + content, driven by validated Response Plans</p>
+      <p class="ol-kicker mono">Ask away. OutLoud answers — speak or type, get a spoken answer with helpful visuals.</p>
       <h1 class="ol-title">Ask this page a question.<br /><em>It answers out loud, and shows its work.</em></h1>
 
       <div class="ol-stage-row">
@@ -59,6 +59,12 @@
         <span id="ol-state" class="ol-state" data-state="IDLE">IDLE</span>
       </div>
       <p class="ol-hint mono">Talk, type, or tap a plan-priced panel below. Barge in anytime while it speaks: it stops and listens.</p>
+      <div class="ol-chips" aria-label="Suggested questions">
+        <button type="button" class="ol-chip">What is OutLoud?</button>
+        <button type="button" class="ol-chip">What does it cost?</button>
+        <button type="button" class="ol-chip">See client demos</button>
+        <button type="button" class="ol-chip">Book a demo</button>
+      </div>
     </section>
 
     <!-- ============ CONVERSATION ============ -->
@@ -86,20 +92,20 @@
   <p class="sr-status mono" id="ol-sr-status" role="status" aria-live="polite"></p>
 
   <!-- Layers, in boot order. No build step; plain script tags.
-       ?v=10 = Simli live video avatar (tap gate, sprite fallback) 2026-09-21. -->
-  <script src="outloud.config.js?v=10"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
-  <script src="event-bus.js?v=10"></script>           <!-- OutLoudEvent envelope + pub/sub -->
-  <script src="business-knowledge.js?v=10"></script>  <!-- Context 1: business knowledge (RAG) -->
-  <script src="customer-memory.js?v=10"></script>     <!-- Context 2: customer/session memory -->
-  <script src="plan-validator.js?v=10"></script>      <!-- plan validation + graceful repair -->
-  <script src="response-planner.js?v=10"></script>    <!-- Context 3: reasoning → Response Plan -->
-  <script src="realtime-input.js?v=10"></script>      <!-- mic, VAD, streaming transcript, barge-in -->
-  <script src="speech-director.js?v=10"></script>     <!-- ElevenLabs TTS + chunk streaming -->
-  <script src="vendor/simli-client.js?v=10"></script> <!-- SimliLib bundle (WebRTC talking head) -->
-  <script src="simli-director.js?v=10"></script>      <!-- live video avatar + PCM16 feed -->
-  <script src="avatar-director.js?v=10"></script>     <!-- sprite adapter: face/gaze/gesture channels (fallback) -->
-  <script src="content-director.js?v=10"></script>    <!-- Content Registry + Action Registry -->
-  <script src="session-orchestrator.js?v=10"></script><!-- state machine + event routing -->
-  <script src="runtime.js?v=10"></script>             <!-- bootstrap + page chrome -->
+       ?v=11 = Simli live video avatar (tap gate, sprite fallback) 2026-09-21. -->
+  <script src="outloud.config.js?v=11"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
+  <script src="event-bus.js?v=11"></script>           <!-- OutLoudEvent envelope + pub/sub -->
+  <script src="business-knowledge.js?v=11"></script>  <!-- Context 1: business knowledge (RAG) -->
+  <script src="customer-memory.js?v=11"></script>     <!-- Context 2: customer/session memory -->
+  <script src="plan-validator.js?v=11"></script>      <!-- plan validation + graceful repair -->
+  <script src="response-planner.js?v=11"></script>    <!-- Context 3: reasoning → Response Plan -->
+  <script src="realtime-input.js?v=11"></script>      <!-- mic, VAD, streaming transcript, barge-in -->
+  <script src="speech-director.js?v=11"></script>     <!-- ElevenLabs TTS + chunk streaming -->
+  <script src="vendor/simli-client.js?v=11"></script> <!-- SimliLib bundle (WebRTC talking head) -->
+  <script src="simli-director.js?v=11"></script>      <!-- live video avatar + PCM16 feed -->
+  <script src="avatar-director.js?v=11"></script>     <!-- sprite adapter: face/gaze/gesture channels (fallback) -->
+  <script src="content-director.js?v=11"></script>    <!-- Content Registry + Action Registry -->
+  <script src="session-orchestrator.js?v=11"></script><!-- state machine + event routing -->
+  <script src="runtime.js?v=11"></script>             <!-- bootstrap + page chrome -->
 </body>
 </html>
