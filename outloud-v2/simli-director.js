@@ -79,6 +79,7 @@
     }
     this.starting = true;
     this.bus.publish('simli.starting', {});
+    if (this.stage) { this.stage.classList.add('connecting'); }  /* hide sprite during handshake */
 
     function makeClient(token, ice, transport) {
       return new SimliLib.SimliClient(
@@ -126,11 +127,13 @@
     }).then(function () {
       self.live = true;
       self.starting = false;
+      if (self.stage) { self.stage.classList.remove('connecting'); }
       self.stage.classList.add('video-mode');
       self.bus.publish('simli.live', {});
       return true;
     }).catch(function (e) {
       self.starting = false;
+      if (self.stage) { self.stage.classList.remove('connecting'); }
       self.lastError = (e && e.message) || 'unknown';
       try { if (self.client && self.client.close) { self.client.close(); } } catch (e2) {}
       self.client = null;

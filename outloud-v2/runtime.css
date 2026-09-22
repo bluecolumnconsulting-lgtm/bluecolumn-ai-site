@@ -321,7 +321,7 @@
   gap: 6px;
   border: 1px solid var(--irid-rim, rgba(120, 160, 210, 0.5));
   border-radius: 20px;
-  background: linear-gradient(160deg, rgba(20, 30, 48, 0.92), rgba(30, 42, 66, 0.86));
+  background: linear-gradient(160deg, #141e30, #1e2a42);
   color: #fff;
   cursor: pointer;
   font: inherit;
@@ -334,3 +334,8 @@
 @media (max-width: 640px) {
   .ol-avatar-stage.video-mode { width: 236px; height: 268px; }
 }
+
+/* Connecting state: sprite hidden the instant the visitor taps —
+   the stage reads as "waking up", never as the old mascot. */
+.ol-avatar-stage.connecting .ol-avatar-face { opacity: 0; }
+.ol-avatar-stage.connecting .ol-avatar-glow { opacity: 0; }
