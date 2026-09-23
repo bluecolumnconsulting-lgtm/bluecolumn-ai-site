@@ -23,7 +23,10 @@
   'use strict';
   var mascot = document.getElementById('mascot');
   if (!mascot) { return; }
+  /* clear any legacy background state on the host element */
   mascot.style.backgroundImage = 'none';
+  mascot.style.backgroundSize = 'auto';
+  mascot.style.backgroundPosition = 'initial';
 
   /* --- client-site viseme map (verbatim) --- */
   var VISEME = {
@@ -39,51 +42,54 @@
   var COLS = 4, ROWS = 2;
   var SPRITE_URL = 'fencebot-sprite.png';
 
-  /* --- two-layer crossfade renderer (client-site pose-in/pose-out) --- */
+  /* --- two-layer crossfade renderer (client-site pose-in/pose-out) ---
+     Scale-relative math: background-size 400% x 200% of the layer and
+     percentage positions — immune to layout-timing / resize drift that
+     pixel math suffers when clientWidth is read before layout settles. */
   var layers = [];
   (function buildLayers() {
     var prev = document.createElement('div');
     var cur = document.createElement('div');
     [prev, cur].forEach(function (el) {
       el.style.cssText = 'position:absolute;inset:0;background-image:url("' +
-        SPRITE_URL + '");background-repeat:no-repeat;';
+        SPRITE_URL + '");background-repeat:no-repeat;background-size:400% 200%;';
       el.setAttribute('aria-hidden', 'true');
       mascot.appendChild(el);
       layers.push(el);
     });
   })();
 
-  function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
-
-  var showing = 1;                 /* which layer is current */
+  var curIdx = 1;                  /* layer currently in the "current" slot */
   var curVisemeName = null;
 
+  function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+
   function renderLayer(el, v, anim, z) {
-    var w = mascot.clientWidth || 320;
-    var h = mascot.clientHeight || w;
-    el.style.backgroundSize = (w * COLS) + 'px ' + (h * ROWS) + 'px';
-    el.style.backgroundPosition = (-v.col * w) + 'px ' + (-v.row * h) + 'px';
+    /* percentage sprite math: cell (c,r) at x=c/(COLS-1)*100%, y=r/(ROWS-1)*100%
+       with background-size 400% x 200% lands exactly on cell (col,row) */
+    el.style.backgroundPosition =
+      (v.col / (COLS - 1) * 100).toFixed(4) + '% ' +
+      (v.row / (ROWS - 1) * 100).toFixed(4) + '%';
     el.style.animation = 'none';
-    /* force restart of the 320ms pose animation on every swap */
-    void el.offsetWidth;
+    void el.offsetWidth;           /* force restart of the pose animation */
     el.style.animation = anim;
     el.style.zIndex = String(z);
   }
   function setViseme(name) {
     if (!VISEME[name]) { name = 'rest'; }
     if (name === curVisemeName) { return; }
-    var v = VISEME[name];
-    var prevEl = layers[showing], curEl = layers[1 - showing];
-    showing = 1 - showing;
     curVisemeName = name;
-    /* previous frame fades out (if it ever rendered), new frame fades in */
-    if (curEl.getAttribute('data-rendered') === '1') {
-      renderLayer(prevEl, VISEME[curEl.getAttribute('data-v') || 'rest'],
-        'pose-out 320ms ease-out forwards', 1);
+    var prevEl = layers[curIdx];
+    var nextEl = layers[1 - curIdx];
+    curIdx = 1 - curIdx;
+    if (prevEl.getAttribute('data-v')) {   /* had a frame -> fade it out */
+      prevEl.style.animation = 'none';
+      void prevEl.offsetWidth;
+      prevEl.style.animation = 'pose-out 320ms ease-out forwards';
+      prevEl.style.zIndex = '1';
     }
-    curEl.setAttribute('data-rendered', '1');
-    curEl.setAttribute('data-v', name);
-    renderLayer(curEl, v, 'pose-in 320ms ease-out forwards', 2);
+    renderLayer(nextEl, VISEME[name], 'pose-in 320ms ease-out forwards', 2);
+    nextEl.setAttribute('data-v', name);
   }
 
   /* --- engine: faithful port of the client-site LipSync class --- */
@@ -250,13 +256,6 @@
     return a;
   };
 
-  /* re-render on resize so pixel math stays exact */
-  window.addEventListener('resize', function () {
-    if (curVisemeName) {
-      var name = curVisemeName;
-      curVisemeName = null;
-      setViseme(name);
-    }
-  });
+  /* percentage sprite math is resize-proof; nothing to re-render */
   setViseme('rest');
 })();
