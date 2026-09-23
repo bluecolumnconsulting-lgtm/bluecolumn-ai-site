@@ -85,17 +85,16 @@ a{color:inherit}
 .mascot-float{animation:mascotFloat 5.5s ease-in-out infinite}
 @keyframes mascotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 .mascot{
+  position:relative;
   width:min(380px,74vw);
-  aspect-ratio:125/250;
-  background-image:url("mascot-sprite.png");
-  background-size:400% 200%;
-  background-repeat:no-repeat;
-  background-position:0% 0%;
+  aspect-ratio:1/1;
   border-radius:28px;
-  will-change:transform,background-position;
+  will-change:transform;
   filter:drop-shadow(0 26px 44px rgba(34,51,59,.18));
-  transition:background-position .06s linear;
+  overflow:hidden;
 }
+@keyframes pose-in{from{opacity:0}to{opacity:1}}
+@keyframes pose-out{from{opacity:1}to{opacity:0}}
 .mascot-shadow{width:46%;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(34,51,59,.22),transparent 70%);margin-top:-4px}
 .mascot-status{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
 
@@ -525,7 +524,7 @@ window.BOT_CFG={
   fallback:"I can help with block walls, steel view fencing, wood, vinyl, custom gates, free estimates, financing, and scheduling. For anything else, call Arcadia at 480-906-9605 — Mon–Fri 7am–8pm, Sat 8am–4pm."
 };
 </script>
-<script src="mascot-rig.js?v=1"></script>
+<script src="mascot-rig.js?v=2"></script>
 <script src="arcadia-agent.js?v=1"></script>
 <script>
 (function(){
