@@ -148,6 +148,11 @@
       if (!a || /not in available context/i.test(a) || a.length < 8) {
         return { t: cannedText, canned: true };
       }
+      /* Brand guard: if the brain surfaces another company, use the
+         Arcadia canned answer instead. */
+      if (/vulcan/i.test(a)) {
+        return { t: cannedText, canned: true };
+      }
       return { t: a, canned: false };
     }).catch(function () { return { t: cannedText, canned: true }; });
   }
