@@ -153,6 +153,7 @@ a{color:inherit}
   backdrop-filter:blur(2px);
 }
 .deck-card.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.deck-photo{display:block;width:calc(100% + 40px);margin:-18px -20px 12px;height:150px;object-fit:cover;border-radius:17px 17px 0 0;background:#0d141d}
 .deck-kicker{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin-bottom:7px;font-weight:600}
 .deck-title{font-weight:800;font-size:clamp(17px,2vw,21px);margin:0 0 6px;color:#fff}
 .deck-body{font-size:13.5px;line-height:1.55;color:rgba(233,238,241,.82);margin:0 0 12px}
@@ -323,6 +324,7 @@ footer.foot{
   .input-shell{min-width:100%;order:-1;min-height:48px}
   #live-input{font-size:16px}
   .controls{margin-top:10px;padding:10px}
+  .deck-photo{height:104px;width:calc(100% + 20px);margin:-10px -10px 10px}
 }
 </style>
 </head>
@@ -538,19 +540,20 @@ window.BOT_CFG={
   var flowLabels={'arc-type':'Fence type','arc-address':'Address or cross streets','arc-name':'Name','arc-phone':'Phone'};
 
   /* ---------- screen deck: six validated Arcadia cards ---------- */
+  /* Cards use real material from arcadiafenceaz.com */
   var CARDS=[
-    {k:'What we build',t:'Block · Steel · Wood · Vinyl · Gates',b:'Custom built, Arizona-strong — block walls, steel view fencing, wood, vinyl, and custom gates, manual or automated.',a:'What do you build?'},
-    {k:'Free estimate',t:'Quotes with no mystery fees',b:'Free design call, transparent quote, pro install by a licensed crew. Say quote and Buddy starts it now.',a:'Start my free quote'},
-    {k:'Why Arcadia',t:'ROC 337481 · since 2018',b:'Licensed, insured, HomeAdvisor Approved, BBB listed — and owner Joe Pagano is on every job.',a:'Are you licensed and insured?'},
-    {k:'Financing',t:'Monthly plans that fit',b:'Flexible payment options, multiple lenders, quick approvals — upgrade now, pay over time.',a:'Tell me about financing'},
-    {k:'Service area',t:'Valley-wide, Arizona',b:'Phoenix Metro, East Mesa, and surrounding communities — Mon–Fri 7am–8pm, Sat 8am–4pm.',a:'Do you serve my area?'},
-    {k:'Recent work',t:'Built across the Valley',b:'Steel view fences, iron courtyard gates, capped block walls, cedar privacy — and commercial chain link in East Mesa.',a:'Show me recent work'}
+    {k:'What we build',t:'Block · Steel · Wood · Vinyl · Gates',img:'img/hero.jpg',b:"Custom built, Arizona-strong — quality craftsmanship, local expertise, since 2018.",a:'What do you build?'},
+    {k:'Block walls',t:'Privacy. Security. Quiet.',img:'img/block-wall.jpg',b:"Decorative caps & toppers, privacy and HOA heights, reinforced for long-term stability.",a:'Price my block wall'},
+    {k:'Steel view fencing',t:'Modern lines. Zero warp.',img:'img/steel-view.jpg',b:"Powder-coated, low-maintenance — perimeter, pool, and patio solutions.",a:'See steel styles'},
+    {k:'Wood fencing',t:'Warm, timeless, done right for our climate',img:'img/cedar-privacy.jpg',b:"Cedar & treated lumber — horizontal or vertical slats, privacy or decorative accents.",a:'Get wood fence options'},
+    {k:'Custom gates',t:'Security that welcomes',img:'img/iron-gate.jpg',b:"Manual or automated — keypads, remotes, smart access, heavy-duty hinges.",a:'Design my gate'},
+    {k:'Vinyl fencing',t:'Looks great, shrugs off the sun',img:'img/vinyl-privacy.jpg',b:"UV-resistant — privacy, picket, ranch-rail. Clean, modern profiles, no repainting.",a:'Explore vinyl'}
   ];
   var deck=F('deck'), deckDots=F('deck-dots'), deckIdx=-1, deckTimer=0, deckStarted=false;
   CARDS.forEach(function(c,i){
     var d=document.createElement('div');
     d.className='deck-card'+(i===0?' active':'');
-    d.innerHTML='<div class="deck-kicker mono">'+c.k+'</div><h3 class="deck-title">'+c.t+'</h3><p class="deck-body">'+c.b+'</p><button type="button" class="deck-ask" data-ask="'+c.a.replace(/"/g,'&quot;')+'">'+c.a+'</button>';
+    d.innerHTML=(c.img?'<img class="deck-photo" src="'+c.img+'" alt="">':'')+'<div class="deck-kicker mono">'+c.k+'</div><h3 class="deck-title">'+c.t+'</h3><p class="deck-body">'+c.b+'</p><button type="button" class="deck-ask" data-ask="'+c.a.replace(/"/g,'&quot;')+'">'+c.a+'</button>';
     d.querySelector('.deck-ask').addEventListener('click',function(){ask(c.a);});
     deck.appendChild(d);
     var dot=document.createElement('span'); if(i===0){dot.className='on';} deckDots.appendChild(dot);

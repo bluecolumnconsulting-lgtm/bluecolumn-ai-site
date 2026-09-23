@@ -16,10 +16,13 @@
   .ol-console:has(#ol-log:empty){display:none}
   .ol-avatar-face.speaking{animation:ol-talk .34s ease-in-out infinite alternate}
   @keyframes ol-talk{from{transform:translateY(0) scale(1)}to{transform:translateY(-4px) scale(1.035)}}
+  .ol-card-img{display:block;width:100%;height:132px;object-fit:contain;margin-bottom:8px}
+  .ol-standby-img{max-width:70%;height:auto;border-radius:8px;margin-bottom:4px}
   @media (max-width:640px){
-    .ol-stage-row{flex-direction:column;align-items:center}
+    .ol-stage-row{flex-direction:column;align-items:stretch;width:100%}
     .ol-avatar-stage{width:200px;height:220px;margin:0 auto}
     .ol-screen{width:100%;min-height:250px}
+    .ol-card-img{height:100px}
     .ol-main{padding:10px 12px}
     header.top{padding:10px 14px}
     .ol-inrow-stage{margin-bottom:14px}
@@ -57,9 +60,9 @@
           </div>
           <div class="ol-screen-body">
             <div class="ol-screen-standby" id="ol-screen-standby">
-              <div class="ol-standby-word">OTTOMEDIC</div>
-              <div class="ol-standby-sub mono">ottomedic.com · a reef system that manages itself</div>
-              <div class="ol-standby-note mono">ask me how it works, models, specs, or setup</div>
+              <img class="ol-standby-img" src="img/brand-name.jpg" alt="OttoMedic">
+              <div class="ol-standby-sub mono">U.S. Patent 9078419 · Model EVO 7000Z1</div>
+              <div class="ol-standby-note mono">tap anywhere — Marina walks you through it</div>
             </div>
             <!-- SDK content.host — panels render here while the avatar presents -->
             <div id="outloud-content-panel" class="ol-host ol-host-screen" aria-label="Content shown by Marina"></div>

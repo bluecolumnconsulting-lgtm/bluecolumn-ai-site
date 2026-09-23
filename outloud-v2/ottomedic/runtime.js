@@ -207,6 +207,8 @@
     }
   }
   orch.sessionStart();
+  /* Branded screen deck shows immediately — no empty screen on load. */
+  screen.start();
   /* Greeting runs through the full pipeline as a validated plan turn
      (internal=true keeps the trigger off the transcript). The reply
      lands on the transcript via the speech chunk walk, so voice and

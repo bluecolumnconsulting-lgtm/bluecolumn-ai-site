@@ -28,41 +28,55 @@
 (function () {
   'use strict';
 
-  var CARDS = [
+  /* Cards use real material from ottomedic.com */
+var CARDS = [
     {
-      id: 'what-is',
-      kicker: 'OttoMedic',
-      title: 'The skimmer that thinks for itself',
-      body: 'Purely mechanical regulation — no sensors to calibrate, no controllers to tune. Set your foam height once, never touch it again.',
-      ask: 'What is OttoMedic?'
+      id: 'brand',
+      img: 'img/skimmer-full.jpg',
+      kicker: 'OTTOMEDIC · U.S. Patent 9078419',
+      title: 'EVO 7000Z1 protein skimmer',
+      body: "Integrated hands-free automatic internal water level control — the only one of its kind. Always performing at 100% efficiency.",
+      ask: 'How does it work?'
     },
     {
-      id: 'prevents',
-      kicker: 'The big three',
-      title: 'It prevents the disasters',
-      body: 'Overflow on your floor, a pump running dry, corals stressed to a stop. OttoMedic eliminates all three.',
-      ask: 'What problems does it prevent?'
+      id: 'water-level',
+      img: 'img/skimmer-quarter.jpg',
+      kicker: 'Self-regulating',
+      title: 'Water level exactly where you want it',
+      body: "Operates in ANY water level between 1 inch and 10½ inches — regardless of changing aquarium and sump conditions.",
+      ask: 'How does the water level control work?'
     },
     {
-      id: 'models',
-      kicker: 'Three models',
-      title: 'EVO 5000, 7000, 9000',
-      body: '100 to 600 gallons, $899 to $1,399. 60-day performance guarantee, 5-year warranty, made in Germany.',
-      ask: 'Which model fits my tank?'
+      id: 'power',
+      img: 'img/skimmer-lid.jpg',
+      kicker: 'Built to survive',
+      title: 'Unaffected by power outages',
+      body: "Goes into a state of suspended animation — internal water level never changes until power returns.",
+      ask: 'What happens in a power outage?'
     },
     {
-      id: 'comparison',
-      kicker: 'Why mechanical',
-      title: 'No calibration, ever',
-      body: 'Electronic controllers need calibration and eventually fail. The patented valve works identically on day 1 and day 1,000.',
-      ask: 'How does it compare?'
+      id: 'siphon',
+      img: 'img/skimmer-base.jpg',
+      kicker: 'Siphon technology',
+      title: 'Maximum water flow, minimum effort',
+      body: "The pump works in unison with the siphon that literally pulls water through the skimmer — no flow-restricting valves.",
+      ask: 'Why is it better than other brands?'
     },
     {
-      id: 'keepers',
-      kicker: 'Who runs it',
-      title: '2,000+ reef keepers',
-      body: 'Protecting livestock worth $40,000 and up. Stability is survival — that is the whole product.',
-      ask: 'Who uses it?'
+      id: 'quiet',
+      img: 'img/skimmer-full.jpg',
+      kicker: 'Closed-loop air',
+      title: 'Extremely quiet — and no smells',
+      body: "Self-contained air circulation keeps smoke, fumes, dust, dander and odors out of your aquarium — and your home.",
+      ask: 'Tell me about the closed loop'
+    },
+    {
+      id: 'maintain',
+      img: 'img/skimmer-lid.jpg',
+      kicker: 'Easy maintenance',
+      title: 'Never unplug to empty it',
+      body: "Remove the collection container without turning off power. Silicon O-rings make disassembly and re-assembly easy.",
+      ask: 'How do I maintain it?'
     },
     {
       id: 'your-business',
@@ -111,6 +125,7 @@
       }).observe(this.screen, { attributes: true, attributeFilter: ['class'] });
     }
 
+    if (this.standby) { this.standby.classList.add('ol-standby-dim'); }
     this.schedule(FIRST_DELAY);
   };
 
@@ -123,6 +138,7 @@
       d.className = 'ol-screen-card' + (i === 0 ? ' active' : '');
       d.setAttribute('data-card', c.id);
       d.innerHTML =
+        (c.img ? '<img class="ol-card-img" src="' + c.img + '" alt="">' : '') +
         '<div class="ol-card-kicker mono">' + c.kicker + '</div>' +
         '<div class="ol-card-title">' + c.title + '</div>' +
         '<div class="ol-card-body">' + c.body + '</div>' +
