@@ -24,7 +24,7 @@
     protocolVersion: '2.0',
 
     endpoints: {
-      blueColumnBase: 'https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1',
+      blueColumnBase: 'https://api.bluecolumn.ai',
       /* TODO(edge-proxy): replace direct provider URLs with same-origin
          /api/tts and /api/rag routes so keys never reach the browser. */
       ttsBase: 'https://api.elevenlabs.io/v1/text-to-speech/'
