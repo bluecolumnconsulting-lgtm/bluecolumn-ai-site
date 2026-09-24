@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f2">
+  <title>Your OutLoud | BlueColumn</title>
+  <meta name="description" content="A page you can talk to.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <style>
+    /* Minimal inline styles — this page is standalone and must not depend on app.css */
+    :root { --ink:#172d32; --primary:#174b47; --edge:#dfe5df; --grad:linear-gradient(100deg,#A63A5E 0%,#A96A1F 22%,#2F8352 44%,#2379A8 64%,#5468C4 82%,#8E3D9C 100%); }
+    *,*::before,*::after { box-sizing:border-box; }
+    body { margin:0; background:#f7f7f2; color:var(--ink); font:16px/1.5 'DM Sans',Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    .site-header { max-width:960px; margin:auto; padding:27px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .brand-lockup { display:inline-flex; align-items:center; gap:10px; text-decoration:none; }
+    .brand-logo { width:34px; height:34px; border-radius:50%; box-shadow:0 1px 4px rgba(23,45,50,.18); }
+    .wordmark { color:var(--ink); font-size:18px; font-weight:700; letter-spacing:-.055em; }
+    .wordmark span { color:#b17f4b; }
+    .wordmark-outloud { font-style:normal; background:var(--grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; margin-left:2px; }
+    .header-note { display:inline-flex; align-items:center; gap:8px; color:#64766f; font-size:11px; font-weight:700; }
+    .live-dot { display:inline-block; width:7px; height:7px; background:#328971; border-radius:50%; }
+    main { max-width:680px; margin:0 auto; padding:10px 20px 80px; text-align:center; }
+    h1 { font:400 clamp(40px,6vw,60px)/1.08 'Newsreader',Georgia,serif; letter-spacing:-.03em; margin:40px 0 10px; }
+    h1 em { background:var(--grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+    .sub { color:#61716e; font-size:15px; margin:0 0 30px; }
+    .stage { background:#edf2ed; border:1px solid var(--edge); border-radius:14px; padding:56px 22px; box-shadow:0 14px 40px rgba(23,45,50,.06); }
+    .stage .mascot { width:150px; height:150px; border-radius:50%; background:#fff center/cover no-repeat; margin:0 auto 18px; border:1px solid var(--edge); image-rendering:auto; }
+    .status-line { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--edge); background:#f7faf6; color:#27594d; border-radius:999px; padding:8px 16px; font-weight:700; font-size:12.5px; }
+    .status-line .dot { width:8px; height:8px; border-radius:50%; background:#c99a2e; }
+    .status-line.live .dot { background:#328971; }
+    .state-note { color:#8a9793; font-size:13px; margin-top:16px; }
+    footer { max-width:960px; margin:20px auto 0; padding:16px 24px 34px; color:#9aa5a0; font-size:12px; display:flex; justify-content:space-between; }
+    footer a { color:#7d9c94; }
+    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand-lockup" href="https://bluecolumn.ai/" aria-label="BlueColumn home">
+      <img class="brand-logo" src="../bluecolumn-mark.png" alt="BlueColumn logo" width="34" height="34">
+      <span class="wordmark">bluecolumn<span>.</span> <em class="wordmark-outloud">Out Loud</em></span>
+    </a>
+    <span class="header-note"><span class="live-dot" aria-hidden="true"></span> <span id="hdr-status">OutLoud page</span></span>
+  </header>
+
+  <main>
+    <h1 id="pg-name">Hello</h1>
+    <p class="sub" id="pg-tag">This page can talk.</p>
+
+    <section class="stage" aria-label="OutLoud agent">
+      <!--
+        ============ BOT_CFG hydration shape (wiring target for the outloud-v3 runtime, next build) ============
+        The public page will fetch the account's config from BlueColumn through the edge proxy (key stays
+        server-side at GA), then hand it to the existing runtime. Exact block that future code fills:
+
+          window.BOT_CFG = {
+            slug:          cfg.slug,                       // e.g. "acme-fence"
+            name:          cfg.business.name,              // display name
+            whatYouDo:     cfg.business.whatYouDo,         // RAG prefix / identity line
+            serviceArea:   cfg.business.serviceArea,
+            hours:         cfg.business.hours,
+            pricingStyle:  cfg.business.pricingStyle,
+            commonQuestions: cfg.business.commonQuestions, // newline-separated seed questions
+            namespace:     "ol_acct_" + cfg.slug,          // BlueColumn namespace for recall (catalog, leads)
+            avatar: {
+              kind:        cfg.avatar.kind,                // "mascot" | "simli"
+              faceId:      cfg.avatar.faceId,              // Simli faceId when kind === "simli"
+              name:        cfg.avatar.name
+            },
+            voice: { voiceId: cfg.voice.voiceId, name: cfg.voice.name },
+            status:        cfg.status                      // "draft" | "live"
+          };
+          // → then boot outloud-v3: avatar-director (mascot sprite) or simli-director (video face),
+          //   speech-director (ElevenLabs voiceId), business-knowledge ← BOT_CFG + namespace recall.
+
+        Until the proxy lands, this template renders identity from the config (client-recall with the
+        account-scoped namespace) or shows the dressed-up placeholder below.
+      -->
+      <div class="mascot" id="stage-face" style="background-image:url('../mascot-sprites.png'); background-size:300% 300%; background-position:0% 0%;"></div>
+      <div><span class="status-line" id="pg-status"><span class="dot"></span><span id="pg-status-text">Getting ready</span></span></div>
+      <p class="state-note" id="pg-note">This OutLoud is getting dressed up — check back shortly.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span id="ft-brand">OutLoud by BlueColumn</span>
+    <span><a href="https://bluecolumn.ai/app-preview/">Make your own OutLoud</a></span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    var params = new URLSearchParams(location.search);
+    var slug = (params.get('slug') || '').toLowerCase().replace(/[^a-z0-9-]/g, '');
+    // Demo slugs render without any network call; real slugs hydrate from BlueColumn.
+    var demo = { acme: { name: 'Acme Fence', live: true } };
+
+    function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+    function paint(cfg) {
+      var name = cfg && cfg.business && cfg.business.name;
+      var live = cfg && cfg.status === 'live';
+      document.title = (name ? name + ' | ' : '') + 'OutLoud by BlueColumn';
+      document.getElementById('pg-name').innerHTML = esc(name || 'Hello') + '<em>.</em>';
+      document.getElementById('pg-tag').textContent = (cfg && cfg.business && cfg.business.whatYouDo) || 'This page can talk.';
+      var st = document.getElementById('pg-status');
+      st.classList.toggle('live', !!live);
+      document.getElementById('pg-status-text').textContent = live ? 'Live — ask away' : 'Almost there';
+      document.getElementById('hdr-status').textContent = name ? name + ' · OutLoud' : 'OutLoud page';
+      document.getElementById('ft-brand').textContent = name ? name + ' · powered by OutLoud' : 'OutLoud by BlueColumn';
+      var note = document.getElementById('pg-note');
+      if (cfg && live) {
+        note.textContent = 'The talking part arrives with the launch update.';
+      }
+    }
+
+    if (demo[slug]) {
+      paint({ business: { name: demo[slug].name }, status: demo[slug].live ? 'live' : 'draft' });
+      return;
+    }
+    if (!slug) {
+      document.getElementById('pg-name').textContent = 'This page is resting';
+      document.getElementById('pg-tag').textContent = 'No OutLoud lives at this address yet.';
+      return;
+    }
+
+    // Real slug: try to hydrate the public identity from the account's BlueColumn namespace.
+    // NOTE: this uses the anon-safe client path; at GA the edge proxy serves this server-side.
+    var BC_BASE = 'https://api.bluecolumn.ai';
+    var BC_KEY = window.OL_KEYS && window.OL_KEYS.blueColumnKey;
+    if (!BC_KEY) {
+      // keys.js is not loaded on public pages by design; show placeholder identity
+      paint(null);
+      return;
+    }
+    fetch(BC_BASE + '/agent-recall', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + BC_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ namespace: 'ol_acct_' + slug, q: 'account configuration for this business', top_k: 5 })
+    }).then(function (r) { return r.ok ? r.json() : null; }).then(function (data) {
+      var sources = (data && data.sources) || [];
+      for (var i = 0; i < sources.length; i++) {
+        var t = String(sources[i].excerpt || '').trim();
+        if (t[0] === '{') {
+          var cut = t.lastIndexOf('}');
+          if (cut > 0) t = t.slice(0, cut + 1);
+          try {
+            var cfg = JSON.parse(t);
+            if (cfg && cfg.version === 1 && cfg.business) { paint(cfg); return; }
+          } catch (e) { /* try next source */ }
+        }
+      }
+      paint(null);
+    }).catch(function () { paint(null); });
+  })();
+  </script>
+</body>
+</html>
