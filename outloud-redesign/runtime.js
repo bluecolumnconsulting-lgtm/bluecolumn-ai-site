@@ -200,34 +200,33 @@
      With the Simli video path, the greeting waits for the tap gate:
      a gesture is required before any audio may play. */
   showGate();
-  /* No tap gate: the sprite avatar shows immediately. The live video
-     upgrade starts on the visitor's first real interaction — a typed
-     question, the mic, or a click on the avatar itself (a real click
-     is a valid user gesture, so autoplay rules stay satisfied). */
-  var simliStartTried = false;
-  function trySimliStart(greet) {
-    if (simliStartTried) { return; }
-    simliStartTried = true;
-    simli.start().then(function (ok) {
-      if (!greet) { return; }
-      if (ok) {
-        addMsg('outloud', 'Video avatar is live — watch me talk.');
-      } else {
-        addMsg('outloud', 'Video could not connect (' + (simli.lastError || 'unknown') + '). Voice mode still works. If this is an in-app browser (Telegram etc.), copy this link and open it in Safari or Chrome.');
-      }
-      /* Greeting goes through whichever channel is now active. */
+  /* No gate, no click: the live video avatar starts on page load,
+     muted so browser autoplay rules let the face show with no
+     gesture. The visitor's first interaction inside the demo (click,
+     key, touch) unmutes the voice — and greets only if the
+     conversation hasn't started. The sprite stays underneath as the
+     fallback if the video cannot connect. */
+  simli.start();
+  var audioUnlocked = false;
+  function unlockAudio(e) {
+    if (audioUnlocked) { return; }
+    var t = e.target;
+    if (!t || !t.closest || !t.closest('#demo')) { return; }
+    audioUnlocked = true;
+    document.removeEventListener('pointerdown', unlockAudio, true);
+    document.removeEventListener('keydown', unlockAudio, true);
+    document.removeEventListener('touchstart', unlockAudio, true);
+    simli.unmute();
+    /* Retry if the boot attempt failed — a real gesture is on file now. */
+    simli.start();
+    var log = document.getElementById('ol-log');
+    if (!log || !log.childElementCount) {
       bus.publish('transcript.final', { text: 'hello', internal: true });
-    });
-  }
-  var avatarStageEl = F('ol-avatar-stage');
-  if (avatarStageEl) { avatarStageEl.addEventListener('click', function () { trySimliStart(true); }); }
-  bus.on('transcript.final', function onceStart(env) {
-    if (!env.payload.internal) {
-      removeGate();
-      trySimliStart(false);
-      bus.off('transcript.final', onceStart);
     }
-  });
+  }
+  document.addEventListener('pointerdown', unlockAudio, true);
+  document.addEventListener('keydown', unlockAudio, true);
+  document.addEventListener('touchstart', unlockAudio, true);
 
   window.OutLoudRuntime = { bus: bus, orch: orch, memory: memory, planner: planner, content: content, avatar: avatar, speech: speech, input: input };
 })();

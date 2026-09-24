@@ -63,10 +63,22 @@
     this.videoEl.className = 'ol-simli-video';
     this.videoEl.setAttribute('playsinline', '');
     this.videoEl.setAttribute('autoplay', '');
+    this.videoEl.muted = true;   /* muted autoplay: the face shows with no gesture */
     this.audioEl = document.createElement('audio');
     this.audioEl.className = 'ol-simli-audio';
+    this.audioEl.muted = true;   /* voice unlocks on the visitor's first interaction */
     wrap.appendChild(this.videoEl);
     wrap.appendChild(this.audioEl);
+  };
+
+  /* First user gesture: unmute so the avatar's voice can play. */
+  SimliDirector.prototype.unmute = function () {
+    try {
+      this.videoEl.muted = false;
+      this.audioEl.muted = false;
+      if (this.videoEl.play) { this.videoEl.play().catch(function () {}); }
+      if (this.audioEl.play) { this.audioEl.play().catch(function () {}); }
+    } catch (e) {}
   };
 
   /* ---------- session lifecycle ---------- */
