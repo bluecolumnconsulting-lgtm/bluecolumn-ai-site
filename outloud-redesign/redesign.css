@@ -115,7 +115,7 @@ h1 em { color: #2379A8; font-weight: 400; }
 .feature-grid h3 { margin: 21px 0 9px; font-size: 18px; letter-spacing: -.035em; }.feature-grid p { max-width: 290px; font-size: 14px; line-height: 1.7; color: #55677E; }
 .closing { max-width: 1234px; margin: 96px auto; background: var(--irid-rim); color: #1C2B3F; border-radius: 13px; padding: 56px 64px; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
 .closing .section-kicker { color: #44557A; }.closing h2 { max-width: 590px; font-size: clamp(38px, 4.4vw, 56px); line-height: 1.06; letter-spacing: -.035em; margin: 16px 0 0; }
-.button-light { color: var(--blue); background: #fff; white-space: nowrap; }.button-light:hover { background: #E9F1FB;
+.button-light { color: var(--blue); background: #fff; white-space: nowrap; }.button-light:hover { background: #E9F1FB; }
 .site-footer { max-width: 1330px; margin: auto; padding: 0 48px 30px; display: flex; justify-content: space-between; color: #44557A; font-size: 12px; }
 
 @media (max-width: 1100px) {
