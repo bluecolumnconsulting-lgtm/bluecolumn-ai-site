@@ -167,6 +167,30 @@
       for (var i = 0; i < candidates.length; i++) {
         try { return JSON.parse(candidates[i]); } catch (e) { /* next */ }
       }
+      // still unparsed → tail-repair pass (handles truncated JSON excerpts)
+      var inStr = false, esc = false, ob = 0, ab = 0;
+      for (var m = 0; m < t.length; m++) {
+        var c = t[m];
+        if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false; continue; }
+        if (c === '"') inStr = true;
+        else if (c === '{') ob++;
+        else if (c === '[') ab++;
+        else if (c === '}') ob = Math.max(0, ob - 1);
+        else if (c === ']') ab = Math.max(0, ab - 1);
+      }
+      var fixed = t;
+      if (inStr) fixed += '"';
+      // strip a dangling partial key or trailing comma left by truncation
+      fixed = fixed.replace(/,\s*"[^"]*"?\s*:?\s*$/, '');
+      fixed = fixed.replace(/,\s*$/, '');
+      // an unclosed object inside an array needs its '}' BEFORE the array's ']'
+      if (ab > 0 && ob > 0) {
+        fixed += '}';
+        ob--;
+      }
+      for (var q = 0; q < ab; q++) fixed += ']';
+      for (var r = 0; r < ob; r++) fixed += '}';
+      try { return JSON.parse(fixed); } catch (e) { return null; }
     }
     return null;
   }
