@@ -80,6 +80,10 @@
   Orchestrator.prototype.sessionStart = function () {
     this.bus.sessionId = this.memory.id;
     this.bus.publish('session.start', { resumed: !!this.memory.facts['session.returned'], sessionId: this.memory.id });
+    /* A half-finished lead capture never survives a page reload — a
+       returning visitor gets a fresh welcome, not an interrogation
+       about a phone number from their last visit. */
+    if (this.memory.leadState === 'capturing') { this.memory.setLeadState('none'); }
     this.memory.setFact('session.returned', true, 'interaction');
     /* Capability report (client side of session.ready). */
     this.bus.publish('session.ready', {

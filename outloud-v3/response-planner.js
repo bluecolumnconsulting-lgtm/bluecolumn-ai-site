@@ -56,9 +56,9 @@
 
   /* Phrase pools: rotate so repeated turns never repeat verbatim. */
   var GREETINGS = [
-    "Hey there{NAME}. Ask me anything: what OutLoud does, what it costs, how it works. Or say book a demo and I'll take your details.",
-    "Hi{NAME}, good to see you. I can cover pricing, how the stack works, or the live client pages. What's on your mind?",
-    "Hello{NAME}. I'm the OutLoud agent, and this page is me. Fire away with questions, or say book a walkthrough."
+    "Hey, welcome to OutLoud. What's on your mind?",
+    "Hi there{NAME}. Ask me anything.",
+    "Welcome to OutLoud. What would you like to know?"
   ];
   var FOLLOWUPS = [
     "Want me to line up a walkthrough for your business?",
