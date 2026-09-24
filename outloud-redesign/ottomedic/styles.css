@@ -1,0 +1,822 @@
+/* ============================================================
+   OutLoud v2: "Frosted Glass" material language
+   Approved style anchor: soft-3D frosted glass render
+   (style-anchor.png) — stacked translucent discs, prismatic rim.
+   Manrope (body/headings, geometric-humanist sans)
+   Spline Sans Mono (timestamps, labels, data)
+   White→blue vertical gradient · frosted glass panels ·
+   one iridescent accent (live/play semantics, replacing red)
+   Soft depth, radius 12–20px, no hard rules.
+   ============================================================ */
+
+:root {
+  /* Page gradient: pale off-white → deeper calm blue */
+  --bg-top: #FCFDFF;
+  --bg-hi: #F2F6FC;
+  --bg-mid: #E1EAF7;
+  --bg-deep: #AEC9E8;
+
+  /* Text on glass (contrast-checked on white-alpha panels) */
+  --ink: #1C2B3F;
+  --body-ink: #2A3B52;
+  --muted: #55677E;
+  --visitor-ink: #3D4E64;
+
+  /* Frosted glass material */
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.72);
+  --glass-faint: rgba(255, 255, 255, 0.38);
+  --edge: rgba(255, 255, 255, 0.7);
+  --edge-soft: rgba(28, 43, 63, 0.08);
+  --inner-hi: rgba(255, 255, 255, 0.85);
+  --shadow-soft: 0 24px 60px rgba(70, 100, 145, 0.14), 0 4px 14px rgba(70, 100, 145, 0.06);
+
+  /* Interactive blue */
+  --blue: #2461C4;
+  --blue-bright: #3B7BDD;
+
+  /* The one iridescent accent (semantic slot of the old signal red).
+     Two strengths: bright rim gradient for surfaces,
+     deepened version for small text so it passes contrast. */
+  --irid-rim: linear-gradient(100deg,
+    #F2A9C3 0%, #F6D9A0 20%, #BCE8BE 40%,
+    #9ED8EC 60%, #A9BBF2 80%, #E3ADE6 100%);
+  --irid-text: linear-gradient(100deg,
+    #A63A5E 0%, #A96A1F 22%, #2F8352 44%,
+    #2379A8 64%, #5468C4 82%, #8E3D9C 100%);
+
+  --sans: "Manrope", -apple-system, "SF Pro Text", "Segoe UI", sans-serif;
+  --mono: "Spline Sans Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --measure: 640px;
+  --rail: 118px;
+  --gutter: 24px;
+  --radius: 20px;
+  --radius-sm: 14px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: linear-gradient(180deg,
+    var(--bg-top) 0%,
+    var(--bg-hi) 24%,
+    var(--bg-mid) 48%,
+    #C6D8EE 72%,
+    var(--bg-deep) 100%);
+  color: var(--body-ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Faint ambient light bands behind everything, like the anchor's backdrop */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 38% at 14% 8%, rgba(255, 219, 226, 0.45), transparent 70%),
+    radial-gradient(50% 34% at 86% 16%, rgba(212, 236, 255, 0.55), transparent 70%),
+    radial-gradient(42% 30% at 50% 55%, rgba(255, 246, 226, 0.30), transparent 72%),
+    radial-gradient(45% 30% at 80% 78%, rgba(190, 220, 250, 0.40), transparent 72%);
+}
+
+.mono { font-family: var(--mono); }
+a { color: inherit; }
+button { font: inherit; cursor: pointer; }
+
+::selection { background: rgba(140, 180, 240, 0.35); }
+
+:focus-visible {
+  outline: 2px solid var(--blue-bright);
+  outline-offset: 2px;
+}
+
+/* ---------- Top bar: frosted strip ---------- */
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px var(--gutter);
+  margin: 12px auto 0;
+  max-width: 1100px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft), inset 0 1px 0 var(--inner-hi);
+}
+
+.brand-word {
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.brand-sub {
+  margin-left: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.sound {
+  background: var(--glass-faint);
+  border: 1px solid var(--edge);
+  border-radius: 12px;
+  padding: 9px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+  transition: border-color 180ms, color 180ms, background 180ms;
+  min-height: 44px;
+}
+
+.sound:hover { border-color: rgba(255, 255, 255, 0.95); color: var(--ink); background: var(--glass-strong); }
+.sound[aria-pressed="false"] { color: var(--muted); border-color: var(--edge-soft); background: transparent; box-shadow: none; }
+
+/* ---------- Sections: layered glass panels, no hard rules ---------- */
+
+main { display: block; padding: 0 var(--gutter); }
+
+.section,
+.call,
+.cta {
+  max-width: 1100px;
+  margin: 28px auto 0;
+  padding: 64px 56px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  backdrop-filter: blur(24px) saturate(1.5);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft), inset 0 1px 0 var(--inner-hi);
+}
+
+/* The one prismatic rim: topmost element only (and echoed on the CTA) */
+.call, .cta { position: relative; overflow: hidden; }
+
+.call::before,
+.cta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--irid-rim);
+  opacity: 0.85;
+  box-shadow: 0 -2px 14px rgba(214, 190, 240, 0.55);
+}
+
+.section { margin-top: 28px; }
+.call { margin-top: 24px; }
+
+.sec-num {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.sec-title {
+  font-weight: 700;
+  font-size: clamp(28px, 4.8vw, 42px);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+.sec-title em,
+.title em {
+  font-style: italic;
+  font-weight: 700;
+}
+
+.sec-lede {
+  max-width: 52ch;
+  color: var(--muted);
+  margin-bottom: 36px;
+}
+
+/* ---------- Opener / hero (transcript start) ---------- */
+
+.call { padding-top: 72px; }
+
+.opener {
+  max-width: 820px;
+}
+
+.kicker {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 36px;
+}
+
+.title {
+  font-weight: 700;
+  font-size: clamp(32px, 6vw, 60px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 32px;
+}
+
+.lede {
+  max-width: 58ch;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.stub-note {
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--glass-faint);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+  padding: 14px 18px;
+  max-width: 62ch;
+  line-height: 1.7;
+}
+
+/* ---------- Transcript ---------- */
+
+.transcript {
+  list-style: none;
+  margin-top: 72px;
+}
+
+/* Every line gets the same box so the timestamp rail stays aligned;
+   OutLoud lines are the brighter frosted layer. */
+.line {
+  display: grid;
+  grid-template-columns: var(--rail) 1fr;
+  gap: 0 24px;
+  padding: 18px;
+  border-radius: 16px;
+  max-width: calc(var(--measure) + var(--rail) + 42px);
+  margin-bottom: 8px;
+}
+
+.line-outloud {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.45));
+  border: 1px solid var(--edge);
+  box-shadow: 0 10px 28px rgba(70, 100, 145, 0.10), inset 0 1px 0 var(--inner-hi);
+}
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 6px;
+  font-size: 12px;
+}
+
+.stamp { color: var(--muted); letter-spacing: 0.05em; }
+
+.who {
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Live speaker: iridescent, but readable — a tiny prism dot + deep ink */
+.who-live {
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.who-live::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--irid-rim);
+  box-shadow: 0 0 6px rgba(210, 180, 245, 0.7);
+  flex: none;
+}
+
+.speech { min-width: 0; }
+
+.talk {
+  max-width: 58ch;
+  font-size: 18px;
+  line-height: 1.55;
+  margin-top: 10px;
+  color: var(--body-ink);
+}
+
+.line-visitor .talk {
+  font-style: italic;
+  color: var(--visitor-ink);
+}
+
+.line-outloud .talk {
+  font-style: normal;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Play control: frosted chip, timestamp label + level meter */
+
+.play {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--glass-faint);
+  border: 1px solid var(--edge);
+  border-radius: 12px;
+  padding: 7px 12px;
+  color: var(--muted);
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+  transition: border-color 180ms, color 180ms, background 180ms, box-shadow 180ms;
+  min-height: 36px;
+}
+
+.play:hover {
+  background: var(--glass-strong);
+  border-color: rgba(255, 255, 255, 0.95);
+  color: var(--ink);
+}
+
+.play:focus-visible { outline: 2px solid var(--blue-bright); outline-offset: 2px; }
+
+.p-label {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  min-width: 4ch;
+  text-align: left;
+}
+
+.meter {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.meter i {
+  width: 2px;
+  height: 4px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.9;
+}
+
+/* Live/playing state: the prismatic accent, as a gradient border + glow.
+   Double-background technique: white fill inside padding-box,
+   iridescent gradient in the border-box ring. */
+.line-outloud .play[data-live] {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--glass-strong), var(--glass-strong)) padding-box,
+    var(--irid-rim) border-box;
+  color: var(--ink);
+}
+
+.playing {
+  border-color: transparent;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)) padding-box,
+    var(--irid-rim) border-box;
+  color: var(--ink);
+  box-shadow: 0 0 0 4px rgba(196, 176, 236, 0.18), 0 6px 18px rgba(150, 120, 210, 0.18);
+}
+
+.playing .meter i { animation: level 0.9s ease-in-out infinite; }
+.playing .meter i:nth-child(1) { animation-delay: 0s; }
+.playing .meter i:nth-child(2) { animation-delay: 0.12s; }
+.playing .meter i:nth-child(3) { animation-delay: 0.24s; }
+.playing .meter i:nth-child(4) { animation-delay: 0.36s; }
+.playing .meter i:nth-child(5) { animation-delay: 0.48s; }
+
+@keyframes level {
+  0%, 100% { height: 4px; }
+  50% { height: 12px; }
+}
+
+/* Stage direction after the call: a quieter inner layer */
+
+.direction {
+  margin-top: 48px;
+  padding: 24px 26px;
+  max-width: calc(var(--measure) + var(--rail) + 42px);
+  background: var(--glass-faint);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.direction-note { margin-top: 12px; }
+
+/* ---------- 01 What just happened: frosted beat tiles ---------- */
+
+.beats {
+  list-style: none;
+  max-width: 720px;
+  display: grid;
+  gap: 14px;
+}
+
+.beats li {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 18px;
+  padding: 22px 24px;
+  background: var(--glass-faint);
+  border: 1px solid var(--edge);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+}
+
+.beat-n {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--glass-strong);
+  border: 1px solid var(--edge);
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+}
+
+.beats h3 {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.beats p {
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+/* ---------- 02 Overnight log: translucent ledger ---------- */
+
+.log {
+  list-style: none;
+  max-width: 720px;
+  background: var(--glass-faint);
+  border: 1px solid var(--edge);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+  padding: 8px 24px;
+}
+
+.log li {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.log li:last-child { border-bottom: none; }
+
+.log li p { max-width: 54ch; }
+
+/* Overnight timestamps carry the deepened iridescent text */
+.log-t {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: var(--irid-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-top: 3px;
+}
+
+.log-note {
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- 03 Spec: definition rows ---------- */
+
+.spec { max-width: 720px; }
+
+.spec-lede {
+  max-width: 58ch;
+  margin-bottom: 32px;
+}
+
+.spec-list { list-style: none; }
+
+.spec-list li {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.spec-list li:last-child { border-bottom: none; }
+
+.spec-k {
+  font-size: 12px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  padding-top: 4px;
+}
+
+.spec-list p { max-width: 54ch; }
+
+.proof {
+  margin-top: 32px;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  max-width: 46ch;
+  padding: 20px 24px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.4));
+  border: 1px solid var(--edge);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+}
+
+/* ---------- 04 Live pages: translucent index ---------- */
+
+.live-index {
+  list-style: none;
+  max-width: 720px;
+  background: var(--glass-faint);
+  border: 1px solid var(--edge);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+  padding: 8px 24px;
+}
+
+.live-index li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.live-index li:last-child { border-bottom: none; }
+
+.live-index a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 8px;
+  margin: 0 -8px;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 12px;
+  transition: background 180ms, color 180ms;
+}
+
+.live-index a:hover {
+  background: var(--glass-strong);
+  color: var(--blue);
+}
+
+.idx-tag {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ---------- 05 Pricing: frosted plan layers ---------- */
+
+.plans {
+  width: 100%;
+  max-width: 780px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+.plans tr { border-top: 1px solid rgba(255, 255, 255, 0.55); }
+.plans tr:first-child { border-top: none; }
+.plans tr:last-child { border-bottom: none; }
+
+.plans th {
+  text-align: left;
+  vertical-align: top;
+  font-weight: 400;
+  padding: 28px 32px 28px 0;
+}
+
+.plan-name {
+  display: block;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.plan-desc {
+  display: block;
+  color: var(--muted);
+  max-width: 44ch;
+  font-size: 15px;
+}
+
+.plans td {
+  vertical-align: top;
+  text-align: right;
+  padding: 28px 0;
+  white-space: nowrap;
+}
+
+.serif-price {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.price-tag {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 2px 0 10px;
+}
+
+/* ---------- CTA ---------- */
+
+.cta { padding: 88px 56px; }
+
+.cta-lede {
+  max-width: 50ch;
+  color: var(--muted);
+  margin-bottom: 36px;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 26px;
+  border-radius: 14px;
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 180ms, color 180ms, box-shadow 180ms, transform 180ms;
+}
+
+.btn-solid {
+  background: linear-gradient(180deg, var(--blue-bright), var(--blue));
+  color: #FFFFFF;
+  box-shadow: 0 10px 24px rgba(36, 97, 196, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.btn-solid:hover {
+  box-shadow: 0 14px 30px rgba(36, 97, 196, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-line {
+  background: var(--glass-faint);
+  border-color: var(--edge);
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 var(--inner-hi);
+}
+
+.btn-line:hover {
+  background: var(--glass-strong);
+  border-color: rgba(255, 255, 255, 0.95);
+}
+
+.cta-note {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- Footer ---------- */
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  max-width: 1100px;
+  margin: 28px auto 0;
+  padding: 22px var(--gutter) 44px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- Screen-reader status ---------- */
+
+.sr-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+
+  main { padding: 0; }
+
+  .top { margin: 10px 12px 0; padding: 12px 16px; }
+  .brand-sub { display: none; }
+
+  .section,
+  .call,
+  .cta {
+    margin: 16px 12px 0;
+    padding: 40px 20px;
+    border-radius: 16px;
+  }
+
+  .call { padding-top: 52px; }
+  .cta { padding: 64px 20px; }
+
+  .call::before,
+  .cta::before { left: 16px; right: 16px; }
+
+  .line {
+    grid-template-columns: 1fr;
+    gap: 8px 0;
+    padding: 14px 12px;
+  }
+
+  .rail {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 12px;
+    padding-top: 0;
+  }
+
+  .talk { font-size: 17px; }
+
+  .beats li { grid-template-columns: 40px 1fr; gap: 12px; padding: 18px 16px; }
+
+  .log { padding: 4px 16px; }
+  .log li { grid-template-columns: 1fr; gap: 4px; }
+  .log-t { padding-top: 0; }
+
+  .spec-list li { grid-template-columns: 1fr; gap: 4px; }
+
+  .plans tr { display: block; padding: 24px 0; }
+  .plans th, .plans td { display: block; padding: 0; text-align: left; }
+  .plans td { margin-top: 14px; }
+  .serif-price { font-size: 26px; }
+  .price-tag { display: inline; margin: 0 8px 0 6px; }
+
+  .live-index { padding: 4px 14px; }
+  .live-index a { flex-direction: column; gap: 4px; align-items: flex-start; }
+
+  .foot { margin: 16px 12px 0; }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .playing .meter i { animation: none; height: 10px; }
+  * { transition: none !important; }
+}

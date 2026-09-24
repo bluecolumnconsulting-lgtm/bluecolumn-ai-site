@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OttoMedic — Talk to Marina, Live</title>
+  <meta name="description" content="A live talking page for OttoMedic — the self-regulating protein skimmer. Ask Marina anything: how it works, what it prevents, models, specs. She answers and shows her work." />
+  <meta name="theme-color" content="#F2F6FC" />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="runtime.css?v=18" />
+  <style>
+  .ol-console:has(#ol-log:empty){display:none}
+  .ol-avatar-face.speaking{animation:ol-talk .34s ease-in-out infinite alternate}
+  @keyframes ol-talk{from{transform:translateY(0) scale(1)}to{transform:translateY(-4px) scale(1.035)}}
+  .ol-card-img{display:block;width:100%;height:132px;object-fit:contain;margin-bottom:8px}
+  .ol-standby-img{max-width:70%;height:auto;border-radius:8px;margin-bottom:4px}
+  @media (max-width:640px){
+    .ol-stage-row{flex-direction:column;align-items:stretch;width:100%}
+    .ol-avatar-stage{width:200px;height:220px;margin:0 auto}
+    .ol-screen{width:100%;min-height:250px}
+    .ol-card-img{height:100px}
+    .ol-main{padding:10px 12px}
+    header.top{padding:10px 14px}
+    .ol-inrow-stage{margin-bottom:14px}
+  }
+  </style>
+</head>
+<body>
+
+  <header class="top">
+    <div class="brand">
+      <span class="brand-word">OttoMedic</span>
+      <span class="brand-sub mono">ottomedic.com · live agent</span>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button type="button" id="ol-mic" class="ol-mic" aria-pressed="false">
+        <span class="ol-btn-label">Talk</span>
+      </button>
+      <button type="button" id="ol-sound" class="ol-sound" aria-pressed="true">
+        <span class="ol-btn-label">Sound: on</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="ol-main">
+
+    <!-- ============ AVATAR STAGE ============ -->
+    <section class="ol-stage-panel" aria-label="OttoMedic live agent stage">
+
+      <div class="ol-stage-row">
+        <div id="ol-avatar-stage" class="ol-avatar-stage" aria-label="OttoMedic avatar"></div>
+        <div class="ol-screen" id="ol-screen" aria-label="OttoMedic presentation screen">
+          <div class="ol-screen-topbar mono">
+            <span class="ol-screen-brand">OTTOMEDIC</span>
+            <span class="ol-screen-url">ottomedic.com</span>
+          </div>
+          <div class="ol-screen-body">
+            <div class="ol-screen-standby" id="ol-screen-standby">
+              <img class="ol-standby-img" src="img/brand-name.jpg" alt="OttoMedic">
+              <div class="ol-standby-sub mono">U.S. Patent 9078419 · Model EVO 7000Z1</div>
+              <div class="ol-standby-note mono">tap anywhere — Marina walks you through it</div>
+            </div>
+            <!-- SDK content.host — panels render here while the avatar presents -->
+            <div id="outloud-content-panel" class="ol-host ol-host-screen" aria-label="Content shown by Marina"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ol-status-row">
+        <span id="ol-state" class="ol-state" data-state="IDLE">Ready when you are</span>
+      </div>
+      <!-- Controls in the main view: ask from the hero itself -->
+      <div class="ol-inrow ol-inrow-stage">
+        <input id="ol-text-in" class="ol-text" type="text" autocomplete="off"
+               placeholder="Ask Marina anything about OttoMedic, or press Talk" aria-label="Message Marina" />
+        <button type="button" id="ol-send" class="ol-send">Send</button>
+      </div>
+    </section>
+
+    <!-- ============ CONVERSATION ============ -->
+    <section class="ol-console" aria-label="Conversation with Marina">
+      <ol id="ol-log" class="ol-log" aria-live="polite"></ol>
+    </section>
+
+
+  </main>
+
+  <footer class="foot mono">
+    <span>© 2026 OttoMedic GmbH · ottomedic.com</span>
+  </footer>
+
+  <p class="sr-status mono" id="ol-sr-status" role="status" aria-live="polite"></p>
+
+  <!-- Layers, in boot order. No build step; plain script tags.
+       2.0 runtime: Simli live video avatar (tap gate, sprite fallback) + live BlueColumn brain. -->
+  <script src="outloud.config.js?v=18"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
+  <script src="event-bus.js?v=18"></script>           <!-- OutLoudEvent envelope + pub/sub -->
+  <script src="business-knowledge.js?v=18"></script>  <!-- Context 1: OttoMedic knowledge (RAG) -->
+  <script src="customer-memory.js?v=18"></script>     <!-- Context 2: customer/session memory -->
+  <script src="plan-validator.js?v=18"></script>      <!-- plan validation + graceful repair -->
+  <script src="response-planner.js?v=18"></script>    <!-- Context 3: reasoning → Response Plan -->
+  <script src="realtime-input.js?v=18"></script>      <!-- mic, VAD, streaming transcript, barge-in -->
+  <script src="speech-director.js?v=18"></script>     <!-- ElevenLabs TTS + chunk streaming -->
+  <script src="vendor/simli-client.js?v=18"></script> <!-- SimliLib bundle (WebRTC talking head) -->
+  <script src="simli-director.js?v=18"></script>      <!-- live video avatar + PCM16 feed -->
+  <script src="avatar-director.js?v=18"></script>     <!-- sprite adapter: face/gaze/gesture channels (fallback) -->
+  <script src="content-director.js?v=18"></script>    <!-- Content Registry + Action Registry -->
+  <script src="screen-director.js?v=18"></script>     <!-- ambient branded card rotation -->
+  <script src="session-orchestrator.js?v=18"></script><!-- state machine + event routing -->
+  <script src="runtime.js?v=18"></script>             <!-- bootstrap + page chrome -->
+</body>
+</html>
