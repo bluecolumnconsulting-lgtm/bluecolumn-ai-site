@@ -116,25 +116,11 @@
     gateEl = null;
   }
   function showGate() {
-    var stage = F('ol-avatar-stage');
-    if (!stage || stage.querySelector('.ol-tap-gate')) { return; }
-    gateEl = document.createElement('button');
-    gateEl.type = 'button';
-    gateEl.className = 'ol-tap-gate';
-    gateEl.innerHTML = '<span class="ol-gate-word">Tap to meet OutLoud</span><span class="ol-gate-sub mono">live video agent · voice + answers</span>';
-    gateEl.addEventListener('click', function () {
-      removeGate();
-      simli.start().then(function (ok) {
-        if (ok) {
-          addMsg('outloud', 'Video avatar is live — watch me talk.');
-        } else {
-          addMsg('outloud', 'Video could not connect (' + (simli.lastError || 'unknown') + '). Voice mode still works. If this is an in-app browser (Telegram etc.), copy this link and open it in Safari or Chrome.');
-        }
-        /* Greeting goes through whichever channel is now active. */
-        bus.publish('transcript.final', { text: 'hello', internal: true });
-      });
-    });
-    stage.appendChild(gateEl);
+    /* No tap gate — the avatar is visible the moment the page loads.
+       The sprite shows first; the live video avatar starts on the
+       visitor's first real interaction (typed question, mic, or a
+       click on the avatar itself) — still a valid user gesture, so
+       autoplay rules are satisfied. See trySimliStart below. */
   }
   bus.on('simli.failed', function (env) {
     console.info('[outloud] simli failed:', env.payload.message);
@@ -214,13 +200,31 @@
      With the Simli video path, the greeting waits for the tap gate:
      a gesture is required before any audio may play. */
   showGate();
-  /* Typed input (or mic) before tapping the gate still works — and
-     a real click IS a valid user gesture, so the Simli video starts
-     here too. The sprite only ever shows if video cannot start. */
+  /* No tap gate: the sprite avatar shows immediately. The live video
+     upgrade starts on the visitor's first real interaction — a typed
+     question, the mic, or a click on the avatar itself (a real click
+     is a valid user gesture, so autoplay rules stay satisfied). */
+  var simliStartTried = false;
+  function trySimliStart(greet) {
+    if (simliStartTried) { return; }
+    simliStartTried = true;
+    simli.start().then(function (ok) {
+      if (!greet) { return; }
+      if (ok) {
+        addMsg('outloud', 'Video avatar is live — watch me talk.');
+      } else {
+        addMsg('outloud', 'Video could not connect (' + (simli.lastError || 'unknown') + '). Voice mode still works. If this is an in-app browser (Telegram etc.), copy this link and open it in Safari or Chrome.');
+      }
+      /* Greeting goes through whichever channel is now active. */
+      bus.publish('transcript.final', { text: 'hello', internal: true });
+    });
+  }
+  var avatarStageEl = F('ol-avatar-stage');
+  if (avatarStageEl) { avatarStageEl.addEventListener('click', function () { trySimliStart(true); }); }
   bus.on('transcript.final', function onceStart(env) {
     if (!env.payload.internal) {
       removeGate();
-      simli.start();
+      trySimliStart(false);
       bus.off('transcript.final', onceStart);
     }
   });
