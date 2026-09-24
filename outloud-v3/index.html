@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f2">
+  <title>OutLoud by BlueColumn | A website you can talk to</title>
+  <meta name="description" content="A website you can talk to. Ask OutLoud a question and experience the live demo.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="OutLoud by BlueColumn">
+  <meta property="og:description" content="A website you can talk to. Try the live demo.">
+  <meta property="og:url" content="https://bluecolumn.ai/outloud-v2/">
+  <meta property="og:image" content="https://bluecolumn.ai/outloud/og-1200x630.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=16">
+  <link rel="stylesheet" href="runtime.css?v=18">
+  <link rel="stylesheet" href="redesign.css?v=3">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to demo</a>
+  <header class="site-header">
+    <a class="wordmark" href="https://bluecolumn.ai/" aria-label="BlueColumn home">bluecolumn<span>.</span></a>
+    <span class="header-note"><span class="live-dot" aria-hidden="true"></span> OutLoud live demo</span>
+  </header>
+
+  <main id="main">
+    <section class="intro" aria-labelledby="headline">
+      <h1 id="headline">A website you can <em>talk to.</em></h1>
+      <p>Ask a question. OutLoud answers in its own voice.</p>
+    </section>
+
+    <section class="experience" aria-label="Try OutLoud">
+      <div class="avatar-area">
+        <div id="ol-avatar-stage" class="ol-avatar-stage" aria-label="OutLoud avatar"></div>
+        <div class="state-line"><span id="ol-state" class="ol-state" data-state="IDLE">Ready when you are</span></div>
+      </div>
+
+      <div class="conversation-area">
+        <div class="ol-chips" aria-label="Suggested questions">
+          <button type="button" class="ol-chip">What is OutLoud?</button>
+          <button type="button" class="ol-chip">What does it cost?</button>
+        </div>
+        <div class="ask-row">
+          <button type="button" id="ol-mic" class="ol-mic" aria-pressed="false" aria-label="Turn microphone on"><span class="mic-symbol" aria-hidden="true">●</span><span class="ol-btn-label">Talk</span></button>
+          <label class="sr-only" for="ol-text-in">Ask OutLoud</label>
+          <input id="ol-text-in" class="ol-text" type="text" autocomplete="off" placeholder="Or type a question…">
+          <button type="button" id="ol-send" class="ol-send" aria-label="Send question">↑</button>
+        </div>
+        <div class="utility-row">
+          <button type="button" id="ol-stop" class="stop-button" hidden>Stop answer</button>
+          <button type="button" id="ol-sound" class="ol-sound" aria-pressed="true"><span class="ol-btn-label">Sound: on</span></button>
+          <span class="hint">Microphone access is requested only when you tap Talk.</span>
+        </div>
+        <div class="response-space" id="ol-response-space" aria-live="polite" aria-atomic="true"></div>
+        <div class="ol-screen" id="ol-screen" aria-label="Supporting information">
+          <div class="ol-screen-body">
+            <div id="ol-screen-standby" class="ol-screen-standby" hidden></div>
+            <div id="outloud-content-panel" class="ol-host ol-host-screen"></div>
+          </div>
+        </div>
+        <section class="ol-console" aria-label="Conversation transcript"><ol id="ol-log" class="ol-log" aria-live="polite"></ol></section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>OutLoud by BlueColumn</span><span>© 2026 BlueColumn</span></footer>
+  <p class="sr-only" id="ol-sr-status" role="status" aria-live="polite"></p>
+
+  
+  <script src="outloud.config.js?v=18"></script>
+  <script src="event-bus.js?v=18"></script>
+  <script src="business-knowledge.js?v=18"></script>
+  <script src="customer-memory.js?v=18"></script>
+  <script src="plan-validator.js?v=18"></script>
+  <script src="response-planner.js?v=18"></script>
+  <script src="realtime-input.js?v=18"></script>
+  <script src="speech-director.js?v=18"></script>
+  <script src="vendor/simli-client.js?v=18"></script>
+  <script src="simli-director.js?v=18"></script>
+  <script src="avatar-director.js?v=18"></script>
+  <script src="content-director.js?v=18"></script>
+  <script src="minimal-screen-director.js?v=3"></script>
+  <script src="session-orchestrator.js?v=18"></script>
+  <script src="runtime.js?v=18"></script>
+  <script src="redesign.js?v=3"></script>
+</body>
+</html>
