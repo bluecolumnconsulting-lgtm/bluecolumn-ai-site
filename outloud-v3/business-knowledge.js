@@ -172,6 +172,31 @@
   window.OUTLOUD.knowledge = {
     retrieve: function (query) {
       var local = fromCatalog(query);
+      var brain = window.OUTLOUD.openaiBrain;
+      if (brain && brain.available() && CONFIG.brain && CONFIG.brain.provider === 'openai') {
+        /* Owner directive 2026-09-25: OpenAI RUNS the avatar brain.
+           Grounding (BlueColumn /recall) is raced against a short cap so
+           it never stalls the OpenAI call. STRONG catalog matches stay
+           instant: published facts answer faster than any model. */
+        var groundCap = (CONFIG.brain.groundTimeoutMs || 2500);
+        var groundCapped = Promise.race([
+          ragFetch(buildQuery(query)).catch(function () { return null; }),
+          new Promise(function (res) { setTimeout(function () { res(null); }, groundCap); })
+        ]);
+        return brain.answer(query, groundCapped).then(function (t) {
+          return { text: t, source: 'openai', knowledgeId: 'openai:' + Date.now() };
+        }).catch(function () {
+          return retrieveLegacy(query, local);
+        });
+      }
+      return retrieveLegacy(query, local);
+    },
+    peek: fromCatalog
+  };
+
+  /* Legacy safety net (used when OpenAI is unavailable): strong catalog
+     match, then BlueColumn /recall, then the honest fallback. */
+  function retrieveLegacy(query, local) {
       if (local && local._score >= STRONG) {
         return Promise.resolve({ text: local.text, source: 'catalog', knowledgeId: local.knowledgeId });
       }
@@ -183,7 +208,5 @@
           source: 'fallback'
         };
       });
-    },
-    peek: fromCatalog
-  };
+  }
 })();

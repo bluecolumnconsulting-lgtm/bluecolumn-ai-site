@@ -17,6 +17,7 @@
   var SECRETS = {
     blueColumnKey: 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy',
     elevenLabsKey: 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843',
+    openaiKey: '',   // DROP-IN: paste the OpenAI key here — owner directive 2026-09-25: OpenAI runs the avatar brain
     simliKey: ''   // DISABLED 2026-09-25 per Joe: OpenAI is the only allowed avatar provider; no third-party runs the face
   };
 
@@ -37,6 +38,18 @@
       voiceId: 'iLVmqjzCGGvqtMCk6vVQ', // verified working 2026-08-24
       outputFormat: 'mp3_44100_128',
       streamChunks: true   // plan-level chunk streaming; true token streaming is TODO(edge-proxy)
+    },
+
+    /* --- Brain (owner directive 2026-09-25 16:10: OpenAI RUNS the
+         avatar — it is the reasoning brain, not the face. BlueColumn
+         /recall grounds it with the business's own knowledge; the
+         static catalog answers only when OpenAI is unavailable. ---) */
+    brain: {
+      provider: 'openai',
+      model: 'gpt-4o-mini',
+      timeoutMs: 9000,
+      maxTokens: 220,
+      groundTimeoutMs: 2500   // recall grounding never stalls the OpenAI call longer than this
     },
 
     /* --- Live RAG (BlueColumn /recall) is the PRIMARY brain.
