@@ -129,7 +129,7 @@
       signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) {
       if (res.status === 401 || res.status === 402 || res.status === 429 || res.status === 403) {
-        try { sessionStorage.setItem('ol-rag-down-until', String(Date.now() + 60 * 60 * 1000)); } catch (e) {}
+        try { sessionStorage.setItem('ol-rag-down-until', String(Date.now() + (res.status === 401 ? 60 * 60 * 1000 : 30 * 1000))); } catch (e) {}
         return null;
       }
       return res.json();
@@ -174,7 +174,7 @@
         if (r) { return r; }
         if (local) { return { text: local.text, source: 'catalog', knowledgeId: local.knowledgeId }; }
         return {
-          text: "Here’s the quick version. OutLoud is a talking website that answers questions, captures leads, and can book appointments. Plans start at $49 a month, video starts at $149, and I can also show pricing, live demos, avatars, or how setup works.",
+          text: "That one’s not in my head yet. I can talk pricing, what OutLoud is, how it works, live client pages, or setup timelines — or leave your name and number and a strategist follows up.",
           source: 'fallback'
         };
       });

@@ -43,7 +43,7 @@
          Catalog below is the instant fallback when the brain has no
          grounded answer or the network is down. --- */
     rag: {
-      timeoutMs: 650,           // product-demo bias: if the live brain is not fast, answer from catalog now
+      timeoutMs: 6000,           // brain answers land in 0.4-0.8s measured 2026-09-24; 650ms raced and lost, causing repeated canned fallbacks
       minAnswerChars: 8,        // shorter = junk
       notInContext: /not in available context/i
     },

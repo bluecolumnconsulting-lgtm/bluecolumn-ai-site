@@ -171,7 +171,7 @@
       signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) {
       if (res.status === 401 || res.status === 402 || res.status === 429 || res.status === 403) {
-        try { sessionStorage.setItem('ol-rag-down-until', String(Date.now() + 60 * 60 * 1000)); } catch (e) {}
+        try { sessionStorage.setItem('ol-rag-down-until', String(Date.now() + (res.status === 401 ? 60 * 60 * 1000 : 30 * 1000))); } catch (e) {}
         return null;
       }
       return res.json();
@@ -202,7 +202,7 @@
         if (r) { return r; }
         if (local) { return { text: local.text, source: 'catalog', knowledgeId: local.knowledgeId }; }
         return {
-          text: "Here's the quick version. OttoMedic is the self-regulating protein skimmer — purely mechanical, no sensors to calibrate — with three EVO models from $899 to $1,399 and a 60-day guarantee. I can cover how it works, what it prevents, specs, or which model fits your tank.",
+          text: "That one’s not in my head yet. I can cover how the skimmer works, what it prevents, specs, or which model fits your tank — or leave your name and number and we follow up.",
           source: 'fallback'
         };
       });

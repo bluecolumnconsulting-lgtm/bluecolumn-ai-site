@@ -35,7 +35,7 @@
     protocolVersion: '2.0',
 
     endpoints: {
-      blueColumnBase: 'https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1',
+      blueColumnBase: 'https://api.bluecolumn.ai',
       ttsBase: 'https://api.elevenlabs.io/v1/text-to-speech/'
     },
 
@@ -52,7 +52,7 @@
          the namespace holds the OttoMedic "Marina brain" doc
          (verified live 2026-09-21). Catalog = instant fallback. --- */
     rag: {
-      timeoutMs: 650,
+      timeoutMs: 6000,
       minAnswerChars: 8,
       notInContext: /not in available context/i
     },
