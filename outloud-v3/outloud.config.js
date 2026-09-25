@@ -17,7 +17,7 @@
   var SECRETS = {
     blueColumnKey: 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy',
     elevenLabsKey: 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843',
-    openaiKey: '',   // DROP-IN: paste the OpenAI key here — owner directive 2026-09-25: OpenAI runs the avatar brain
+    openaiKey: '',   // key is NOT stored in the repo (GitHub push protection) — the brain proxy injects it server-side   // owner directive 2026-09-25: OpenAI runs the avatar brain (runtime fallback-provider key)   // DROP-IN: paste the OpenAI key here — owner directive 2026-09-25: OpenAI runs the avatar brain
     simliKey: ''   // DISABLED 2026-09-25 per Joe: OpenAI is the only allowed avatar provider; no third-party runs the face
   };
 
