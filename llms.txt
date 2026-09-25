@@ -5,6 +5,7 @@
 ## Documentation
 - [Quickstart](https://bluecolumn.ai/docs/quickstart)
 - [API Reference](https://bluecolumn.ai/docs/api)
+- [Vercel AI SDK integration](https://github.com/bluecolumnconsulting-lgtm/bluecolumn-mcp/blob/main/docs/integrations/vercel-ai-sdk.md)
 - [Pricing](https://bluecolumn.ai/pricing)
 
 ## Pricing
