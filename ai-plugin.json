@@ -1,0 +1,12 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "BlueColumn",
+  "name_for_model": "bluecolumn",
+  "description_for_human": "Persistent memory for AI agents. Store and recall text, audio, and documents across sessions.",
+  "description_for_model": "Persistent semantic memory API. Endpoints: POST /remember (ingest text, audio, or document URLs; returns summary, action items, entities), POST /recall (plain-English query, returns synthesized answer with cited sources), POST /note (lightweight write without chunking). Idempotent by default; SSE streaming on /recall?stream=1. Free tier: 100 writes + 100 reads/month.",
+  "api": { "type": "openapi", "url": "https://bluecolumn.ai/.well-known/openapi.yaml" },
+  "auth": { "type": "none" },
+  "logo_url": "https://bluecolumn.ai/bluecolumn-logo-circle.png",
+  "contact_email": "hello@bluecolumn.ai",
+  "legal_info_url": "https://bluecolumn.ai/terms"
+}

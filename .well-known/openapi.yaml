@@ -1,0 +1,104 @@
+openapi: 3.1.0
+info:
+  title: BlueColumn Memory API
+  version: "1.0.0"
+  description: >
+    Persistent memory for AI agents. Write text/audio/documents, recall in
+    plain English with cited sources. All endpoints authenticated with a
+    Bearer API key (Authorization: Bearer bc_...).
+servers:
+  - url: https://api.bluecolumn.ai
+security:
+  - bearerAuth: []
+paths:
+  /remember:
+    post:
+      operationId: remember
+      summary: Ingest text, a document URL, or an audio URL into memory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text: { type: string, description: "Raw text to store" }
+                file_url: { type: string, format: uri, description: "PDF or document URL" }
+                audio_url: { type: string, format: uri, description: "Audio file URL (transcribed)" }
+                title: { type: string, description: "Optional title; include a date for best recall" }
+      responses:
+        "200":
+          description: Ingestion result with session_id, summary, action_items, chunk count
+  /recall:
+    post:
+      operationId: recall
+      summary: Query memory in plain English; returns a synthesized answer with cited sources
+      parameters:
+        - name: stream
+          in: query
+          schema: { type: string, enum: ["1"], description: "SSE streaming responses" }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [q]
+              properties:
+                q: { type: string, description: "Natural-language query" }
+      responses:
+        "200":
+          description: Synthesized answer plus sources with relevance scores
+  /note:
+    post:
+      operationId: note
+      summary: Store a lightweight observation as searchable working memory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text: { type: string, minLength: 5 }
+                tags: { type: array, items: { type: string } }
+      responses:
+        "200": { description: Note stored }
+  /sessions:
+    get:
+      operationId: listSessions
+      summary: List paginated memory sessions
+      responses:
+        "200": { description: Paginated session list }
+  /sessions/{id}:
+    get:
+      operationId: getSession
+      summary: Retrieve one session with full metadata
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Session detail }
+    delete:
+      operationId: deleteSession
+      summary: Hard-delete a session (GDPR-compliant)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "204": { description: Deleted }
+  /usage:
+    get:
+      operationId: getUsage
+      summary: Real-time quota and spend
+      responses:
+        "200": { description: Quota and spend dashboard }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, description: "BlueColumn API key (bc_...)" }
+
