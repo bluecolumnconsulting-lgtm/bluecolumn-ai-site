@@ -17,7 +17,7 @@
   var SECRETS = {
     blueColumnKey: 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy',
     elevenLabsKey: 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843',
-    openaiKey: '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',   // owner directive 2026-09-25: OpenAI runs the avatar brain   // key is NOT stored in the repo (GitHub push protection) — the brain proxy injects it server-side   // owner directive 2026-09-25: OpenAI runs the avatar brain (runtime fallback-provider key)   // DROP-IN: paste the OpenAI key here — owner directive 2026-09-25: OpenAI runs the avatar brain
+    openaiKey: '',   // runtime key was auto-revoked by OpenAI minutes after GitHub saw it — brain key must live server-side in the proxy   // owner directive 2026-09-25: OpenAI runs the avatar brain   // key is NOT stored in the repo (GitHub push protection) — the brain proxy injects it server-side   // owner directive 2026-09-25: OpenAI runs the avatar brain (runtime fallback-provider key)   // DROP-IN: paste the OpenAI key here — owner directive 2026-09-25: OpenAI runs the avatar brain
     simliKey: ''   // DISABLED 2026-09-25 per Joe: OpenAI is the only allowed avatar provider; no third-party runs the face
   };
 
@@ -45,6 +45,7 @@
          /recall grounds it with the business's own knowledge; the
          static catalog answers only when OpenAI is unavailable. ---) */
     brain: {
+      endpoint: '',   // brain proxy URL (server-side key holder) — flips the demo brain live without any key in the browser
       provider: 'openai',
       model: 'gpt-4o-mini',
       timeoutMs: 9000,

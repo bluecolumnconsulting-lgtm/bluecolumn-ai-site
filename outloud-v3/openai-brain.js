@@ -23,7 +23,7 @@
   var MAX_TOKENS = B.maxTokens || 220;
 
   function available() {
-    return !!SECRETS.openaiKey;
+    return !!(B.endpoint || SECRETS.openaiKey);
   }
 
   /* Base persona + standing rules + the published fact sheet. The
@@ -47,9 +47,10 @@
   function callOpenAI(query, contextText) {
     var ctrl = (typeof AbortController === 'function') ? new AbortController() : null;
     var timer = setTimeout(function () { try { ctrl.abort(); } catch (e) {} }, TIMEOUT);
-    return fetch('https://api.openai.com/v1/chat/completions', {
+    var target = B.endpoint || 'https://api.openai.com/v1/chat/completions';
+    return fetch(target, {
       method: 'POST',
-      headers: {
+      headers: (B.endpoint || !SECRETS.openaiKey) ? { 'Content-Type': 'application/json' } : {
         'Authorization': 'Bearer ' + SECRETS.openaiKey,
         'Content-Type': 'application/json'
       },
