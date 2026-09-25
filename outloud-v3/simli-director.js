@@ -43,6 +43,9 @@
   };
 
   SimliDirector.prototype.capable = function () {
+    if (!CONFIG.simli || CONFIG.simli.enabled === false) {
+      return { ok: false, why: 'third-party avatar providers disabled (OpenAI-only per owner directive)' };
+    }
     var ua = navigator.userAgent || '';
     var inApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|Snapchat|TikTok/i.test(ua);
     return {
@@ -57,6 +60,7 @@
   /* ---------- mount: video rides inside the gaze wrapper so the
      existing gesture/gaze transforms still lean the live face ---------- */
   SimliDirector.prototype.attach = function (stageHost) {
+    if (!CONFIG.simli || CONFIG.simli.enabled === false) { return; }  /* keep stage clean — no dead video elements */
     this.stage = stageHost;
     var wrap = stageHost.querySelector('#mascot-gaze') || stageHost;
     this.videoEl = document.createElement('video');

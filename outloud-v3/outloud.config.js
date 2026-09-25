@@ -17,7 +17,7 @@
   var SECRETS = {
     blueColumnKey: 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy',
     elevenLabsKey: 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843',
-    simliKey: '5e2ucmvyrlmkapwg4hzyf'   // verified live 2026-09-21 (session token issued)
+    simliKey: ''   // DISABLED 2026-09-25 per Joe: OpenAI is the only allowed avatar provider; no third-party runs the face
   };
 
   var CONFIG = {
@@ -57,7 +57,8 @@
     /* --- Avatar (Avatar Director, sprite adapter) --- */
     /* --- Simli video avatar (Simli Director) — sprite stays as fallback --- */
     simli: {
-      faceId: '7e74d6e7-d559-4394-bd56-4923a3ab75ad',   // Joe's face — verified via session token 2026-09-21
+      enabled: false,   // owner directive 2026-09-25: avatar face/motion must come from OpenAI-generated assets + in-house rig only
+      faceId: '7e74d6e7-d559-4394-bd56-4923a3ab75ad',   // Joe's face — RETIRED from the live path 2026-09-25
       maxSessionLength: 600,
       maxIdleTime: 180
     },
