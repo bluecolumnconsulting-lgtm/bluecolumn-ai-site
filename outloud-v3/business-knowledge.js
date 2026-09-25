@@ -41,7 +41,12 @@
     {
       id: 'how-it-works',
       k: ['how does it work', 'how it works', 'how do', 'brain', 'stack', 'under the hood', 'built', 'what can you do', 'capab'],
-      t: "Every OutLoud page carries an agent like me. A live BlueColumn brain answers from the business's own knowledge, an ElevenLabs voice speaks the answer, and the mascot moves while it talks. Mic in, voice out, calendar connected."
+      t: "Every OutLoud page carries an agent like me. A live BlueColumn brain answers from the business's own knowledge, an ElevenLabs voice speaks the answer, and the mascot moves while it talks. Mic in, voice out."
+    },
+    {
+      id: 'capabilities',
+      k: ['help me with', 'what can you help', 'what do you help', 'what do you do', 'what can i ask', 'capabilit', 'features'],
+      t: "I answer real questions, out loud: what OutLoud is, pricing, how the stack works, the live client pages running on it, setup timelines, and booking a walkthrough with a strategist. Ask me any of those."
     },
     {
       id: 'live-sites',
