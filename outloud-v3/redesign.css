@@ -26,6 +26,7 @@ main { padding:0 20px; }
 .intro { max-width:740px; margin:62px auto 30px; text-align:center; }
 .intro h1 { margin:0 0 11px; font:400 clamp(47px,7vw,72px)/1.04 'Newsreader',Georgia,serif; letter-spacing:-.045em; display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap; }
 
+.headline-mark { width:.95em; height:.95em; display:inline-block; object-fit:contain; filter:drop-shadow(0 2px 6px rgba(23,45,50,.22)); }
 .intro h1 em { background:linear-gradient(100deg,#A63A5E 0%,#A96A1F 22%,#2F8352 44%,#2379A8 64%,#5468C4 82%,#8E3D9C 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; font-weight:400; }
 .intro p { margin:0; color:#61716e; font-size:15px; }
 .experience { max-width:680px; margin:0 auto 76px; padding:18px; border:1px solid #dfe5df; border-radius:14px; background:#fff; box-shadow:0 16px 48px rgba(23,45,50,.07); position:relative; overflow:hidden; }
