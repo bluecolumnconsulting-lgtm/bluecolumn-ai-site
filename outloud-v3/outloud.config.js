@@ -101,6 +101,12 @@
     },
 
     avatar: {
+      /* --- Unified face registry (2026-09-26, owner directive): every
+         selectable face resolves through avatar-catalog.js. Clients
+         and users see only BlueColumn faces — provider routing is
+         internal and never surfaced. Pickers consume
+         BlueColumnAvatarCatalog.list(); directors consume resolve(). --- */
+      faceCatalog: 'avatar-catalog.js',
       sprite: 'mascot-sprites.png',
       cols: 4,
       rows: 3,
