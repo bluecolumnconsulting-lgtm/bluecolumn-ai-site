@@ -18,7 +18,30 @@
     blueColumnKey: 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy',
     elevenLabsKey: 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843',
     openaiKey: '',   // runtime key was auto-revoked by OpenAI minutes after GitHub saw it — brain key must live server-side in the proxy   // owner directive 2026-09-25: OpenAI runs the avatar brain   // key is NOT stored in the repo (GitHub push protection) — the brain proxy injects it server-side   // owner directive 2026-09-25: OpenAI runs the avatar brain (runtime fallback-provider key)   // DROP-IN: paste the OpenAI key here — owner directive 2026-09-25: OpenAI runs the avatar brain
-    simliKey: ''   // DISABLED 2026-09-25 per Joe: OpenAI is the only allowed avatar provider; no third-party runs the face
+    simliKey: '',   // DISABLED 2026-09-25 per Joe: OpenAI is the only allowed avatar provider; no third-party runs the face
+
+    /* --- Additional avatar providers (added 2026-09-25, all empty until
+        a human pastes a credential; adapters fail gracefully) ---
+        anamKey:       Anam API key. Browser must NOT ship this raw in
+                       prod: create session tokens server-side and point
+                       CONFIG.avatar.providers.anam.tokenEndpoint at the
+                       same-origin route. The raw-key path in
+                       anam-director.js is a localhost dev fallback only.
+        liveavatarKey: LiveAvatar (HeyGen) API key. Server-side only; the
+                       browser gets session-scoped credentials from
+                       liveavatar.tokenEndpoint (LITE mode).
+        didClientKey:  D-ID CLIENT key (browser-safe, domain-restricted).
+                       Created server-side via POST /agents/client-key
+                       (the Basic API key stays server-side). Existing
+                       account has ~12 credits — DO NOT spend (Joe
+                       2026-09-21).
+        beyondKey:     Deferred provider (needs a server-side LiveKit
+                       worker; see RESEARCH.md in the avatar-providers
+                       workspace). Placeholder for the future proxy. */
+    anamKey: '',
+    liveavatarKey: '',
+    didClientKey: '',
+    beyondKey: ''
   };
 
   var CONFIG = {
@@ -45,7 +68,7 @@
          /recall grounds it with the business's own knowledge; the
          static catalog answers only when OpenAI is unavailable. ---) */
     brain: {
-      endpoint: '',   // brain proxy URL (server-side key holder) — flips the demo brain live without any key in the browser
+      endpoint: 'https://cggcqzncdoyenlgrwnpf.supabase.co/functions/v1/agent-proxy',   // Supabase edge proxy — holds OPENAI_API_KEY server-side, origin-gated to bluecolumn.ai; demo brain is OPENAI-RUN (owner directive)
       provider: 'openai',
       model: 'gpt-4o-mini',
       timeoutMs: 9000,
@@ -87,6 +110,67 @@
         maxGestureIntensity: 0.8,
         avoidPointing: true,   // sprite rig has no arm layer; validator degrades point_* → present_*
         keepEyeContact: true   // gaze leaves user only briefly, then returns
+      },
+      /* --- Additional avatar video providers (added 2026-09-25) ---
+         Feature-flagged per provider, ALL disabled. Each adapter
+         implements the SimliDirector contract (capable/attach/unmute/
+         start/stop/playBlob/cancelFeed) and emits its own bus events
+         (anam.*, liveavatar.*, did.*). The sprite rig stays the
+         always-on fallback; nothing activates without a credential AND
+         an enabled:true flip. Research + activation guide live in the
+         avatar-providers agent workspace (RESEARCH.md, INTEGRATION.md). */
+      providers: {
+        /* --- Anam (anam.ai): session-token WebRTC + audio passthrough ---
+           Feed our ElevenLabs blobs as PCM16/16kHz via the SDK's
+           createAgentAudioInputStream. Free tier: 30 min/mo, 3-min
+           conversation cap, 1 concurrent session (anam.ai/pricing). */
+        anam: {
+          enabled: false,          // flip only after anamKey or tokenEndpoint exists
+          esmUrl: 'https://esm.sh/@anam-ai/js-sdk@latest',  // SDK loader; vendor locally for prod
+          avatarId: '',            // stock avatar id from the Anam dashboard
+          avatarModel: 'cara-4',   // persona model name used at token creation
+          tokenEndpoint: '',       // same-origin route issuing Anam session tokens (preferred); empty = dev raw-key path
+          connectTimeoutMs: 12000
+        },
+        /* --- Beyond Presence (bey.dev): DEFERRED, no adapter ---
+           Their browser path needs a server-side LiveKit Agents worker
+           (docs.bey.dev/get-started/quickstart/speech-to-video); a
+           static demo page cannot drive it. Revisit when the edge
+           proxy ships. Full rationale in RESEARCH.md. */
+        beyond: {
+          enabled: false,          // no adapter exists for this provider
+          tokenEndpoint: '',       // would issue LiveKit room credentials from the future proxy
+          avatarId: ''
+        },
+        /* --- LiveAvatar by HeyGen: LITE mode (bring your own TTS) ---
+           Command WebSocket (agent.speak / speak_end / interrupt,
+           PCM16/24kHz mono base64) + LiveKit room for the video.
+           tokenEndpoint must return { wsUrl, liveKitUrl, liveKitToken }.
+           Free test path: Sandbox Mode (Wayne avatar, no credits,
+           docs.liveavatar.com/docs/sandbox-mode). LITE costs 1 credit/min. */
+        liveavatar: {
+          enabled: false,          // flip only after tokenEndpoint exists
+          tokenEndpoint: '',       // same-origin route: POST /v1/sessions/token + /v1/sessions/start (LITE mode)
+          avatarId: '',            // sandbox: dd73ea75-1218-4ef3-92ce-606d5f7fbc0a (Wayne, no credits)
+          livekitGlobal: 'LivekitClient',  // window global of the vendored livekit-client UMD build
+          connectTimeoutMs: 12000
+        },
+        /* --- D-ID Agents SDK ---
+           speakMode 'text': D-ID renders its own voice from chunk text
+           (consumes D-ID credits per speak). speakMode 'audio': speaks
+           our ElevenLabs mp3 via speak({type:'audio', audio_url}) but
+           needs an upload proxy returning { audioUrl }. EXISTING ACCOUNT
+           HAS ~12 CREDITS (Joe 2026-09-21) — DO NOT SPEND; test only with
+           Joe's approval or on a fresh trial account. */
+        did: {
+          enabled: false,          // flip only after a client key exists AND credit spend is approved
+          agentId: '',             // D-ID agent id from the dashboard
+          sdkSrc: 'vendor/d-id-client-sdk.js',   // vendored UMD build (documented in INTEGRATION.md)
+          sdkGlobal: 'DID',        // window global exposed by the vendored build (verify after vendoring)
+          speakMode: 'text',       // 'text' (D-ID voice, credit-consuming) | 'audio' (needs audioUploadEndpoint)
+          audioUploadEndpoint: '', // same-origin route: accepts the mp3, returns { audioUrl } (audio mode only)
+          connectTimeoutMs: 12000
+        }
       }
     },
 

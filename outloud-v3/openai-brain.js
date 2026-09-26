@@ -58,6 +58,7 @@
         model: MODEL,
         max_tokens: MAX_TOKENS,
         temperature: 0.4,
+        stream: false,   // proxy returns plain JSON; SSE only if explicitly requested
         messages: [
           { role: 'system', content: systemPrompt(contextText) },
           { role: 'user', content: String(query || '') }
