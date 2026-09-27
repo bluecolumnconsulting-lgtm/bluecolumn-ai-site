@@ -45,9 +45,12 @@
   SimliDirector.prototype.capable = function () {
     var ua = navigator.userAgent || '';
     var inApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|Snapchat|TikTok/i.test(ua);
+    var enabled = !CONFIG.simli || CONFIG.simli.enabled !== false;
     return {
-      ok: !inApp && !!window.RTCPeerConnection && !!window.SimliLib && !!SECRETS.simliKey,
-      why: inApp ? 'in-app browser blocks WebRTC'
+      ok: enabled && !!CONFIG.simli.faceId && !inApp && !!window.RTCPeerConnection && !!window.SimliLib && !!SECRETS.simliKey,
+      why: !enabled ? 'simli disabled for this page'
+         : !CONFIG.simli.faceId ? 'no Simli face configured'
+         : inApp ? 'in-app browser blocks WebRTC'
          : !window.RTCPeerConnection ? 'no WebRTC support'
          : !window.SimliLib ? 'simli-client did not load'
          : !SECRETS.simliKey ? 'no Simli key in config' : null
@@ -76,7 +79,9 @@
     var cap = this.capable();
     if (!cap.ok) {
       this.lastError = cap.why;
-      this.bus.publish('simli.failed', { message: cap.why });
+      if (cap.why !== 'simli disabled for this page') {
+        this.bus.publish('simli.failed', { message: cap.why });
+      }
       return Promise.resolve(false);
     }
     this.starting = true;

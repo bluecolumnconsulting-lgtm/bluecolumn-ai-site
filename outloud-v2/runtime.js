@@ -31,6 +31,20 @@
   var log = F('ol-log'), textIn = F('ol-text-in'), sendBtn = F('ol-send');
   var micBtn = F('ol-mic'), soundBtn = F('ol-sound'), stateChip = F('ol-state');
   var srStatus = F('ol-sr-status');
+  var simliConfigured = !(!O.CONFIG.simli || O.CONFIG.simli.enabled === false || !O.CONFIG.simli.faceId);
+  var simliStartAttempted = false;
+
+  function trySimliStart(greet) {
+    if (!simliConfigured || simliStartAttempted) { return Promise.resolve(false); }
+    simliStartAttempted = true;
+    return simli.start().then(function (ok) {
+      if (!ok) { return false; }
+      if (greet) {
+        bus.publish('transcript.final', { text: 'hello', internal: true });
+      }
+      return true;
+    });
+  }
 
   function addMsg(role, text, cls) {
     var li = document.createElement('li');
@@ -116,25 +130,7 @@
     gateEl = null;
   }
   function showGate() {
-    var stage = F('ol-avatar-stage');
-    if (!stage || stage.querySelector('.ol-tap-gate')) { return; }
-    gateEl = document.createElement('button');
-    gateEl.type = 'button';
-    gateEl.className = 'ol-tap-gate';
-    gateEl.innerHTML = '<span class="ol-gate-word">Tap to meet OutLoud</span><span class="ol-gate-sub mono">live video agent · voice + answers</span>';
-    gateEl.addEventListener('click', function () {
-      removeGate();
-      simli.start().then(function (ok) {
-        if (ok) {
-          addMsg('outloud', 'Video avatar is live — watch me talk.');
-        } else {
-          addMsg('outloud', 'Video could not connect (' + (simli.lastError || 'unknown') + '). Voice mode still works. If this is an in-app browser (Telegram etc.), copy this link and open it in Safari or Chrome.');
-        }
-        /* Greeting goes through whichever channel is now active. */
-        bus.publish('transcript.final', { text: 'hello', internal: true });
-      });
-    });
-    stage.appendChild(gateEl);
+    return;
   }
   bus.on('simli.failed', function (env) {
     console.info('[outloud] simli failed:', env.payload.message);
@@ -163,6 +159,7 @@
         addMsg('outloud', 'Voice input needs Chrome, Edge, or Safari 14.5+. Typing works everywhere.');
         return;
       }
+      trySimliStart(false);
       var on = !micBtn.classList.contains('on');
       setMicUI(on);
       orch.setMic(on);
@@ -182,6 +179,7 @@
   function sendTyped() {
     var t = textIn.value.trim();
     if (!t) { return; }
+    trySimliStart(false);
     textIn.value = '';
     input.type(t);
   }
@@ -207,12 +205,8 @@
     }
   }
   orch.sessionStart();
-  /* Greeting runs through the full pipeline as a validated plan turn
-     (internal=true keeps the trigger off the transcript). The reply
-     lands on the transcript via the speech chunk walk, so voice and
-     text can never disagree or double up.
-     With the Simli video path, the greeting waits for the tap gate:
-     a gesture is required before any audio may play. */
+  /* Greeting waits for a real user gesture because browsers still
+     block autoplay. The avatar itself stays visible on load. */
   showGate();
   /* Typed input (or mic) before tapping the gate still works — and
      a real click IS a valid user gesture, so the Simli video starts
@@ -220,10 +214,16 @@
   bus.on('transcript.final', function onceStart(env) {
     if (!env.payload.internal) {
       removeGate();
-      simli.start();
+      trySimliStart(false);
       bus.off('transcript.final', onceStart);
     }
   });
+  var avatarStage = F('ol-avatar-stage');
+  if (avatarStage) {
+    avatarStage.addEventListener('click', function () {
+      trySimliStart(true);
+    }, { once: true });
+  }
 
   window.OutLoudRuntime = { bus: bus, orch: orch, memory: memory, planner: planner, content: content, avatar: avatar, speech: speech, input: input };
 })();

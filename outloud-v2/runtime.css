@@ -425,6 +425,9 @@
 
 /* ---------- Book a Demo persistent CTA ---------- */
 .ol-book-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   border-radius: 999px;
   padding: 9px 18px;
@@ -433,6 +436,7 @@
   font: 700 0.86rem/1 Manrope, sans-serif;
   letter-spacing: 0.01em;
   cursor: pointer;
+  text-decoration: none;
   box-shadow: 0 6px 18px rgba(255, 122, 40, 0.35);
   transition: transform 140ms ease, box-shadow 140ms ease;
 }

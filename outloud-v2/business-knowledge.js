@@ -23,6 +23,10 @@
   var CONFIG = window.OUTLOUD.CONFIG;
   var SECRETS = window.OUTLOUD.SECRETS;
   var RAG = CONFIG.rag || { timeoutMs: 5000, minAnswerChars: 8, notInContext: /not in available context/i };
+  var ACCOUNT_NS = CONFIG.business && CONFIG.business.namespace;
+  var ACCOUNT_PROFILE = CONFIG.business || {};
+  var ACCOUNT_ITEMS = Array.isArray(ACCOUNT_PROFILE.catalogItems) ? ACCOUNT_PROFILE.catalogItems : [];
+  var ACCOUNT_SUMMARY = Array.isArray(ACCOUNT_PROFILE.catalogSummary) ? ACCOUNT_PROFILE.catalogSummary : [];
 
   /* --- Static catalog: instant, offline-safe fallback.
          Mirrors facts already published on the OutLoud product page
@@ -56,12 +60,12 @@
     {
       id: 'booking-flow',
       k: ['book', 'demo', 'walkthrough', 'schedule', 'sign up', 'talk to someone', 'get started'],
-      t: "Happy to set that up. I'll take your name, business, and the best phone number, and a BlueColumn strategist schedules the walkthrough. You can also email hello@bluecolumn.ai."
+      t: "If you want the self-serve signup flow, go to bluecolumn.ai/app/ and create an account there. That lets a new client pick an avatar face, choose a voice, upload business details, and go live. If you want us to help build it with you, I can still take your name, business, and best phone number for a walkthrough."
     },
     {
       id: 'voice-avatar',
       k: ['voice', 'avatar', 'mascot', 'lip', 'speak', 'robot', 'animation'],
-      t: "I speak with an ElevenLabs voice, think with a live BlueColumn brain, and move as a sprite-animated mascot whose lip-sync runs independently of my gestures. On client pages the same stack runs as a real-time video avatar."
+      t: "I speak with an ElevenLabs voice, think with a live BlueColumn brain, and the self-serve flow at bluecolumn.ai/app/ lets you choose either the animated mascot or a Simli video face. On client pages the same stack can run as a real-time video avatar."
     }
   ];
 
@@ -97,7 +101,81 @@
       .replace(/\s+/g, ' ')
       .trim();
     if (q.length < 3) { q = String(text || '').trim(); }
-    return CONFIG.business.ragPrefix + q;
+    return (CONFIG.business.ragPrefix || '') + q;
+  }
+
+  function normalize(text) {
+    return String(text || '').toLowerCase().replace(/out[ ]+loud/g, 'outloud');
+  }
+
+  function accountFallback(text) {
+    var low = normalize(text);
+    var bits = [];
+    if (ACCOUNT_PROFILE.whatYouDo) {
+      bits.push(ACCOUNT_PROFILE.whatYouDo);
+    }
+    if (ACCOUNT_PROFILE.serviceArea && /(where|service area|serve|location|area|town|city)/.test(low)) {
+      return {
+        text: 'We serve ' + ACCOUNT_PROFILE.serviceArea + '.',
+        source: 'account-fallback',
+        knowledgeId: 'account:service-area'
+      };
+    }
+    if (ACCOUNT_PROFILE.hours && /(hours|open|when|available|reach you|schedule)/.test(low)) {
+      return {
+        text: 'Our hours are ' + ACCOUNT_PROFILE.hours + '.',
+        source: 'account-fallback',
+        knowledgeId: 'account:hours'
+      };
+    }
+    if (ACCOUNT_PROFILE.pricingStyle && /(price|pricing|cost|quote|estimate|how much|rate)/.test(low)) {
+      var priceText = 'Pricing works like this: ' + ACCOUNT_PROFILE.pricingStyle + '.';
+      if (ACCOUNT_SUMMARY.length) {
+        priceText += ' A few examples: ' + ACCOUNT_SUMMARY.slice(0, 3).join(' · ') + '.';
+      }
+      return {
+        text: priceText,
+        source: 'account-fallback',
+        knowledgeId: 'account:pricing'
+      };
+    }
+    if (ACCOUNT_ITEMS.length && /(service|services|products|sell|offer|menu|catalog|what do you have|what do you offer)/.test(low)) {
+      return {
+        text: 'Here are a few things we offer: ' + ACCOUNT_ITEMS.slice(0, 5).map(function (item) {
+          return item.price ? item.name + ' for ' + item.price : item.name;
+        }).join(', ') + '.',
+        source: 'account-fallback',
+        knowledgeId: 'account:catalog'
+      };
+    }
+    if (bits.length && /(what do you do|who are you|tell me about|what is this|what is your business|what do you offer)/.test(low)) {
+      var base = bits.join(' ');
+      if (ACCOUNT_PROFILE.serviceArea) { base += ' We serve ' + ACCOUNT_PROFILE.serviceArea + '.'; }
+      return {
+        text: base,
+        source: 'account-fallback',
+        knowledgeId: 'account:about'
+      };
+    }
+    if (/(get started|book|contact|call|how do i start|next step)/.test(low)) {
+      var startText = 'Ask me about services, pricing, hours, or timing.';
+      if (ACCOUNT_PROFILE.commonQuestions) {
+        startText += ' Common questions include: ' + ACCOUNT_PROFILE.commonQuestions.split(/\n+/).slice(0, 3).join(', ') + '.';
+      }
+      return {
+        text: startText,
+        source: 'account-fallback',
+        knowledgeId: 'account:get-started'
+      };
+    }
+    if (bits.length) {
+      return {
+        text: bits.join(' '),
+        source: 'account-fallback',
+        knowledgeId: 'account:generic'
+      };
+    }
+    return null;
   }
 
   function ragFetch(query) {
@@ -118,14 +196,15 @@
     } catch (e) {}
     var ctrl = (typeof AbortController === 'function') ? new AbortController() : null;
     var timer = setTimeout(function () { try { ctrl.abort(); } catch (e) {} }, RAG.timeoutMs);
-    var url = CONFIG.endpoints.blueColumnBase + '/recall';
+    var url = CONFIG.endpoints.blueColumnBase + (ACCOUNT_NS ? '/agent-recall' : '/recall');
+    var body = ACCOUNT_NS ? { namespace: ACCOUNT_NS, q: query, top_k: 8 } : { q: query };
     return fetch(url, {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + SECRETS.blueColumnKey,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ q: query }),
+      body: JSON.stringify(body),
       signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) {
       if (res.status === 401 || res.status === 402 || res.status === 429 || res.status === 403) {
@@ -166,6 +245,17 @@
 
   window.OUTLOUD.knowledge = {
     retrieve: function (query) {
+      if (ACCOUNT_NS) {
+        return ragFetch(buildQuery(query)).then(function (r) {
+          if (r) { return r; }
+          var fallback = accountFallback(query);
+          if (fallback) { return fallback; }
+          return {
+            text: 'I can help with services, pricing, hours, service area, or how to get started. Ask me one of those and I will answer from this business profile.',
+            source: 'fallback'
+          };
+        });
+      }
       var local = fromCatalog(query);
       if (local && local._score >= STRONG) {
         return Promise.resolve({ text: local.text, source: 'catalog', knowledgeId: local.knowledgeId });

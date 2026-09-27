@@ -1,0 +1,69 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Inject the OpenAI brain key into outloud-v3/outloud.config.js at build
+      # time only. The key never touches the repository; the committed file
+      # keeps an empty slot. Same pattern as the ElevenLabs key.
+      - name: Inject brain key (build-time only)
+        env:
+          BC_OPENAI_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PYEOF'
+          import re, os
+          path = 'outloud-v3/outloud.config.js'
+          key = os.environ['BC_OPENAI_KEY']
+          assert key.startswith('sk-'), 'secret missing or malformed'
+          s = open(path).read()
+          new, n = re.subn(r"openaiKey: '[^']*'", "openaiKey: '" + key + "'", s, count=1)
+          assert n == 1, 'openaiKey slot not found in ' + path
+          open(path, 'w').write(new)
+          print('openaiKey injected (build-time only, not committed)')
+          PYEOF
+
+      - name: Stage site (strip repo internals)
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/site
+          rsync -a --exclude '.git' --exclude '.github' ./ /tmp/site/
+          test -f /tmp/site/CNAME
+          test -f /tmp/site/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: /tmp/site
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

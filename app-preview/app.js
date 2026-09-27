@@ -14,6 +14,10 @@
   var LS_LAST = 'ol_last_config_';
   var LS_SESSION_CACHE = 'ol_session_cache';
 
+  function publicUrlForSlug(slug) {
+    return PUBLIC_BASE + '?slug=' + encodeURIComponent(String(slug || '').toLowerCase());
+  }
+
   // Plan flags — stored as labels only, no billing in this build.
   var PLANS = {
     starter: { name: 'Starter', price: '$49' },
@@ -557,7 +561,7 @@
       '<span class="c-sub">A talking page about you — for portfolios, schedules, or as a gift.</span>' +
       '</button>' +
       '</div>' +
-      '<p class="mini-note">Your web address will be <strong>' + esc(PUBLIC_BASE + p.slug + '/') + '</strong></p>' +
+      '<p class="mini-note">Your web address will be <strong>' + esc(publicUrlForSlug(p.slug)) + '</strong></p>' +
       '</div>'
     );
     function pick(type) {
@@ -597,7 +601,7 @@
       },
       avatar: { kind: 'mascot', faceId: '', name: 'OutLoud mascot' },
       voice: { voiceId: 'iLVmqjzCGGvqtMCk6vVQ', name: 'Antonio' },
-      publicUrl: PUBLIC_BASE + p.slug + '/',
+      publicUrl: publicUrlForSlug(p.slug),
       status: 'draft',
       created_at: now,
       updated_at: now
@@ -635,7 +639,7 @@
       business: { name: acct.business_name || 'My OutLoud', whatYouDo: '', serviceArea: '', hours: '', pricingStyle: '', commonQuestions: '' },
       avatar: { kind: 'mascot', faceId: '', name: 'OutLoud mascot' },
       voice: { voiceId: 'iLVmqjzCGGvqtMCk6vVQ', name: 'Antonio' },
-      publicUrl: PUBLIC_BASE + acct.slug + '/',
+      publicUrl: publicUrlForSlug(acct.slug),
       status: 'draft', created_at: new Date().toISOString(), updated_at: new Date().toISOString()
     };
   }
@@ -1099,7 +1103,7 @@
       li('Voice', voiceName) +
       '</ul>' +
       '<div class="url-row" style="margin-top:16px"><span class="lab" style="font-weight:700;font-size:13px">Your public page</span>' +
-      '<span class="url-pill">' + esc(PUBLIC_BASE + wizard.config.slug + '/') + '</span></div>' +
+      '<span class="url-pill">' + esc(publicUrlForSlug(wizard.config.slug)) + '</span></div>' +
       '<p class="mini-note">Everything stays editable from your dashboard after you go live.</p>' +
       '<div class="btn-row"><button class="btn ghost" id="w-back">Back</button><span class="spacer"></span>' +
       '<button class="btn" id="go-live">Go live</button></div>' +
@@ -1128,10 +1132,10 @@
         '<div class="success-check" aria-hidden="true">✓</div>' +
         '<h1 class="page-title">You are live</h1>' +
         '<p class="page-sub">Your OutLoud is on and listening on your page.</p>' +
-        '<div class="url-row" style="justify-content:center;margin:18px 0"><span class="url-pill">' + esc(PUBLIC_BASE + slug + '/') + '</span>' +
-        '<button class="copy-btn" data-copy="' + esc(PUBLIC_BASE + slug + '/') + '">Copy link</button></div>' +
+        '<div class="url-row" style="justify-content:center;margin:18px 0"><span class="url-pill">' + esc(publicUrlForSlug(slug)) + '</span>' +
+        '<button class="copy-btn" data-copy="' + esc(publicUrlForSlug(slug)) + '">Copy link</button></div>' +
         '<div class="btn-row" style="justify-content:center">' +
-        '<a class="btn ghost" href="' + esc(PUBLIC_BASE + slug + '/') + '" target="_blank" rel="noopener">View my page</a>' +
+        '<a class="btn ghost" href="' + esc(publicUrlForSlug(slug)) + '" target="_blank" rel="noopener">View my page</a>' +
         '<a class="btn" href="#/dashboard">Open my dashboard</a></div>' +
         '</div>'
       );
@@ -1164,7 +1168,7 @@
         acct.config = cfg;
         var isLive = cfg.status === 'live';
         var plan = PLANS[cfg.plan] || PLANS.starter;
-        var url = cfg.publicUrl || (PUBLIC_BASE + cfg.slug + '/');
+        var url = cfg.publicUrl || publicUrlForSlug(cfg.slug);
         var b = cfg.business || {};
         el('dash-main').outerHTML =
           '<div class="card">' +

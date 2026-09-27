@@ -94,12 +94,12 @@
 
   /* --- engine: faithful port of the client-site LipSync class --- */
   var CFG = {
-    fftSize: 2048, analyserSmoothing: 0.75, targetFps: 30,
-    attackMs: 55, releaseMs: 220, noiseLearnRate: 0.015,
-    gateDb: 8.5, hangoverMs: 180,
+    fftSize: 2048, analyserSmoothing: 0.92, targetFps: 30,
+    attackMs: 90, releaseMs: 420, noiseLearnRate: 0.015,
+    gateDb: 8.5, hangoverMs: 380,
     quietDb: 9, softDb: 13, mediumDb: 17, loudDb: 21,
     lowBandHz: [200, 600], midBandHz: [800, 2500], highBandHz: [3000, 8000],
-    hysteresisDb: 3.5, minHoldMs: 110, peakBoostDb: 2.5,
+    hysteresisDb: 3.5, minHoldMs: 320, peakBoostDb: 2.5,
     centroidBoostDb: 2, maxRangeDb: 30
   };
   function toDb(x) { var e = Math.max(1e-8, x); return 20 * Math.log10(e); }

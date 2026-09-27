@@ -88,6 +88,43 @@
     session: { storageKey: 'outloud20-session' }
   };
 
+  var BOOT = window.OUTLOUD_BOOT_CONFIG;
+  if (BOOT) {
+    if (BOOT.endpoints) {
+      CONFIG.endpoints = Object.assign({}, CONFIG.endpoints, BOOT.endpoints);
+    }
+    if (BOOT.voice) {
+      CONFIG.voice = Object.assign({}, CONFIG.voice, BOOT.voice);
+    }
+    if (BOOT.rag) {
+      CONFIG.rag = Object.assign({}, CONFIG.rag, BOOT.rag);
+    }
+    if (BOOT.business) {
+      CONFIG.business = Object.assign({}, CONFIG.business, BOOT.business);
+    }
+    if (BOOT.simli) {
+      CONFIG.simli = Object.assign({}, CONFIG.simli, BOOT.simli);
+    }
+    if (BOOT.avatar) {
+      CONFIG.avatar = Object.assign({}, CONFIG.avatar, BOOT.avatar);
+      if (BOOT.avatar.baseline) {
+        CONFIG.avatar.baseline = Object.assign({}, CONFIG.avatar.baseline, BOOT.avatar.baseline);
+      }
+      if (BOOT.avatar.constraints) {
+        CONFIG.avatar.constraints = Object.assign({}, CONFIG.avatar.constraints, BOOT.avatar.constraints);
+      }
+    }
+    if (BOOT.content) {
+      CONFIG.content = Object.assign({}, CONFIG.content, BOOT.content);
+    }
+    if (BOOT.vad) {
+      CONFIG.vad = Object.assign({}, CONFIG.vad, BOOT.vad);
+    }
+    if (BOOT.session) {
+      CONFIG.session = Object.assign({}, CONFIG.session, BOOT.session);
+    }
+  }
+
   window.OUTLOUD = window.OUTLOUD || {};
   window.OUTLOUD.CONFIG = CONFIG;
   window.OUTLOUD.SECRETS = SECRETS;

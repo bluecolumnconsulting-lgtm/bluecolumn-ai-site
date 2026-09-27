@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f6fc">
+  <title>Your OutLoud</title>
+  <meta name="description" content="A live talking page powered by OutLoud.">
+  <link rel="icon" href="../favicon.png?v=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../outloud-v2/styles.css?v=16">
+  <link rel="stylesheet" href="../outloud-v2/runtime.css?v=20">
+  <style>
+    .client-shell {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(73, 138, 255, 0.12), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(255, 122, 40, 0.12), transparent 30%),
+        #f2f6fc;
+    }
+    .client-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 24px 0;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+    .client-brand {
+      display: grid;
+      gap: 4px;
+    }
+    .client-name {
+      margin: 0;
+      font: 800 clamp(1.6rem, 2vw, 2.3rem)/1 Manrope, sans-serif;
+      letter-spacing: -0.04em;
+      color: #0d1b2a;
+    }
+    .client-note {
+      margin: 0;
+      color: #5c7088;
+      font: 500 0.92rem/1.4 Manrope, sans-serif;
+    }
+    .powered-by {
+      color: #5c7088;
+      text-decoration: none;
+      font: 600 0.85rem/1 Spline Sans Mono, monospace;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .client-main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 12px 24px 42px;
+    }
+    .client-empty {
+      max-width: 720px;
+      margin: 12vh auto 0;
+      padding: 34px 28px;
+      border: 1px solid rgba(13, 27, 42, 0.08);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: 0 24px 60px rgba(17, 30, 43, 0.08);
+      text-align: center;
+    }
+    .client-empty h1 {
+      margin: 0 0 10px;
+      font: 800 clamp(2rem, 4vw, 3.6rem)/1.02 Manrope, sans-serif;
+      letter-spacing: -0.05em;
+      color: #0d1b2a;
+    }
+    .client-empty p {
+      margin: 0;
+      color: #5c7088;
+      font: 500 1rem/1.6 Manrope, sans-serif;
+    }
+    .client-empty .tiny {
+      margin-top: 14px;
+      font-size: 0.85rem;
+    }
+    @media (max-width: 720px) {
+      .client-top {
+        padding: 18px 18px 0;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .client-main {
+        padding: 10px 18px 28px;
+      }
+    }
+  </style>
+</head>
+<body class="client-shell">
+  <header class="client-top">
+    <div class="client-brand">
+      <p class="client-name" id="client-name">Your OutLoud</p>
+      <p class="client-note" id="client-note">Loading your live page…</p>
+    </div>
+    <a class="powered-by" href="https://bluecolumn.ai/app/" target="_blank" rel="noopener">Powered by OutLoud</a>
+  </header>
+
+  <main class="client-main" id="client-main">
+    <section class="client-empty" id="client-empty">
+      <h1 id="empty-title">Waking up your page</h1>
+      <p id="empty-copy">Fetching the business profile and avatar settings for this OutLoud.</p>
+      <p class="tiny" id="empty-detail">If this is a brand-new setup, give it a few seconds and refresh once.</p>
+    </section>
+  </main>
+
+  <script src="../outloud-v2/outloud.config.js?v=22"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var params = new URLSearchParams(location.search);
+      var rawSlug = params.get('slug') || '';
+      var slug = rawSlug.toLowerCase().replace(/[^a-z0-9-]/g, '');
+      var CONFIG = window.OUTLOUD && window.OUTLOUD.CONFIG;
+      var SECRETS = window.OUTLOUD && window.OUTLOUD.SECRETS;
+
+      function text(id, value) {
+        var node = document.getElementById(id);
+        if (node) node.textContent = value;
+      }
+
+      function escHtml(value) {
+        return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      function showError(title, copy, detail) {
+        text('client-name', 'OutLoud');
+        text('client-note', 'Public page unavailable');
+        text('empty-title', title);
+        text('empty-copy', copy);
+        text('empty-detail', detail || '');
+      }
+
+      function fetchJson(url, body) {
+        return fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + SECRETS.blueColumnKey,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        }).then(function (res) {
+          if (!res.ok) {
+            return res.text().then(function (t) {
+              throw new Error(res.status + ' ' + t.slice(0, 180));
+            });
+          }
+          return res.json();
+        });
+      }
+
+      function parseSources(data) {
+        return (data && data.sources) || [];
+      }
+
+      function parseJsonExcerpt(source) {
+        var text = String((source && source.excerpt) || '').trim();
+        if (!text) return null;
+        var cut = Math.max(text.lastIndexOf('}'), text.lastIndexOf(']'));
+        if (cut > 0) text = text.slice(0, cut + 1);
+        try { return JSON.parse(text); } catch (e) { return null; }
+      }
+
+      function findConfigDoc(data) {
+        var sources = parseSources(data), i, parsed;
+        for (i = 0; i < sources.length; i++) {
+          parsed = parseJsonExcerpt(sources[i]);
+          if (parsed && parsed.version === 1 && parsed.slug && parsed.business) return parsed;
+        }
+        return null;
+      }
+
+      function findCatalogDoc(data) {
+        var sources = parseSources(data), i, parsed;
+        for (i = 0; i < sources.length; i++) {
+          parsed = parseJsonExcerpt(sources[i]);
+          if (parsed && Array.isArray(parsed.items)) return parsed;
+        }
+        return null;
+      }
+
+      function summarizeCatalog(items) {
+        return items.slice(0, 5).map(function (item) {
+          var parts = [item.name];
+          if (item.price) parts.push(item.price);
+          if (item.description) parts.push(item.description);
+          return parts.join(' — ');
+        });
+      }
+
+      function buildBootConfig(cfg, catalogDoc) {
+        var business = cfg.business || {};
+        var avatar = cfg.avatar || {};
+        var voice = cfg.voice || {};
+        var catalogItems = catalogDoc && Array.isArray(catalogDoc.items) ? catalogDoc.items : [];
+        return {
+          business: {
+            name: business.name || cfg.slug,
+            ragPrefix: (business.name || cfg.slug) + ' customer question: ',
+            namespace: 'ol_acct_' + cfg.slug,
+            whatYouDo: business.whatYouDo || '',
+            serviceArea: business.serviceArea || '',
+            hours: business.hours || '',
+            pricingStyle: business.pricingStyle || '',
+            commonQuestions: business.commonQuestions || '',
+            catalogItems: catalogItems,
+            catalogSummary: summarizeCatalog(catalogItems)
+          },
+          voice: {
+            voiceId: voice.voiceId || CONFIG.voice.voiceId,
+            name: voice.name || CONFIG.voice.name
+          },
+          simli: {
+            enabled: avatar.kind === 'simli' && !!avatar.faceId,
+            faceId: avatar.faceId || '',
+            maxSessionLength: CONFIG.simli.maxSessionLength,
+            maxIdleTime: CONFIG.simli.maxIdleTime
+          },
+          avatar: {
+            sprite: '../outloud-v2/mascot-sprites.png'
+          }
+        };
+      }
+
+      function applyBootConfig(boot) {
+        function mergeSection(key) {
+          if (boot[key]) {
+            CONFIG[key] = Object.assign({}, CONFIG[key], boot[key]);
+          }
+        }
+        mergeSection('endpoints');
+        mergeSection('voice');
+        mergeSection('rag');
+        mergeSection('business');
+        mergeSection('simli');
+        mergeSection('content');
+        mergeSection('vad');
+        mergeSection('session');
+        if (boot.avatar) {
+          CONFIG.avatar = Object.assign({}, CONFIG.avatar, boot.avatar);
+          if (boot.avatar.baseline) {
+            CONFIG.avatar.baseline = Object.assign({}, CONFIG.avatar.baseline, boot.avatar.baseline);
+          }
+          if (boot.avatar.constraints) {
+            CONFIG.avatar.constraints = Object.assign({}, CONFIG.avatar.constraints, boot.avatar.constraints);
+          }
+        }
+      }
+
+      function paintShell(cfg) {
+        var business = cfg.business || {};
+        var title = business.name || cfg.slug || 'Your OutLoud';
+        var noteBits = [];
+        if (business.whatYouDo) noteBits.push(business.whatYouDo);
+        if (business.serviceArea) noteBits.push('Serving ' + business.serviceArea);
+        text('client-name', title);
+        text('client-note', noteBits.join(' · ') || 'Live and ready to answer questions');
+        document.title = title + ' | OutLoud';
+      }
+
+      function bootRuntime() {
+        var scripts = [
+          '../outloud-v2/event-bus.js?v=18',
+          '../outloud-v2/business-knowledge.js?v=23',
+          '../outloud-v2/customer-memory.js?v=18',
+          '../outloud-v2/plan-validator.js?v=18',
+          '../outloud-v2/response-planner.js?v=18',
+          '../outloud-v2/realtime-input.js?v=18',
+          '../outloud-v2/speech-director.js?v=18',
+          '../outloud-v2/vendor/simli-client.js?v=18',
+          '../outloud-v2/simli-director.js?v=19',
+          '../outloud-v2/avatar-director.js?v=18',
+          '../outloud-v2/content-director.js?v=18',
+          '../outloud-v2/screen-director.js?v=18',
+          '../outloud-v2/session-orchestrator.js?v=18',
+          '../outloud-v2/runtime.js?v=19'
+        ];
+        function next() {
+          var src = scripts.shift();
+          if (!src) return;
+          var tag = document.createElement('script');
+          tag.src = src;
+          tag.onload = next;
+          tag.onerror = function () {
+            showError('Runtime failed to load', 'One of the page scripts did not load correctly.', src);
+          };
+          document.body.appendChild(tag);
+        }
+        next();
+      }
+
+      function mountMarkup(cfg) {
+        var business = cfg.business || {};
+        var prompt = business.whatYouDo || 'Ask a question and this page will answer out loud.';
+        var main = document.getElementById('client-main');
+        main.innerHTML =
+          '<section class="ol-stage-panel" aria-label="' + escHtml((business.name || 'OutLoud') + ' agent stage') + '">' +
+            '<p class="ol-kicker mono">Live conversational page</p>' +
+            '<h1 class="ol-title">Talk to ' + escHtml(business.name || 'this business') + '.<br><em>' + escHtml(prompt) + '</em></h1>' +
+            '<div class="ol-stage-row">' +
+              '<div id="ol-avatar-stage" class="ol-avatar-stage" aria-label="Avatar"></div>' +
+              '<div class="ol-screen" id="ol-screen" aria-label="Supporting information">' +
+                '<div class="ol-screen-topbar mono">' +
+                  '<span class="ol-screen-brand">' + escHtml((business.name || 'OUTLOUD').toUpperCase()) + '</span>' +
+                  '<span class="ol-screen-url">' + escHtml(location.host) + '</span>' +
+                '</div>' +
+                '<div class="ol-screen-body">' +
+                  '<div class="ol-screen-standby" id="ol-screen-standby">' +
+                    '<div class="ol-standby-word">' + escHtml((business.name || 'OUTLOUD').toUpperCase()) + '</div>' +
+                    '<div class="ol-standby-sub mono">' + escHtml(prompt) + '</div>' +
+                    '<div class="ol-standby-note mono">Ask about services, pricing, timing, or how to get started.</div>' +
+                  '</div>' +
+                  '<div id="outloud-content-panel" class="ol-host ol-host-screen" aria-label="Content shown on screen"></div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="ol-status-row"><span id="ol-state" class="ol-state" data-state="IDLE">Ready when you are</span></div>' +
+            '<p class="ol-hint mono">Talk, type, or tap the avatar. If video is configured for this page it starts on your first real interaction.</p>' +
+            '<div class="ol-chips" aria-label="Suggested questions">' +
+              '<button type="button" class="ol-chip">What do you do?</button>' +
+              '<button type="button" class="ol-chip">What does it cost?</button>' +
+              '<button type="button" class="ol-chip">What areas do you serve?</button>' +
+              '<button type="button" class="ol-chip">How do I get started?</button>' +
+            '</div>' +
+            '<div class="ol-inrow ol-inrow-stage">' +
+              '<input id="ol-text-in" class="ol-text" type="text" autocomplete="off" placeholder="Ask a question or press Talk" aria-label="Ask a question">' +
+              '<button type="button" id="ol-send" class="ol-send">Send</button>' +
+            '</div>' +
+            '<div class="ol-status-row" style="justify-content:flex-start;gap:10px;margin-top:12px">' +
+              '<button type="button" id="ol-mic" class="ol-mic" aria-pressed="false"><span class="ol-btn-label">Talk</span></button>' +
+              '<button type="button" id="ol-sound" class="ol-sound" aria-pressed="true"><span class="ol-btn-label">Sound: on</span></button>' +
+              '<button type="button" id="ol-book-cta" class="ol-book-cta">Book</button>' +
+            '</div>' +
+          '</section>' +
+          '<section class="ol-console" aria-label="Conversation transcript"><ol id="ol-log" class="ol-log" aria-live="polite"></ol></section>' +
+          '<footer class="foot mono"><span>Powered by OutLoud</span><span>' + escHtml(business.name || 'Live page') + '</span></footer>' +
+          '<p class="sr-status mono" id="ol-sr-status" role="status" aria-live="polite"></p>';
+      }
+
+      if (!slug) {
+        showError('Missing page address', 'This public OutLoud link is missing its business slug.', 'Open the link again from the dashboard so the slug query is included.');
+        return;
+      }
+      if (!CONFIG || !SECRETS || !SECRETS.blueColumnKey) {
+        showError('Configuration missing', 'The OutLoud runtime config was not available on this page.', 'Reload once. If it still fails, redeploy the site.');
+        return;
+      }
+
+      Promise.all([
+        fetchJson(CONFIG.endpoints.blueColumnBase + '/agent-recall', {
+          namespace: 'ol_acct_' + slug,
+          q: 'account configuration for this business',
+          top_k: 8
+        }),
+        fetchJson(CONFIG.endpoints.blueColumnBase + '/agent-recall', {
+          namespace: 'ol_acct_' + slug,
+          q: 'catalog of products and services',
+          top_k: 8
+        }).catch(function () { return null; })
+      ]).then(function (results) {
+        var cfg = findConfigDoc(results[0]);
+        var catalogDoc = findCatalogDoc(results[1]);
+        if (!cfg) {
+          showError('This OutLoud is not live yet', 'We found the slug, but the business configuration has not been published into memory yet.', 'Finish onboarding, click Go live, then refresh this page.');
+          return;
+        }
+        paintShell(cfg);
+        window.OUTLOUD_BOOT_CONFIG = buildBootConfig(cfg, catalogDoc);
+        applyBootConfig(window.OUTLOUD_BOOT_CONFIG);
+        mountMarkup(cfg);
+        bootRuntime();
+      }).catch(function (err) {
+        showError('Could not load this page', 'The business profile lookup failed before the runtime could start.', err && err.message ? err.message : 'Unknown error');
+      });
+    })();
+  </script>
+</body>
+</html>

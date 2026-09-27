@@ -52,6 +52,11 @@
   /* Smart 404 v2: route known aliases to the right page instead of dead-ending */
   (function () {
     var p = decodeURIComponent(window.location.pathname).toLowerCase().replace(/\/+$/, '');
+    var aMatch = p.match(/^\/a\/([a-z0-9-]+)$/);
+    if (aMatch) {
+      window.location.replace('/a/?slug=' + encodeURIComponent(aMatch[1]));
+      return;
+    }
     var routes = [
       [/venture[-_]?club|adventure[-_]?club|rewards[-_]?club|the-rewards-club|^\/(club|venture|rewards)$/, '/showcase/the-rewards-club/'],
       [/otto[-_]?medic|ottmedic|home[-_]?spark|reef|skimmer|^\/(reef|reefclub)$/, '/showcase/project-home-spark/'],
