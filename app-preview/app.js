@@ -18,6 +18,12 @@
     return PUBLIC_BASE + '?slug=' + encodeURIComponent(String(slug || '').toLowerCase());
   }
 
+  function normalizePublicUrl(url, slug) {
+    var next = publicUrlForSlug(slug);
+    if (!url) return next;
+    return /^https:\/\/bluecolumn\.ai\/a\/[a-z0-9-]+\/?$/i.test(String(url)) ? next : url;
+  }
+
   // Plan flags — stored as labels only, no billing in this build.
   var PLANS = {
     starter: { name: 'Starter', price: '$49' },
@@ -1168,7 +1174,7 @@
         acct.config = cfg;
         var isLive = cfg.status === 'live';
         var plan = PLANS[cfg.plan] || PLANS.starter;
-        var url = cfg.publicUrl || publicUrlForSlug(cfg.slug);
+        var url = normalizePublicUrl(cfg.publicUrl, cfg.slug);
         var b = cfg.business || {};
         el('dash-main').outerHTML =
           '<div class="card">' +
