@@ -87,7 +87,11 @@ a{color:inherit}
 .mascot{
   position:relative;
   width:min(380px,74vw);
-  aspect-ratio:1/1;
+  /* sprite cells are 180x210 (6:7). The rig's percentage math
+     (background-size 400%x200%) is exact ONLY when this element
+     matches the cell aspect. Square 1/1 stretched Buddy ~17% wider
+     and clipped the mouth row, which is why the lip-sync looked broken. */
+  aspect-ratio:6/7;
   border-radius:28px;
   will-change:transform;
   filter:drop-shadow(0 26px 44px rgba(34,51,59,.18));
