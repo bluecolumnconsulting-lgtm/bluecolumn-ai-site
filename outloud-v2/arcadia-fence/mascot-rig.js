@@ -94,13 +94,13 @@
 
   /* --- engine: faithful port of the client-site LipSync class --- */
   var CFG = {
-    fftSize: 2048, analyserSmoothing: 0.92, targetFps: 30,
-    attackMs: 90, releaseMs: 420, noiseLearnRate: 0.015,
-    gateDb: 8.5, hangoverMs: 380,
+    fftSize: 2048, analyserSmoothing: 0.75, targetFps: 30,
+    attackMs: 55, releaseMs: 220, noiseLearnRate: 0.015,
+    gateDb: 8.5, hangoverMs: 180,
     quietDb: 9, softDb: 13, mediumDb: 17, loudDb: 21,
     lowBandHz: [200, 600], midBandHz: [800, 2500], highBandHz: [3000, 8000],
-    hysteresisDb: 3.5, minHoldMs: 320, peakBoostDb: 2.5,
-    centroidBoostDb: 2, maxRangeDb: 30
+    hysteresisDb: 3.5, minHoldMs: 110, peakBoostDb: 2.5,
+    centroidBoostDb: 2, maxRangeDb: 30, compressK: 0.09
   };
   function toDb(x) { var e = Math.max(1e-8, x); return 20 * Math.log10(e); }
   function frac(dt, ms) { return 1 - Math.exp(-dt / Math.max(1, ms)); }
@@ -218,6 +218,7 @@
   }
 
   var lastTick = 0, loopStarted = false;
+  var controller = null;         /* LipSyncController when phoneme events exist */
   function tick(t) {
     requestAnimationFrame(tick);
     if (!rigOn || !engine) { return; }
@@ -226,14 +227,41 @@
     lastTick = t;
     var el = activeEl;
     if (!el || el.paused) { return; }
-    setViseme(engine.tick(t));
+    var name;
+    if (controller) {
+      /* Audio-clock sampling (spec): sample at el.currentTime + offset,
+         NOT accumulated frame deltas. Discontinuities (seek/pause)
+         handled inside the controller. */
+      var pose = controller.sample(el.currentTime + (window.MASCOT_RIG_LATENCY || 0));
+      name = poseToCell(pose);
+    } else {
+      name = engine.tick(t);
+    }
+    setViseme(name);
   }
   function loop() {
     if (!loopStarted) { loopStarted = true; requestAnimationFrame(tick); }
   }
 
+  /* Continuous pose -> nearest sprite cell (8-cell sheet).
+     Order matters: closure dominates, then lip-shape, then jaw. */
+  function poseToCell(p) {
+    if (!p) { return 'rest'; }
+    if (p.lipSeal > 0.5) { return 'rest'; }
+    if (p.lowerLipTuck > 0.45) { return 'fv'; }
+    if (p.tongueForward > 0.45) { return 'th'; }
+    var round = Math.max(p.lipRound, p.lipPucker);
+    if (round > 0.5) { return p.jawOpen > 0.3 ? 'o' : 'u'; }
+    if (p.lipSpread > 0.5) { return 'e'; }
+    if (p.jawOpen > 0.5) { return 'ai'; }
+    if (round > 0.3 && p.jawOpen < 0.3) { return 'ch'; }
+    if (p.jawOpen > 0.3) { return 'e'; }
+    return 'rest';
+  }
+
   function speechEnd() {
     rigOn = false;
+    controller = null;
     mascot.classList.remove('speaking');
     setViseme('rest');
   }
@@ -258,4 +286,28 @@
 
   /* percentage sprite math is resize-proof; nothing to re-render */
   setViseme('rest');
+
+  /* --- public integration API (arcadia-agent.js / any page) ---
+     window.MascotRig.setEvents(events)   feed a timed viseme track
+     window.MascotRig.start(audioEl)      begin audio-clock sampling
+     window.MascotRig.stop()              settle back to rest
+     Requires lip-sync-controller.js to be loaded BEFORE this file. */
+  window.MascotRig = {
+    setEvents: function (events) {
+      if (!window.LipSyncController) { return false; }
+      controller = new window.LipSyncController();
+      controller.setEvents(events || []);
+      return true;
+    },
+    start: function (el) {
+      if (!el) { return false; }
+      activeEl = el;
+      rigOn = true;
+      mascot.classList.add('speaking');
+      loop();
+      return true;
+    },
+    stop: speechEnd,
+    poseToCell: poseToCell
+  };
 })();

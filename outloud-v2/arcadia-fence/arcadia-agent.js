@@ -168,6 +168,34 @@
     });
   }
 
+  /* Speech front end (spec: TTS provider phoneme timings).
+     ElevenLabs /with-timestamps returns audio + per-character alignment
+     in ONE call. We convert the alignment into timed viseme events and
+     hand them to the continuous rig (lip-sync-controller.js). */
+  function ttsFetchAligned(text) {
+    return fetch('https://api.elevenlabs.io/v1/text-to-speech/' + CFG.voiceId + '/with-timestamps?output_format=mp3_44100_128', {
+      method: 'POST',
+      headers: { 'xi-api-key': TTS_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text, model_id: 'eleven_flash_v2_5' })
+    }).then(function (res) {
+      if (!res.ok) { throw new Error('tts ' + res.status); }
+      return res.json();
+    }).then(function (d) {
+      var bin = atob(d.audio_base64);
+      var bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) { bytes[i] = bin.charCodeAt(i); }
+      var blob = new Blob([bytes], { type: 'audio/mpeg' });
+      var events = [];
+      try {
+        var al = d.alignment || (d.normalized_alignment ? d.normalized_alignment : null);
+        if (al && window.eventsFromCharacters) {
+          events = window.eventsFromCharacters(al.characters, al.character_start_times_seconds, al.character_end_times_seconds);
+        }
+      } catch (eE) { events = []; }
+      return { blob: blob, events: events };
+    });
+  }
+
   function simliReady() { return !!(simliClient && videoMode.on); }
 
   async function simliStream(ab) {
@@ -217,13 +245,22 @@
   function playReply(r) {
     if (muted || videoStarting) { setTimeout(botFinished, 300); return; }
     if (videoMode.on && simliReady()) { speakTextThroughSimli(r.t); return; }
-    ttsFetch(r.t).then(function (blob) {
+    var useAligned = !!(window.MascotRig && window.eventsFromCharacters);
+    var p = useAligned
+      ? ttsFetchAligned(r.t)
+      : ttsFetch(r.t).then(function (b) { return { blob: b, events: [] }; });
+    p.then(function (res) {
       stopMouth();
       try { if (currentAudio) { currentAudio.pause(); } } catch (e2) {}
-      currentAudio = new Audio(URL.createObjectURL(blob));
-      if (avatarEl) { avatarEl.classList.add('talking'); }
+      currentAudio = new Audio(URL.createObjectURL(res.blob));
       currentAudio.onended = botFinished;
-      currentAudio.play().then(startMouth).catch(function () { botFinished(); });
+      var rigOwns = false;
+      if (res.events && res.events.length && window.MascotRig) {
+        rigOwns = window.MascotRig.setEvents(res.events);
+      }
+      currentAudio.play().then(function () {
+        if (!rigOwns) { startMouth(); }  /* legacy analyser fallback */
+      }).catch(function () { botFinished(); });
     }).catch(function () {
       if (videoMode.on && simliReady()) { botFinished(); return; }
       botFinished();
