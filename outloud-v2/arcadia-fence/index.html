@@ -87,19 +87,34 @@ a{color:inherit}
 .mascot{
   position:relative;
   width:min(380px,74vw);
-  /* sprite cells are 180x210 (6:7). The rig's percentage math
-     (background-size 400%x200%) is exact ONLY when this element
-     matches the cell aspect. Square 1/1 stretched Buddy ~17% wider
-     and clipped the mouth row, which is why the lip-sync looked broken. */
+  /* sprite cells are 180x210 (6:7) — exactly arcadiafenceaz.com's
+     300x350 render. The rig's percentage math (400%x200%) is exact
+     only at this aspect. Square 1/1 stretched Buddy and smeared the mouth. */
   aspect-ratio:6/7;
-  border-radius:28px;
   will-change:transform;
-  filter:drop-shadow(0 26px 44px rgba(34,51,59,.18));
-  overflow:hidden;
+  /* Verbatim from the client's working renderer: NO rounded corner,
+     NO overflow clip (that was cropping Buddy's edges), and an
+     ORANGE-tinted drop shadow — this is what makes him pop. */
+  border-radius:0;
+  overflow:visible;
+  filter:drop-shadow(0 10px 40px rgba(249,115,22,.5));
 }
+/* talking glow + pulse ring, mirroring the client's full-screen Buddy */
+.mascot::before{
+  content:'';position:absolute;inset:-48px;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle,rgba(249,115,22,.5),transparent 70%);
+  filter:blur(24px);opacity:0;transition:opacity .3s ease;
+}
+.mascot.speaking::before{opacity:1}
+.mascot::after{
+  content:'';position:absolute;inset:-16px;border-radius:50%;z-index:-1;
+  border:4px solid rgba(249,115,22,.4);opacity:0;
+}
+.mascot.speaking::after{opacity:1;animation:pulse-ring 1.5s ease-in-out infinite}
 @keyframes pose-in{from{opacity:0}to{opacity:1}}
 @keyframes pose-out{from{opacity:1}to{opacity:0}}
-.mascot-shadow{width:46%;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(34,51,59,.22),transparent 70%);margin-top:-4px}
+@keyframes pulse-ring{0%{transform:scale(.95);opacity:1}50%{transform:scale(1.05);opacity:.7}100%{transform:scale(.95);opacity:1}}
+.mascot-shadow{display:none}
 .mascot-status{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
 
 /* branded screen */
