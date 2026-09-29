@@ -102,6 +102,11 @@ input:focus, textarea:focus, select:focus { border-color: #176f68; background: #
 .avatar-card.selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(23,75,71,.14); }
 .avatar-card:hover { border-color: #9db8b0; }
 .avatar-card.selected:hover { border-color: var(--primary); }
+.avatar-card .a-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .02em; border-radius: 999px; padding: 2px 9px; margin: 0 8px 4px; border: 1px solid; }
+.avatar-card .a-badge.live { background: #e9f5ee; border-color: #c4e0cf; color: #22633f; }
+.avatar-card .a-badge.soon { background: #faf4e4; border-color: #eadfb9; color: #7a5c14; }
+.avatar-card.soon { opacity: .62; }
+.avatar-card.soon:hover { border-color: var(--edge); box-shadow: none; cursor: not-allowed; }
 
 /* Voice list */
 .voice-list { display: grid; gap: 8px; }

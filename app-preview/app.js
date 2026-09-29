@@ -47,7 +47,7 @@
   // the first two are also used live in this repo: Sabour in outloud-v3, Madison in OttoMedic).
   // The animated mascot uses outloud/mascot-sprites.png (copied into this folder).
   var FACES = [
-    { kind: 'mascot', faceId: '', name: 'OutLoud mascot', sub: 'Animated character, included with every plan', img: 'mascot-sprites.png?v=1' },
+    { kind: 'mascot', faceId: '', name: 'OutLoud mascot', sub: 'Animated character, included with every plan', img: 'mascot-thumb.png?v=1' },
     { kind: 'simli', faceId: '5fc23ea5-8175-4a82-aaaf-cdd8c88543dc', name: 'Professional A', sub: 'Video face — polished and approachable', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/madison.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=8f3119eddb776e0afec44ecf8da6c3d9' },
     { kind: 'simli', faceId: '804c347a-26c9-4dcf-bb49-13df4bed61e8', name: 'Professional B', sub: 'Video face — calm and steady', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/black_programmer.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=94213f32e0d39464bbf4d645430c29d8' },
     { kind: 'simli', faceId: 'cace3ef7-a4c4-425d-a8cf-a5358eb0c427', name: 'Friendly A', sub: 'Video face — warm and welcoming', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/asian_woman.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=e02235fa52f1327b4cfb060ab364ec63' },
@@ -1152,12 +1152,16 @@
       '<p class="page-sub" style="margin-bottom:14px">The animated mascot is included with every plan. Video faces are stock options you can switch anytime.</p>' +
       '<div class="avatar-grid" id="avatar-grid">' +
       FACES.map(function (f) {
+        var soon = f.kind === 'anam' || f.kind === 'liveavatar';
+        var badge = soon ? '<span class="a-badge soon">Coming soon</span>'
+          : (f.kind === 'mascot' ? '<span class="a-badge live">Animated</span>' : '<span class="a-badge live">Live video</span>');
         var sel = (a.kind === f.kind && (f.kind === 'mascot' || a.faceId === f.faceId)) ? ' selected' : '';
         var thumb = f.img
           ? '<img class="thumb" src="' + esc(f.img) + '" alt="" loading="lazy" onerror="this.outerHTML=\'<div class=&quot;thumb fallback&quot;>' + esc(f.name.charAt(0)) + '</div>\'">'
           : '<div class="thumb fallback">' + esc(f.name.charAt(0)) + '</div>';
-        return '<button type="button" class="avatar-card' + sel + '" data-kind="' + f.kind + '" data-face="' + esc(f.faceId) + '" data-name="' + esc(f.name) + '">' +
-          thumb + '<span class="a-name">' + esc(f.name) + '</span><span class="a-sub">' + esc(f.sub) + '</span></button>';
+        var sub = soon ? 'Video face — coming soon' : f.sub;
+        return '<button type="button" class="avatar-card' + sel + (soon ? ' soon' : '') + '" data-kind="' + f.kind + '" data-face="' + esc(f.faceId) + '" data-name="' + esc(f.name) + '">' +
+          thumb + badge + '<span class="a-name">' + esc(f.name) + '</span><span class="a-sub">' + esc(sub) + '</span></button>';
       }).join('') +
       '</div>' +
       '<h3 style="margin:26px 0 4px;font:400 22px var(--serif)">Pick a voice</h3>' +
@@ -1179,6 +1183,10 @@
 
     body.querySelectorAll('.avatar-card').forEach(function (cardB) {
       cardB.addEventListener('click', function () {
+        if (cardB.classList.contains('soon')) {
+          toast(cardB.getAttribute('data-name') + ' is coming soon — the live video engine is not wired yet. Pick a live face for now.');
+          return;
+        }
         body.querySelectorAll('.avatar-card').forEach(function (c) { c.classList.remove('selected'); });
         cardB.classList.add('selected');
         wizard.config.avatar = {
