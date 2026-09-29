@@ -27,6 +27,12 @@
     header.top{padding:10px 14px}
     .ol-inrow-stage{margin-bottom:14px}
   }
+  /* --- Beyond Presence live agent (Marina) --- */
+  .ol-bey-panel{margin:0 0 18px;background:#fff;border:1px solid #e6ecf4;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(17,24,39,.06)}
+  .ol-bey-head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #e6ecf4;font-weight:600;font-size:13px;letter-spacing:.08em;color:#334155}
+  .ol-bey-head .dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.18)}
+  .ol-bey-frame{display:block;border:none;width:100%;height:620px;max-width:100%;background:#0b1220}
+  @media (max-width:640px){.ol-bey-frame{height:520px}}
   </style>
 </head>
 <body>
@@ -48,7 +54,19 @@
 
   <main class="ol-main">
 
-    <!-- ============ AVATAR STAGE ============ -->
+    <!-- ============ BEYOND PRESENCE — LIVE MARINA ============ -->
+    <section class="ol-bey-panel" aria-label="Marina — Beyond Presence live video agent">
+      <div class="ol-bey-head mono"><span class="dot"></span> MARINA · LIVE VIDEO AGENT</div>
+      <iframe
+        class="ol-bey-frame"
+        src="https://bey.chat/f2614afa-e72b-437d-8c68-73d46f9ced50"
+        title="Marina — OttoMedic live agent"
+        allow="camera; microphone; fullscreen"
+        allowfullscreen
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </section>
+
+    <!-- ============ AVATAR STAGE (legacy Simli + sprite fallback) ============ -->
     <section class="ol-stage-panel" aria-label="OttoMedic live agent stage">
 
       <div class="ol-stage-row">
