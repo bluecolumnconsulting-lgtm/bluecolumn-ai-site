@@ -41,6 +41,36 @@ jobs:
           print('openaiKey injected (build-time only, not committed)')
           PYEOF
 
+      # Inject the Simli + Anam avatar keys at build time only (never in the
+      # repo). Slots in the committed configs stay empty; the live page gets
+      # real keys from GitHub Secrets. Covers outloud-v3, outloud-v2, and the
+      # app-preview key bundle.
+      - name: Inject avatar keys (build-time only)
+        env:
+          SIMLI_KEY: ${{ secrets.SIMLI_KEY }}
+          ANAM_KEY: ${{ secrets.ANAM_KEY }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PYEOF'
+          import os
+          simli = os.environ.get('SIMLI_KEY', '')
+          anam = os.environ.get('ANAM_KEY', '')
+          assert simli, 'SIMLI_KEY secret missing'
+          assert anam, 'ANAM_KEY secret missing'
+          def patch(path, sub):
+              s = open(path).read()
+              out = s
+              for key, val in sub.items():
+                  import re
+                  out, n = re.subn(r"(%s: )'[^']*'" % re.escape(key), lambda m: m.group(1) + "'" + val + "'", out, count=1)
+                  assert n == 1, '%s slot not found in %s' % (key, path)
+              open(path, 'w').write(out)
+              print('patched %s: %s' % (path, ','.join(sub.keys())))
+          patch('outloud-v3/outloud.config.js', {'simliKey': simli, 'anamKey': anam})
+          patch('outloud-v2/outloud.config.js', {'simliKey': simli, 'anamKey': anam})
+          patch('app-preview/keys.js', {'simliKey': simli})
+          PYEOF
+
       - name: Stage site (strip repo internals)
         run: |
           set -euo pipefail

@@ -19,12 +19,45 @@
   var input = new O.RealtimeInput(bus);
   var speech = new O.SpeechDirector(bus);
   var simli = new O.SimliDirector(bus);
+  var anam = O.AnamDirector ? new O.AnamDirector(bus) : null;
   var screen = new O.ScreenDirector(bus);   // ambient card rotation on the branded screen
   var avatar = new O.AvatarDirector(bus, O.CONFIG.avatar);
   var content = new O.ContentDirector(bus);
   var planner = new O.ResponsePlanner(bus, memory);
   var orch = new O.Orchestrator(bus, { input: input, speech: speech, avatar: avatar, content: content, memory: memory, planner: planner });
-  speech.sink = simli;   // when Simli is live, speech blobs stream into the video session
+  speech.sink = simli;   // default live sink; pickLiveDir() may switch it to Anam
+
+  /* ---------- conversation controller ----------
+     Port of OutLoud-conversation-controller (BlueColumn drop,
+     2026-09-29). Rides the same bus events as the Orchestrator and
+     adds: revision tokens for stale-turn detection, bounded replies
+     (cleanReply cap applied by the planner), conversation history,
+     avatar.state lifecycle, and InterruptiblePlayback (edge transport).
+     Does not change lip-sync or the sink pipeline. */
+  var session = null;
+  if (O.ConversationSession && O.CONFIG.controller && O.CONFIG.controller.enabled) {
+    session = new O.ConversationSession({ bus: bus, orch: orch, input: input, speech: speech, avatar: avatar, content: content });
+  }
+  bus.on('avatar.state', function (env) {
+    /* Sprite-level reaction to the controller's avatar states; the
+       speaking state stays owned by render()/lipSync. */
+    if (env.payload.state === 'thinking') { avatar.setExpression('thinking', 0.5); }
+    else if (env.payload.state === 'listening') { avatar.setExpression('friendly', 0.6); }
+  });
+
+  /* Live video director pick: Anam only when the page selects it
+     (avatar.providers.anam.selected — /a/ boot configs set this for
+     accounts that picked an Anam face) AND it is credentialed; Simli
+     otherwise. The sprite rig stays underneath either way. */
+  var liveDir = null;
+  function pickLiveDir() {
+    if (liveDir) { return liveDir; }
+    var P = (O.CONFIG.avatar && O.CONFIG.avatar.providers && O.CONFIG.avatar.providers.anam) || null;
+    if (anam && P && P.selected && anam.capable().ok) { liveDir = anam; }
+    else if (simli.capable().ok) { liveDir = simli; }
+    if (liveDir) { speech.sink = liveDir; }
+    return liveDir;
+  }
 
   /* ---------- DOM ---------- */
   function F(id) { return document.getElementById(id); }
@@ -125,8 +158,17 @@
   bus.on('simli.failed', function (env) {
     console.info('[outloud] simli failed:', env.payload.message);
   });
-  /* Barge-in / sound-off clears the active Simli feed instantly. */
-  bus.on('speech.cancelled', function () { simli.cancelFeed(); });
+  bus.on('anam.failed', function (env) {
+    console.info('[outloud] anam failed:', env.payload.message);
+    /* Anam was the selected video path but failed — fall back to Simli. */
+    if (liveDir === anam) {
+      liveDir = null;
+      var d = pickLiveDir();
+      if (d && d !== anam && d.start) { d.start(); }
+    }
+  });
+  /* Barge-in / sound-off clears the active live-video feed instantly. */
+  bus.on('speech.cancelled', function () { simli.cancelFeed(); if (anam) { anam.cancelFeed(); } });
   bus.on('error', function (env) { addMsg('outloud', env.payload.message); });
   bus.on('plan.validated', function (env) {
     if (env.payload.repairs && env.payload.repairs.length) {
@@ -181,6 +223,11 @@
      simli.attach ran first and avatar.attach wiped its elements.) */
   avatar.attach(F('ol-avatar-stage'));
   simli.attach(F('ol-avatar-stage'));
+  /* Anam mounts only when this page selects it — no empty video shell otherwise. */
+  if (anam) {
+    var AP = (O.CONFIG.avatar && O.CONFIG.avatar.providers && O.CONFIG.avatar.providers.anam) || null;
+    if (AP && AP.selected) { anam.attach(F('ol-avatar-stage')); }
+  }
   content.mount();
   /* Presentation screen: standby sign shows when no panel is live. */
   var screenEl = document.getElementById('ol-screen');
@@ -206,7 +253,8 @@
      key, touch) unmutes the voice — and greets only if the
      conversation hasn't started. The sprite stays underneath as the
      fallback if the video cannot connect. */
-  simli.start();
+  var bootDir = pickLiveDir();
+  if (bootDir && bootDir.start) { bootDir.start(); }
   var audioUnlocked = false;
   function unlockAudio(e) {
     if (audioUnlocked) { return; }
@@ -216,9 +264,10 @@
     document.removeEventListener('pointerdown', unlockAudio, true);
     document.removeEventListener('keydown', unlockAudio, true);
     document.removeEventListener('touchstart', unlockAudio, true);
-    simli.unmute();
+    if (liveDir && liveDir.unmute) { liveDir.unmute(); }
     /* Retry if the boot attempt failed — a real gesture is on file now. */
-    simli.start();
+    var retryDir = pickLiveDir();
+    if (retryDir && retryDir.start) { retryDir.start(); }
     var log = document.getElementById('ol-log');
     if (!log || !log.childElementCount) {
       bus.publish('transcript.final', { text: 'hello', internal: true });
@@ -228,5 +277,5 @@
   document.addEventListener('keydown', unlockAudio, true);
   document.addEventListener('touchstart', unlockAudio, true);
 
-  window.OutLoudRuntime = { bus: bus, orch: orch, memory: memory, planner: planner, content: content, avatar: avatar, speech: speech, input: input };
+  window.OutLoudRuntime = { bus: bus, orch: orch, memory: memory, planner: planner, content: content, avatar: avatar, speech: speech, input: input, controller: session };
 })();

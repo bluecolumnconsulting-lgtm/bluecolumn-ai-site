@@ -18,7 +18,7 @@
     blueColumnKey: 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy',
     elevenLabsKey: 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843',
     openaiKey: '',   // runtime key was auto-revoked by OpenAI minutes after GitHub saw it — brain key must live server-side in the proxy   // owner directive 2026-09-25: OpenAI runs the avatar brain   // key is NOT stored in the repo (GitHub push protection) — the brain proxy injects it server-side   // owner directive 2026-09-25: OpenAI runs the avatar brain (runtime fallback-provider key)   // DROP-IN: paste the OpenAI key here — owner directive 2026-09-25: OpenAI runs the avatar brain
-    simliKey: '',   // DISABLED 2026-09-25 per Joe: OpenAI is the only allowed avatar provider; no third-party runs the face
+    simliKey: '',   // injected at build time from GitHub Secrets (SIMLI_KEY)
 
     /* --- Additional avatar providers (added 2026-09-25, all empty until
         a human pastes a credential; adapters fail gracefully) ---
@@ -38,7 +38,7 @@
         beyondKey:     Deferred provider (needs a server-side LiveKit
                        worker; see RESEARCH.md in the avatar-providers
                        workspace). Placeholder for the future proxy. */
-    anamKey: '',
+    anamKey: '',   // injected at build time from GitHub Secrets (ANAM_KEY)
     liveavatarKey: '',
     didClientKey: '',
     beyondKey: ''
@@ -94,8 +94,8 @@
     /* --- Avatar (Avatar Director, sprite adapter) --- */
     /* --- Simli video avatar (Simli Director) — sprite stays as fallback --- */
     simli: {
-      enabled: false,   // owner directive 2026-09-25: avatar face/motion must come from OpenAI-generated assets + in-house rig only
-      faceId: '7e74d6e7-d559-4394-bd56-4923a3ab75ad',   // Joe's face — RETIRED from the live path 2026-09-25
+      enabled: true,    // re-enabled 2026-09-29 per Joe: live video faces back on
+      faceId: '7e74d6e7-d559-4394-bd56-4923a3ab75ad',   // Joe's face — re-enabled 2026-09-29 (swap to a stock faceId anytime)
       maxSessionLength: 600,
       maxIdleTime: 180
     },
@@ -131,9 +131,10 @@
            createAgentAudioInputStream. Free tier: 30 min/mo, 3-min
            conversation cap, 1 concurrent session (anam.ai/pricing). */
         anam: {
-          enabled: false,          // flip only after anamKey or tokenEndpoint exists
+          enabled: true,           // key verified live 2026-09-29
+          selected: false,         // demo page stays on Simli; /a/ boot configs set selected:true when the account picked an Anam face
           esmUrl: 'https://esm.sh/@anam-ai/js-sdk@latest',  // SDK loader; vendor locally for prod
-          avatarId: '',            // stock avatar id from the Anam dashboard
+          avatarId: 'edf6fdcb-acab-44b8-b974-ded72665ee26',   // stock "Mia" — session token verified 2026-09-29
           avatarModel: 'cara-4',   // persona model name used at token creation
           tokenEndpoint: '',       // same-origin route issuing Anam session tokens (preferred); empty = dev raw-key path
           connectTimeoutMs: 12000
@@ -188,6 +189,15 @@
 
     /* --- Realtime input --- */
     vad: { rmsThreshold: 0.035, hangoverMs: 700 },
+
+    /* --- Conversation controller (OutLoud-conversation-controller,
+         installed 2026-09-29): revision-tokened turns, bounded
+         replies, history retention, avatar states. --- */
+    controller: {
+      enabled: true,
+      maxAnswerWords: 90,
+      historyLimit: 8
+    },
 
     /* --- Session --- */
     session: { storageKey: 'outloud20-session' }

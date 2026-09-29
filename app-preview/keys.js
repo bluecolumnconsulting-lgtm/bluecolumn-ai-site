@@ -4,6 +4,6 @@
   window.OL_KEYS = {
     blueColumnKey: 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy',
     elevenLabsKey: '',
-    simliKey: '5e2ucmvyrlmkapwg4hzyf'
+    simliKey: ''
   };
 })();

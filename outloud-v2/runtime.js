@@ -19,6 +19,7 @@
   var input = new O.RealtimeInput(bus);
   var speech = new O.SpeechDirector(bus);
   var simli = new O.SimliDirector(bus);
+  var anam = O.AnamDirector ? new O.AnamDirector(bus) : null;
   var screen = new O.ScreenDirector(bus);   // ambient card rotation on the branded screen
   var avatar = new O.AvatarDirector(bus, O.CONFIG.avatar);
   var content = new O.ContentDirector(bus);
@@ -35,10 +36,20 @@
   var simliStartAttempted = false;
 
   function trySimliStart(greet) {
-    if (!simliConfigured || simliStartAttempted) { return Promise.resolve(false); }
+    if (simliStartAttempted) { return Promise.resolve(false); }
+    /* Director pick: Anam when the page selects it (boot config sets
+       providers.anam.selected for accounts that picked an Anam face)
+       and it is credentialed; Simli otherwise; sprite as fallback. */
+    var P = (O.CONFIG.avatar && O.CONFIG.avatar.providers && O.CONFIG.avatar.providers.anam) || null;
+    var d = null;
+    if (anam && P && P.selected && anam.capable().ok) { d = anam; }
+    else if (simliConfigured && simli.capable().ok) { d = simli; }
+    if (!d) { return Promise.resolve(false); }
     simliStartAttempted = true;
-    return simli.start().then(function (ok) {
+    speech.sink = d;
+    return d.start().then(function (ok) {
       if (!ok) { return false; }
+      if (typeof d.unmute === 'function') { d.unmute(); }
       if (greet) {
         bus.publish('transcript.final', { text: 'hello', internal: true });
       }
@@ -136,7 +147,7 @@
     console.info('[outloud] simli failed:', env.payload.message);
   });
   /* Barge-in / sound-off clears the active Simli feed instantly. */
-  bus.on('speech.cancelled', function () { simli.cancelFeed(); });
+  bus.on('speech.cancelled', function () { simli.cancelFeed(); if (anam) { anam.cancelFeed(); } });
   bus.on('error', function (env) { addMsg('outloud', env.payload.message); });
   bus.on('plan.validated', function (env) {
     if (env.payload.repairs && env.payload.repairs.length) {
@@ -193,6 +204,11 @@
      simli.attach ran first and avatar.attach wiped its elements.) */
   avatar.attach(F('ol-avatar-stage'));
   simli.attach(F('ol-avatar-stage'));
+  /* Anam mounts only when this page selects it — no empty video shell otherwise. */
+  if (anam) {
+    var AP = (O.CONFIG.avatar && O.CONFIG.avatar.providers && O.CONFIG.avatar.providers.anam) || null;
+    if (AP && AP.selected) { anam.attach(F('ol-avatar-stage')); }
+  }
   content.mount();
   /* Presentation screen: standby sign shows when no panel is live. */
   var screenEl = document.getElementById('ol-screen');

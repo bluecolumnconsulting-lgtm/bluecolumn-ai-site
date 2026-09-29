@@ -97,7 +97,9 @@
     }
     this.starting = true;
     this.bus.publish('simli.starting', {});
-    if (this.stage) { this.stage.classList.add('connecting'); }  /* hide sprite during handshake */
+    /* Do NOT blank the stage during the handshake: the sprite stays
+       visible as the face until the live video renders a frame, so an
+       avatar is on screen from the moment the page opens. */
 
     function bindClientEvents(client) {
       if (!client || typeof client.on !== 'function') { return; }
@@ -171,8 +173,12 @@
       self.live = true;
       self.starting = false;
       if (self.stage) { self.stage.classList.remove('connecting'); }
-      self.stage.classList.add('video-mode');
       self.bus.publish('simli.live', {});
+      /* Show the video only once a real frame is rendering; until then
+         the sprite remains the visible face (no blank stage). */
+      waitForVideoFrame(self.videoEl, 4000).then(function () {
+        if (self.stage) { self.stage.classList.add('video-mode'); }
+      });
       return true;
     }).catch(function (e) {
       self.starting = false;
@@ -195,6 +201,27 @@
       this.bus.publish('simli.stopped', {});
     }
   };
+
+  /* Wait until the video element has an actual frame (or timeout), so
+     video-mode only replaces the sprite once there's something to see. */
+  function waitForVideoFrame(video, timeoutMs) {
+    return new Promise(function (resolve) {
+      if (!video) { return resolve(); }
+      if (video.readyState >= 2) { return resolve(); }
+      var done = false;
+      function finish() {
+        if (done) { return; }
+        done = true;
+        video.removeEventListener('playing', finish);
+        video.removeEventListener('loadeddata', finish);
+        clearTimeout(t);
+        resolve();
+      }
+      var t = setTimeout(finish, timeoutMs);
+      video.addEventListener('playing', finish);
+      video.addEventListener('loadeddata', finish);
+    });
+  }
 
   /* ---------- speech sink interface (SpeechDirector calls this) ---------- */
   SimliDirector.prototype.playBlob = function (blob, chunkText) {

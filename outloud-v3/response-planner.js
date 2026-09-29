@@ -343,6 +343,13 @@
     this._lastIntent = intent;
     this._lastTextHead = String(turn.userText || '').toLowerCase().slice(0, 18);
 
+    /* Bounded replies (conversation controller contract): the spoken
+       answer is hard-capped so no turn runs long enough to queue. */
+    if (window.OUTLOUD && window.OUTLOUD.cleanReply) {
+      var cap = (CONFIG.controller && CONFIG.controller.maxAnswerWords) || 90;
+      speech = window.OUTLOUD.cleanReply(speech, cap);
+    }
+
     var responseId = rid('resp');
     return {
       protocolVersion: '2.0',

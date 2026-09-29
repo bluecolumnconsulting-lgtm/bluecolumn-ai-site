@@ -110,7 +110,7 @@
     </section>
   </main>
 
-  <script src="../outloud-v2/outloud.config.js?v=22"></script>
+  <script src="../outloud-v2/outloud.config.js?v=23"></script>
   <script>
     (function () {
       'use strict';
@@ -225,7 +225,21 @@
             maxSessionLength: CONFIG.simli.maxSessionLength,
             maxIdleTime: CONFIG.simli.maxIdleTime
           },
-          avatar: {
+          /* Account picked an Anam face → hand the runtime its provider
+             routing. Any other kind (simli/mascot) boots exactly as before. */
+          avatar: (avatar.kind === 'anam' && avatar.faceId) ? {
+            sprite: '../outloud-v2/mascot-sprites.png',
+            providers: {
+              anam: {
+                enabled: true,
+                selected: true,
+                esmUrl: 'https://esm.sh/@anam-ai/js-sdk@latest',
+                avatarId: avatar.faceId,
+                avatarModel: 'cara-4',
+                connectTimeoutMs: 12000
+              }
+            }
+          } : {
             sprite: '../outloud-v2/mascot-sprites.png'
           }
         };
@@ -253,6 +267,9 @@
           if (boot.avatar.constraints) {
             CONFIG.avatar.constraints = Object.assign({}, CONFIG.avatar.constraints, boot.avatar.constraints);
           }
+          if (boot.avatar.providers) {
+            CONFIG.avatar.providers = Object.assign({}, CONFIG.avatar.providers, boot.avatar.providers);
+          }
         }
       }
 
@@ -278,11 +295,12 @@
           '../outloud-v2/speech-director.js?v=18',
           '../outloud-v2/vendor/simli-client.js?v=18',
           '../outloud-v2/simli-director.js?v=19',
+          '../outloud-v2/anam-director.js?v=1',
           '../outloud-v2/avatar-director.js?v=18',
           '../outloud-v2/content-director.js?v=18',
           '../outloud-v2/screen-director.js?v=18',
           '../outloud-v2/session-orchestrator.js?v=18',
-          '../outloud-v2/runtime.js?v=19'
+          '../outloud-v2/runtime.js?v=20'
         ];
         function next() {
           var src = scripts.shift();

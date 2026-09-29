@@ -53,6 +53,13 @@
     { kind: 'simli', faceId: 'cace3ef7-a4c4-425d-a8cf-a5358eb0c427', name: 'Friendly A', sub: 'Video face — warm and welcoming', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/asian_woman.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=e02235fa52f1327b4cfb060ab364ec63' },
     { kind: 'simli', faceId: '1c6aa65c-d858-4721-a4d9-bda9fde03141', name: 'Friendly B', sub: 'Video face — open and easygoing', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/black_man.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=353c99d375639a3513d5b4f14560e467' },
     { kind: 'simli', faceId: 'dd10cb5a-d31d-4f12-b69f-6db3383c006e', name: 'Casual A', sub: 'Video face — laid-back and familiar', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/hank.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=5864d0148bb709abead34a191313c155' },
+    { kind: 'simli', faceId: 'b9e5fba3-071a-4e35-896e-211c4d6eaa7b', name: 'Laila', sub: 'Video face — warm and composed', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/indian_woman_2.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=1c6868752203ba280e436c7bfdd2a665' },
+    { kind: 'simli', faceId: 'd2a5c7c6-fed9-4f55-bcb3-062f7cd20103', name: 'Kate', sub: 'Video face — polished and clear', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/white_woman.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=cb90417c488a7ad52a20be0701958612' },
+    { kind: 'simli', faceId: '7e74d6e7-d559-4394-bd56-4923a3ab75ad', name: 'Sabour', sub: 'Video face — confident and friendly', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/indian_man.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=7311fb8aee4caba7dea2d7477a580600' },
+    { kind: 'simli', faceId: 'afdb6a3e-3939-40aa-92df-01604c23101c', name: 'Zahra', sub: 'Video face — bright and modern', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/zahra.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=9dcd291b4abf673b9e811757828fa826' },
+    { kind: 'simli', faceId: 'b1f6ad8f-ed78-430b-85ef-2ec672728104', name: 'Charlotte', sub: 'Video face — approachable and steady', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/Charlotte.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=d281e1b7bbf5e3fc148536b0a2805197' },
+    { kind: 'simli', faceId: 'f0ba4efe-7946-45de-9955-c04a04c367b9', name: 'Doctor', sub: 'Video face — professional and reassuring', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/doctor.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=54e19a0bc52face280face4275259257' },
+    { kind: 'simli', faceId: 'c65af549-9105-442a-92a3-dc6c89e34149', name: 'DJ', sub: 'Video face — energetic and modern', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/dj_real.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=24eca4bde098b5d2f2be16862629466e' },
 
     /* --- Heygen (LiveAvatar) stock face --- */
     { kind: 'liveavatar', faceId: '7d1ad641-f746-4dbb-8eb1-84595f32ac17', name: 'Heygen Presenter', sub: 'Live video face', img: 'https://api.heygen.com/v2/avatars/7d1ad641-f746-4dbb-8eb1-84595f32ac17/avatar' },
@@ -1152,16 +1159,13 @@
       '<p class="page-sub" style="margin-bottom:14px">The animated mascot is included with every plan. Video faces are stock options you can switch anytime.</p>' +
       '<div class="avatar-grid" id="avatar-grid">' +
       FACES.map(function (f) {
-        var soon = f.kind === 'anam' || f.kind === 'liveavatar';
-        var badge = soon ? '<span class="a-badge soon">Coming soon</span>'
-          : (f.kind === 'mascot' ? '<span class="a-badge live">Animated</span>' : '<span class="a-badge live">Live video</span>');
+        var badge = f.kind === 'mascot' ? '<span class="a-badge live">Animated</span>' : '<span class="a-badge live">Live video</span>';
         var sel = (a.kind === f.kind && (f.kind === 'mascot' || a.faceId === f.faceId)) ? ' selected' : '';
         var thumb = f.img
           ? '<img class="thumb" src="' + esc(f.img) + '" alt="" loading="lazy" onerror="this.outerHTML=\'<div class=&quot;thumb fallback&quot;>' + esc(f.name.charAt(0)) + '</div>\'">'
           : '<div class="thumb fallback">' + esc(f.name.charAt(0)) + '</div>';
-        var sub = soon ? 'Video face — coming soon' : f.sub;
-        return '<button type="button" class="avatar-card' + sel + (soon ? ' soon' : '') + '" data-kind="' + f.kind + '" data-face="' + esc(f.faceId) + '" data-name="' + esc(f.name) + '">' +
-          thumb + badge + '<span class="a-name">' + esc(f.name) + '</span><span class="a-sub">' + esc(sub) + '</span></button>';
+        return '<button type="button" class="avatar-card' + sel + '" data-kind="' + f.kind + '" data-face="' + esc(f.faceId) + '" data-name="' + esc(f.name) + '">' +
+          thumb + badge + '<span class="a-name">' + esc(f.name) + '</span><span class="a-sub">' + esc(f.sub) + '</span></button>';
       }).join('') +
       '</div>' +
       '<h3 style="margin:26px 0 4px;font:400 22px var(--serif)">Pick a voice</h3>' +
@@ -1183,10 +1187,6 @@
 
     body.querySelectorAll('.avatar-card').forEach(function (cardB) {
       cardB.addEventListener('click', function () {
-        if (cardB.classList.contains('soon')) {
-          toast(cardB.getAttribute('data-name') + ' is coming soon — the live video engine is not wired yet. Pick a live face for now.');
-          return;
-        }
         body.querySelectorAll('.avatar-card').forEach(function (c) { c.classList.remove('selected'); });
         cardB.classList.add('selected');
         wizard.config.avatar = {

@@ -109,7 +109,7 @@
 
   <!-- Layers, in boot order. No build step; plain script tags.
        ?v=16 = Simli live video avatar (tap gate, sprite fallback) 2026-09-21. -->
-  <script src="outloud.config.js?v=22"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
+  <script src="outloud.config.js?v=23"></script>      <!-- config + SECRETS (MOVE TO EDGE PROXY) -->
   <script src="event-bus.js?v=18"></script>           <!-- OutLoudEvent envelope + pub/sub -->
   <script src="business-knowledge.js?v=23"></script>  <!-- Context 1: business knowledge (RAG) -->
   <script src="customer-memory.js?v=18"></script>     <!-- Context 2: customer/session memory -->
@@ -119,10 +119,11 @@
   <script src="speech-director.js?v=18"></script>     <!-- ElevenLabs TTS + chunk streaming -->
   <script src="vendor/simli-client.js?v=18"></script> <!-- SimliLib bundle (WebRTC talking head) -->
   <script src="simli-director.js?v=19"></script>      <!-- live video avatar + PCM16 feed -->
+  <script src="anam-director.js?v=1"></script>        <!-- Anam live video faces (per-account pages) -->
   <script src="avatar-director.js?v=18"></script>     <!-- sprite adapter: face/gaze/gesture channels (fallback) -->
   <script src="content-director.js?v=18"></script>
   <script src="screen-director.js?v=18"></script>  <!-- ambient branded card rotation -->    <!-- Content Registry + Action Registry -->
   <script src="session-orchestrator.js?v=18"></script><!-- state machine + event routing -->
-  <script src="runtime.js?v=19"></script>             <!-- bootstrap + page chrome -->
+  <script src="runtime.js?v=20"></script>             <!-- bootstrap + page chrome -->
 </body>
 </html>

@@ -17,7 +17,8 @@
   var SECRETS = {
     blueColumnKey: 'bc_live_p3NlMdAVuCXATRiffBsQLDTRy6p_cUPy',
     elevenLabsKey: 'sk_6b9aa7c4edd19c804554e48fd48dac0dc3686a3fb49cc843',
-    simliKey: '5e2ucmvyrlmkapwg4hzyf'   // verified live 2026-09-21 (session token issued)
+    simliKey: '',   // injected at build time from GitHub Secrets (SIMLI_KEY)
+    anamKey: ''   // injected at build time from GitHub Secrets (ANAM_KEY)
   };
 
   var CONFIG = {
@@ -72,6 +73,17 @@
         maxGestureIntensity: 0.8,
         avoidPointing: true,   // sprite rig has no arm layer; validator degrades point_* → present_*
         keepEyeContact: true   // gaze leaves user only briefly, then returns
+      },
+      /* --- Anam live video faces (per-account pages; selected via boot config) --- */
+      providers: {
+        anam: {
+          enabled: true,       // key verified live 2026-09-29
+          selected: false,     // /a/ boot config flips this when the account picked an Anam face
+          esmUrl: 'https://esm.sh/@anam-ai/js-sdk@latest',
+          avatarId: 'edf6fdcb-acab-44b8-b974-ded72665ee26',   // stock "Mia"
+          avatarModel: 'cara-4',
+          connectTimeoutMs: 12000
+        }
       }
     },
 
@@ -112,6 +124,9 @@
       }
       if (BOOT.avatar.constraints) {
         CONFIG.avatar.constraints = Object.assign({}, CONFIG.avatar.constraints, BOOT.avatar.constraints);
+      }
+      if (BOOT.avatar.providers) {
+        CONFIG.avatar.providers = Object.assign({}, CONFIG.avatar.providers, BOOT.avatar.providers);
       }
     }
     if (BOOT.content) {
