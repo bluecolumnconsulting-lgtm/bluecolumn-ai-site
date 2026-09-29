@@ -52,7 +52,42 @@
     { kind: 'simli', faceId: '804c347a-26c9-4dcf-bb49-13df4bed61e8', name: 'Professional B', sub: 'Video face — calm and steady', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/black_programmer.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=94213f32e0d39464bbf4d645430c29d8' },
     { kind: 'simli', faceId: 'cace3ef7-a4c4-425d-a8cf-a5358eb0c427', name: 'Friendly A', sub: 'Video face — warm and welcoming', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/asian_woman.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=e02235fa52f1327b4cfb060ab364ec63' },
     { kind: 'simli', faceId: '1c6aa65c-d858-4721-a4d9-bda9fde03141', name: 'Friendly B', sub: 'Video face — open and easygoing', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/black_man.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=353c99d375639a3513d5b4f14560e467' },
-    { kind: 'simli', faceId: 'dd10cb5a-d31d-4f12-b69f-6db3383c006e', name: 'Casual A', sub: 'Video face — laid-back and familiar', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/hank.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=5864d0148bb709abead34a191313c155' }
+    { kind: 'simli', faceId: 'dd10cb5a-d31d-4f12-b69f-6db3383c006e', name: 'Casual A', sub: 'Video face — laid-back and familiar', img: 'https://mintcdn.com/simli/NELbEX-teJCHwcnx/images/hank.png?fit=max&auto=format&n=NELbEX-teJCHwcnx&q=85&s=5864d0148bb709abead34a191313c155' },
+
+    /* --- Heygen (LiveAvatar) stock face --- */
+    { kind: 'liveavatar', faceId: '7d1ad641-f746-4dbb-8eb1-84595f32ac17', name: 'Heygen Presenter', sub: 'Live video face', img: 'https://api.heygen.com/v2/avatars/7d1ad641-f746-4dbb-8eb1-84595f32ac17/avatar' },
+
+    /* --- Anam stock faces (verified live 2026-09-28; public portrait thumbs) --- */
+    { kind: 'anam', faceId: 'edf6fdcb-acab-44b8-b974-ded72665ee26', name: 'Mia', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/edf6fdcb-acab-44b8-b974-ded72665ee26/image/portrait' },
+    { kind: 'anam', faceId: '071b0286-4cce-4808-bee2-e642f1062de3', name: 'Liv', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/071b0286-4cce-4808-bee2-e642f1062de3/image/portrait' },
+    { kind: 'anam', faceId: '6cc28442-cccd-42a8-b6e4-24b7210a09c5', name: 'Gabriel', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/6cc28442-cccd-42a8-b6e4-24b7210a09c5/image/portrait' },
+    { kind: 'anam', faceId: '27e12daa-50fc-4384-93c2-ebca73f1f78d', name: 'Anne', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/27e12daa-50fc-4384-93c2-ebca73f1f78d/image/portrait' },
+    { kind: 'anam', faceId: 'dc9aa3e1-32f2-499e-9921-ecabac1076fc', name: 'Bella', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/dc9aa3e1-32f2-499e-9921-ecabac1076fc/image/portrait' },
+    { kind: 'anam', faceId: '8a339c9f-0666-46bd-ab27-e90acd0409dc', name: 'Finn', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/8a339c9f-0666-46bd-ab27-e90acd0409dc/image/portrait' },
+    { kind: 'anam', faceId: '6dbc1e47-7768-403e-878a-94d7fcc3677b', name: 'Sophie', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/6dbc1e47-7768-403e-878a-94d7fcc3677b/image/portrait' },
+    { kind: 'anam', faceId: 'ecfb2ddb-80ec-4526-88a7-299a4738957c', name: 'Hunter', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/ecfb2ddb-80ec-4526-88a7-299a4738957c/image/portrait' },
+    { kind: 'anam', faceId: 'edcb8f1a-334f-4cdb-871c-5c513db806a7', name: 'Julia', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/edcb8f1a-334f-4cdb-871c-5c513db806a7/image/portrait' },
+    { kind: 'anam', faceId: '3819079b-72ed-47d8-b9f3-5ed8be7e8a86', name: 'Kevin', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/3819079b-72ed-47d8-b9f3-5ed8be7e8a86/image/portrait' },
+    { kind: 'anam', faceId: '1e20c023-e8be-46ca-a08b-bbdd51a6fa22', name: 'Layla', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/1e20c023-e8be-46ca-a08b-bbdd51a6fa22/image/portrait' },
+    { kind: 'anam', faceId: '19d18eb0-5346-4d50-a77f-26b3723ed79d', name: 'Richard', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/19d18eb0-5346-4d50-a77f-26b3723ed79d/image/portrait' },
+    { kind: 'anam', faceId: 'a0e22df0-423b-4ea2-91c5-67505f88e967', name: 'Cara', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/a0e22df0-423b-4ea2-91c5-67505f88e967/image/portrait' },
+    { kind: 'anam', faceId: '2fbdec6f-86fd-47d6-8bcc-e8a69270e75b', name: 'Pablo', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/2fbdec6f-86fd-47d6-8bcc-e8a69270e75b/image/portrait' },
+    { kind: 'anam', faceId: 'e0c4dc80-ec87-458d-97cf-9cd1c494cfcf', name: 'Leo', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/e0c4dc80-ec87-458d-97cf-9cd1c494cfcf/image/portrait' },
+    { kind: 'anam', faceId: 'e717a556-2d44-4213-96ec-27d0b94dc198', name: 'Astrid', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/e717a556-2d44-4213-96ec-27d0b94dc198/image/portrait' },
+    { kind: 'anam', faceId: '195d733e-58a9-40bb-a049-ac344fa70b7f', name: 'Evelyn', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/195d733e-58a9-40bb-a049-ac344fa70b7f/image/portrait' },
+    { kind: 'anam', faceId: '5e96a4a4-4a1d-4ead-a5c9-122627d91655', name: 'Elena', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/5e96a4a4-4a1d-4ead-a5c9-122627d91655/image/portrait' },
+    { kind: 'anam', faceId: 'c8601ae3-9686-4f1f-8e32-7499b470f6b5', name: 'Marcus', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/c8601ae3-9686-4f1f-8e32-7499b470f6b5/image/portrait' },
+    { kind: 'anam', faceId: 'a7fe242b-9ab6-43a7-a31b-514d9606bc14', name: 'Maria', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/a7fe242b-9ab6-43a7-a31b-514d9606bc14/image/portrait' },
+    { kind: 'anam', faceId: 'f1135251-ff04-47c8-b4de-01dd2320513b', name: 'Marie', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/f1135251-ff04-47c8-b4de-01dd2320513b/image/portrait' },
+    { kind: 'anam', faceId: 'df9d0056-8f77-4d9b-8d3a-b130c2342a3c', name: 'Maya', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/df9d0056-8f77-4d9b-8d3a-b130c2342a3c/image/portrait' },
+    { kind: 'anam', faceId: '32673c5e-f85f-4a87-a104-b92b7de9cb39', name: 'Mei', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/32673c5e-f85f-4a87-a104-b92b7de9cb39/image/portrait' },
+    { kind: 'anam', faceId: 'cf437b5e-5bcb-481a-937f-b4f16560a152', name: 'Olivia', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/cf437b5e-5bcb-481a-937f-b4f16560a152/image/portrait' },
+    { kind: 'anam', faceId: '1adc3a8f-54d9-4d1d-ac4d-3364a67f66cc', name: 'Nora', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/1adc3a8f-54d9-4d1d-ac4d-3364a67f66cc/image/portrait' },
+    { kind: 'anam', faceId: '31fcc5e6-f15d-4d56-8b5c-a7061847a218', name: 'Owen', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/31fcc5e6-f15d-4d56-8b5c-a7061847a218/image/portrait' },
+    { kind: 'anam', faceId: '4b0cf5fe-812a-4611-b7ed-cf0c362860da', name: 'Chloe', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/4b0cf5fe-812a-4611-b7ed-cf0c362860da/image/portrait' },
+    { kind: 'anam', faceId: '6615addc-3203-4e6f-b867-13135177107a', name: 'Daniel', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/6615addc-3203-4e6f-b867-13135177107a/image/portrait' },
+    { kind: 'anam', faceId: '36d8b673-a812-4656-8589-f518bdfab4c1', name: 'David', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/36d8b673-a812-4656-8589-f518bdfab4c1/image/portrait' },
+    { kind: 'anam', faceId: '6f7d4c45-4b5a-4258-9518-b48c2e92be1b', name: 'Arthur', sub: 'Live video face', img: 'https://lab.anam.ai/api/avatars/6f7d4c45-4b5a-4258-9518-b48c2e92be1b/image/portrait' }
   ];
 
   var CSV_COLUMNS = [
@@ -378,6 +413,7 @@
     if (h.indexOf('#/onboarding') === 0) return renderOnboarding();
     if (h.indexOf('#/dashboard') === 0) return renderDashboard();
     if (h.indexOf('#/leads') === 0) return renderLeads();
+    if (h.indexOf('#/database') === 0) return renderDatabase();
     if (h.indexOf('#/success') === 0) return renderSuccess();
     // default: authed → dashboard, else login
     if (session) { location.hash = '#/dashboard'; return; }
@@ -758,6 +794,18 @@
       '</div>' +
       '<div id="manual-area" hidden style="margin-top:16px"></div>' +
       '<div id="preview-area"></div>' +
+      '</div>' +
+      /* --- Avatar knowledge upload (BlueColumn database) --- */
+      '<div class="card" style="margin-top:18px">' +
+      '<h3 style="margin:0 0 4px;font:400 22px var(--serif)">Teach your avatar</h3>' +
+      '<p class="page-sub" style="margin-bottom:14px">Drop documents about ' + esc(wizard.config.business && wizard.config.business.name ? wizard.config.business.name : 'your business') + ' — menus, FAQs, service lists, policies. Your avatar reads these when it answers. Saved to your BlueColumn database as it arrives.</p>' +
+      '<div class="drop-zone" id="kb-zone" role="button" tabindex="0" aria-label="Choose or drop knowledge files">' +
+      '<span class="dz-icon" aria-hidden="true">📄</span>' +
+      '<strong>Drop files here</strong><br>or click to pick<br>' +
+      '<span class="help" style="margin-top:6px">.txt, .md, .csv, .json — one or several at a time.</span>' +
+      '</div>' +
+      '<input type="file" id="kb-file" accept=".txt,.md,.markdown,.csv,.json,.htm,.html" multiple hidden>' +
+      '<div id="kb-list" style="margin-top:12px"></div>' +
       '</div>';
 
     // Template download
@@ -796,6 +844,24 @@
       if (fi.files && fi.files[0]) handleCsvFile(fi.files[0]);
     });
 
+    /* --- Knowledge upload zone --- */
+    var kbZone = el('kb-zone'), kbFile = el('kb-file');
+    kbZone.addEventListener('click', function () { kbFile.click(); });
+    kbZone.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); kbFile.click(); } });
+    ['dragover', 'dragenter'].forEach(function (ev) {
+      kbZone.addEventListener(ev, function (e) { e.preventDefault(); kbZone.classList.add('over'); });
+    });
+    ['dragleave', 'drop'].forEach(function (ev) {
+      kbZone.addEventListener(ev, function (e) { e.preventDefault(); kbZone.classList.remove('over'); });
+    });
+    kbZone.addEventListener('drop', function (e) {
+      var files = e.dataTransfer && e.dataTransfer.files;
+      if (files && files.length) handleKnowledgeFiles(files);
+    });
+    kbFile.addEventListener('change', function () {
+      if (kbFile.files && kbFile.files.length) handleKnowledgeFiles(kbFile.files);
+    });
+
     // Manual editor toggle
     el('toggle-manual').addEventListener('click', function () {
       var m = el('manual-area');
@@ -811,6 +877,61 @@
 
     // Restore a preview if user navigated back
     if (wizard.catalog && wizard.catalog.length) renderPreviewTable();
+    renderKbList();
+  }
+
+  /* ---------- Avatar knowledge upload (files → BlueColumn DB) ---------- */
+  function handleKnowledgeFiles(fileList) {
+    var files = Array.prototype.slice.call(fileList || []);
+    if (!files.length) return;
+    if (!wizard.kbFiles) wizard.kbFiles = [];
+    var accepted = 0;
+    files.forEach(function (f) {
+      if (f.size > 1024 * 1024) { toast('"' + f.name + '" is over 1 MB — skipped.'); return; }
+      var reader = new FileReader();
+      reader.onload = function () {
+        var text = String(reader.result || '').trim();
+        if (!text) { toast('"' + f.name + '" came back empty — skipped.'); return; }
+        var kb = { name: f.name, text: text, status: 'saving', savedAt: null };
+        wizard.kbFiles.push(kb);
+        renderKbList();
+        bcRemember('ol_acct_' + acct.slug, text, 'knowledge', 'Knowledge — ' + f.name).then(function () {
+          kb.status = 'saved'; kb.savedAt = new Date().toLocaleString();
+          renderKbList();
+        }).catch(function (err) {
+          kb.status = 'error';
+          renderKbList();
+          toast('Could not save "' + f.name + '": ' + (err.message || 'unknown'));
+        });
+      };
+      reader.onerror = function () { toast('Could not read "' + f.name + '".'); };
+      reader.readAsText(f);
+      accepted++;
+    });
+    if (accepted) toast(accepted + ' file' + (accepted === 1 ? '' : 's') + ' uploading to your database');
+  }
+
+  function renderKbList() {
+    var list = el('kb-list');
+    if (!list) return;
+    var files = wizard.kbFiles || [];
+    if (!files.length) { list.innerHTML = ''; return; }
+    var statusIcon = { saving: '…', saved: '✓', error: '✗' };
+    var statusColor = { saving: '#c99a2e', saved: '#328971', error: '#a94b3a' };
+    list.innerHTML = files.map(function (kb, i) {
+      return '<div class="kb-item" data-i="' + i + '">' +
+        '<span class="kb-name">' + esc(kb.name) + '</span>' +
+        '<span class="kb-status" style="color:' + (statusColor[kb.status] || '#8a9793') + '">' + (statusIcon[kb.status] || '') + ' ' + kb.status + (kb.savedAt ? ' · ' + kb.savedAt : '') + '</span>' +
+        (kb.status !== 'saving' ? '<button type="button" class="kb-remove" title="Remove from list" aria-label="Remove">×</button>' : '') +
+        '</div>';
+    }).join('');
+    list.querySelectorAll('.kb-remove').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var i = parseInt(b.closest('.kb-item').getAttribute('data-i'), 10);
+        wizard.kbFiles.splice(i, 1);
+        renderKbList();
+      });
+    });
   }
 
   function blankItem() {
@@ -1197,6 +1318,7 @@
           '<button class="action-card" id="edit-content"><span class="ac-title">Edit content</span><span class="ac-sub">What you do, hours, prices, and your items.</span></button>' +
           '<button class="action-card" id="edit-avatar"><span class="ac-title">Change avatar & voice</span><span class="ac-sub">Pick a different face or sound.</span></button>' +
           '<button class="action-card" id="view-leads"><span class="ac-title">View leads</span><span class="ac-sub">People who reached out through your page.</span></button>' +
+          '<button class="action-card" id="view-db"><span class="ac-title">My database</span><span class="ac-sub">Your Blue Column — everything your avatar knows and sells.</span></button>' +
           '</div>' +
           '<div class="btn-row"><button class="btn danger" id="sign-out">Sign out</button></div>' +
           '</div>';
@@ -1208,6 +1330,7 @@
           startWizard(cfg, false); wizard.step = 3; location.hash = '#/onboarding'; renderOnboarding(3);
         });
         el('view-leads').addEventListener('click', function () { location.hash = '#/leads'; });
+        el('view-db').addEventListener('click', function () { location.hash = '#/database'; });
         el('sign-out').addEventListener('click', doSignOut);
       }).catch(renderError);
     });
@@ -1250,6 +1373,58 @@
       }).catch(function (err) {
         var lm = el('leads-main');
         if (lm) lm.outerHTML = '<div class="card"><div class="notice err">' + esc(err.message || 'Could not load leads.') +
+          '</div><a class="btn ghost" href="#/dashboard">Back to dashboard</a></div>';
+      });
+    });
+  }
+
+  /* ---------- Database (Blue Column) ---------- */
+  function renderDatabase() {
+    gate(true, function () {
+      if (!acct) { location.hash = '#/dashboard'; return; }
+      var ns = 'ol_acct_' + acct.slug;
+      setView(
+        headerFor('My database', 'Your Blue Column — everything your OutLoud knows, sells, and has heard.') +
+        '<div class="card" id="db-main"><div class="loading"><span class="spin"></span> Reading your database…</div></div>'
+      );
+      bcRecall(ns, 'all account knowledge catalog configuration leads', 20).then(function (data) {
+        var sources = (data && data.sources) || (Array.isArray(data) ? data : []) || [];
+        var rows = sources.map(function (s, i) {
+          var title = s.title || (s.metadata && s.metadata.title) || 'Untitled';
+          var type = (s.metadata && s.metadata.type) || s.doc_type || 'text';
+          var excerpt = String((s.excerpt || '') + (s.text || '')).slice(0, 220);
+          var when = s.created_at || s.updated_at || (s.metadata && s.metadata.created_at) || '';
+          var icon = type === 'catalog' ? '🛍' : (type === 'knowledge' ? '📚' : (type === 'lead' ? '💬' : '🧠'));
+          var isJson = type === 'catalog' || type === 'acct-config' || type === 'acct-registry';
+          var parsed = isJson ? tryParseJson(excerpt) : null;
+          var preview;
+          if (parsed && parsed.items) {
+            preview = parsed.items.length + ' items — ' + parsed.items.slice(0, 3).map(function (it) { return it.name; }).join(', ') + (parsed.items.length > 3 ? '…' : '');
+          } else if (parsed && parsed.business) {
+            preview = 'Business profile — ' + (parsed.business.name || '') + ' · ' + (parsed.business.whatYouDo || '').slice(0, 90);
+          } else {
+            preview = excerpt;
+          }
+          return '<div class="db-item">' +
+            '<div class="db-head"><span class="db-icon">' + icon + '</span>' +
+            '<span class="db-title">' + esc(title) + '</span>' +
+            '<span class="db-type">' + esc(type) + '</span>' +
+            (when ? '<span class="db-when">' + esc(new Date(when).toLocaleString()) + '</span>' : '') +
+            '</div>' +
+            '<div class="db-preview">' + esc(preview) + '</div>' +
+            '</div>';
+        }).join('');
+        var dbm = el('db-main');
+        if (dbm) dbm.outerHTML = '<div class="card">' +
+          '<div class="stat-grid" style="margin-top:0"><div class="stat-cell"><div class="s-label">Documents</div><div class="s-value">' + sources.length + '</div></div></div>' +
+          (rows || '<div class="empty-state"><div class="es-big">Your database is empty</div>Add your products, services, or knowledge and it will appear here.</div>') +
+          '<div class="btn-row">' +
+          '<a class="btn" href="#/onboarding">Add products & knowledge</a>' +
+          '<a class="btn ghost" href="#/dashboard">Back to dashboard</a>' +
+          '</div></div>';
+      }).catch(function (err) {
+        var dbm = el('db-main');
+        if (dbm) dbm.outerHTML = '<div class="card"><div class="notice err">' + esc(err.message || 'Could not load database.') +
           '</div><a class="btn ghost" href="#/dashboard">Back to dashboard</a></div>';
       });
     });
