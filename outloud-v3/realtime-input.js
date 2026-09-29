@@ -119,6 +119,7 @@
       }
     };
     r.onend = function () {
+      if (self.recog !== r) { return; }   /* stale recognizer — a newer one owns the mic now */
       if (self.wantMic && !self.suspended) {
         /* Fast re-arm: recognition restarts in 200ms (was 300ms) so the
            mic is back live almost immediately after each answer. */
@@ -152,7 +153,14 @@
   /* Anti-echo: suspend recognition while OutLoud speaks. */
   RealtimeInput.prototype.suspend = function () {
     this.suspended = true;
-    if (this.recog) { try { this.recog.stop(); } catch (e) {} }
+    /* Drop the recognizer handle BEFORE stopping. resume() calls
+       startTranscription(), which bails when this.recog is set — so a
+       dead recognizer left behind here made resume() a no-op and the
+       runtime went deaf after its first answer. Null it so the next
+       resume() starts a fresh recognizer. */
+    var r = this.recog;
+    this.recog = null;
+    if (r) { try { r.stop(); } catch (e) {} }
   };
   RealtimeInput.prototype.resume = function () {
     var self = this;
