@@ -1,0 +1,108 @@
+/* ============================================================
+   OutLoud v3 — PRESENTATION SCREEN  (Job c3973498 — screen only)
+   ============================================================
+   Layered on top of the existing .ol-screen chrome in runtime.css.
+   runtime.css already owns .ol-screen-cards / .ol-screen-card /
+   .ol-card-* — this file ONLY adds the deck pieces that are new:
+
+     • deck-live   — makes the deck visible without disturbing the
+                     existing content panels (panel-live)
+     • deck topbar — brand + slide dots + prev/next
+     • panel-live  — hides the deck layer so a plan-driven content
+                     panel takes over cleanly
+     • .experience — light-theme overrides (the demo panel is light,
+                     while runtime.css's .ol-card-* assume dark)
+
+   Avatar markup/directors and the lip-sync/sink pipeline are
+   intentionally untouched.
+   ============================================================ */
+
+/* The base .experience rule (redesign.css) hides the screen until a
+   content panel goes live; deck-live re-shows it for the deck. */
+.ol-screen.deck-live { display: flex; flex-direction: column; }
+.experience .ol-screen.deck-live { display: flex; }
+.ol-screen.deck-live .ol-screen-body { position: relative; flex: 1 1 auto; min-height: 170px; }
+
+/* ---- deck topbar: brand + dots + prev/next ---- */
+.ol-screen-topbar.ol-screen-decktop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ol-screen-decknav { display: flex; align-items: center; gap: 10px; }
+.ol-screen-dots { display: flex; align-items: center; gap: 5px; }
+.ol-screen-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
+}
+.ol-screen-dot:hover { background: rgba(255, 255, 255, 0.4); }
+.ol-screen-dot.active { background: #9ec9ff; transform: scale(1.25); }
+
+.ol-screen-navbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid rgba(120, 160, 210, 0.45);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: #dce8ff;
+  font: 700 13px/1 'DM Sans', Arial, sans-serif;
+  cursor: pointer;
+  transition: background 140ms ease, transform 140ms ease;
+}
+.ol-screen-navbtn:hover { background: rgba(255, 255, 255, 0.14); transform: translateY(-1px); }
+
+/* When a plan-driven content panel (pricing, booking, etc.) goes live,
+   the deck layer steps aside entirely — no overlap, no double content. */
+.ol-screen.panel-live .ol-screen-decktop { display: none; }
+.ol-screen.panel-live .ol-screen-cards { opacity: 0; pointer-events: none; }
+
+/* ---------- light-theme overrides (demo .experience panel) ----------
+   The deck lives inside the light "experience" card; runtime.css's
+   .ol-card-* colors target the dark branded screen. Re-map them. */
+.experience .ol-screen.deck-live {
+  background: #f6f8f4;
+  border: 1px solid #dfe5df;
+}
+.experience .ol-screen.deck-live .ol-screen-topbar.ol-screen-decktop {
+  background: #edf2ed;
+  border-bottom: 1px solid #dfe5df;
+}
+.experience .ol-screen .ol-screen-brand { color: #176f68; }
+.experience .ol-screen .ol-screen-navbtn {
+  border-color: #c9d6cc;
+  background: #fff;
+  color: #176f68;
+}
+.experience .ol-screen .ol-screen-navbtn:hover { background: #e9f3ed; }
+.experience .ol-screen .ol-screen-dot { background: #d6dfd8; }
+.experience .ol-screen .ol-screen-dot:hover { background: #b9c8bd; }
+.experience .ol-screen .ol-screen-dot.active { background: #176f68; }
+
+.experience .ol-screen .ol-card-kicker { color: #176f68; }
+.experience .ol-screen .ol-card-title { color: #172d32; }
+.experience .ol-screen .ol-card-body { color: #4a5c5f; }
+.experience .ol-screen .ol-card-ask {
+  border: 1px solid #c9d6cc;
+  background: #fff;
+  color: #176f68;
+}
+.experience .ol-screen .ol-card-ask:hover { background: #e9f3ed; }
+
+@media (max-width: 760px) {
+  .ol-screen.deck-live .ol-screen-body { min-height: 150px; }
+}
