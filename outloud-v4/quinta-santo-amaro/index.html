@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1e2a1c">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <title>Quinta de Santo Amaro | Casamentos, Eventos e Vinhos na Bairrada</title>
+  <meta name="description" content="Quinta de Santo Amaro — uma casa com história desde 1544, no coração da Bairrada. Casamentos, eventos e vinhos entre jardins e vinhas. Fale com o nosso assistente de IA.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Quinta de Santo Amaro">
+  <meta property="og:description" content="Uma casa com história desde 1544. Um site com quem pode falar — pergunte o que quiser sobre a Quinta.">
+  <meta property="og:image" content="hero-quinta.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="runtime.css">
+  <link rel="stylesheet" href="presentation.css">
+  <link rel="stylesheet" href="redesign.css">
+  <link rel="stylesheet" href="lang.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">Ir para a demonstração</a>
+  <header class="site-header">
+    <a class="brand-lockup" href="./" aria-label="Quinta de Santo Amaro">
+      <img class="brand-logo" src="quinta-logo.png" alt="Quinta de Santo Amaro" width="180" height="34">
+      <span class="wordmark">Quinta de Santo <em class="wordmark-outloud">Amaro</em></span>
+    </a>
+    <div class="header-right">
+      <span class="header-note"><span class="live-dot" aria-hidden="true"></span> <span data-i18n="tagline">Casamentos, eventos e vinhos · desde 1544</span></span>
+      <div class="lang-switch" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="pt" aria-pressed="true">PT</button>
+        <span class="lang-sep" aria-hidden="true">|</span>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro" aria-labelledby="headline">
+      <h1 id="headline"><img class="headline-mark" src="quinta-logo.png" alt="Quinta de Santo Amaro">Quinta de Santo <em>Amaro</em></h1>
+      <p data-i18n="intro">Uma casa com história desde 1544, no coração da Bairrada. Faça uma pergunta — o nosso assistente responde com a sua própria voz.</p>
+    </section>
+
+    <section class="experience" aria-label="Quinta de Santo Amaro">
+      <div class="avatar-area">
+        <div id="ol-avatar-stage" class="ol-avatar-stage" aria-label="Assistente de IA da Quinta de Santo Amaro"></div>
+        <div class="state-line"><span id="ol-state" class="ol-state" data-state="IDLE">Pronto quando quiser</span></div>
+      </div>
+
+      <div class="conversation-area">
+        <div class="ol-chips" aria-label="Perguntas sugeridas">
+          <button type="button" class="ol-chip">O que é a Quinta?</button>
+          <button type="button" class="ol-chip">Quero organizar um evento</button>
+          <button type="button" class="ol-chip">Fale-me dos vinhos</button>
+          <button type="button" class="ol-chip">Como faço uma visita?</button>
+        </div>
+        <div class="ask-row">
+          <button type="button" id="ol-mic" class="ol-mic" aria-pressed="false" aria-label="Ligar o microfone"><span class="mic-symbol" aria-hidden="true">●</span><span class="ol-btn-label" data-i18n="talk">Falar</span></button>
+          <label class="sr-only" for="ol-text-in" data-i18n="asklabel">Faça uma pergunta à Quinta</label>
+          <input id="ol-text-in" class="ol-text" type="text" autocomplete="off" placeholder="Ou escreva uma pergunta…">
+          <button type="button" id="ol-send" class="ol-send" aria-label="Enviar pergunta">↑</button>
+        </div>
+        <div class="utility-row">
+          <button type="button" id="ol-stop" class="stop-button" hidden data-i18n="stop">Parar resposta</button>
+          <button type="button" id="ol-sound" class="ol-sound" aria-pressed="true"><span class="ol-btn-label" data-i18n="soundon">Som: ligado</span></button>
+          <span class="hint" data-i18n="hint">O microfone só é pedido quando toca em Falar.</span>
+        </div>
+        <div class="response-space" id="ol-response-space" aria-live="polite" aria-atomic="true"></div>
+        <div class="ol-screen" id="ol-screen" aria-label="Informação de apoio">
+          <div class="ol-screen-body">
+            <div id="ol-screen-standby" class="ol-screen-standby" hidden></div>
+            <div id="outloud-content-panel" class="ol-host ol-host-screen"></div>
+          </div>
+        </div>
+        <section class="ol-console" aria-label="Transcrição da conversa"><ol id="ol-log" class="ol-log" aria-live="polite"></ol></section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>Quinta de Santo Amaro · Largo de Santo Amaro 77, Cadima, Cantanhede</span><span data-i18n="footright">Falar com o nosso assistente</span></footer>
+  <p class="sr-only" id="ol-sr-status" role="status" aria-live="polite"></p>
+
+  <script src="stock-faces.js"></script>
+  <script src="outloud.config.js"></script>
+  <script src="lang.js"></script>
+  <script src="event-bus.js"></script>
+  <script src="avatar-catalog.js"></script>
+  <script src="business-knowledge.js"></script>
+  <script src="customer-memory.js"></script>
+  <script src="plan-validator.js"></script>
+  <script src="response-planner.js"></script>
+  <script src="realtime-input.js"></script>
+  <script src="speech-director.js"></script>
+  <script src="vendor/simli-client.js"></script>
+  <script src="simli-director.js"></script>
+  <script src="anam-director.js"></script>
+  <script src="avatar-director.js"></script>
+  <script src="content-director.js"></script>
+  <script src="presentation-deck.js"></script>
+  <script src="presentation-screen.js"></script>
+  <script src="conversation-controller.js"></script>
+  <script src="session-orchestrator.js"></script>
+  <script src="runtime.js"></script>
+  <script src="redesign.js"></script>
+</body>
+</html>

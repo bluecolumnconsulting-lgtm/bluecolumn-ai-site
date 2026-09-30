@@ -1,0 +1,170 @@
+/* ===============================================================
+   Scuba Junkie — OutLoud v4 RUNTIME CONFIG
+   Same v4 stack as bluecolumn.ai/outloud/ (protocol 2.0). Client-
+   branded: no OutLoud branding, no BlueColumn chrome. Brain, voice,
+   and video sessions all run through the secure backend function —
+   no keys in page files.
+
+   NOTE: avatar wiring is handled separately by Joe/Lovable — the
+   default animated host is left in place here.
+
+   Per-page options (URL):
+     ?client=scubajunkie   which business brain answers (default)
+     ?avatar=<id>          which avatar speaks
+   =============================================================== */
+(function () {
+  'use strict';
+
+  var qs = new URLSearchParams(location.search);
+  var SECRETS = {};   /* kept empty for backwards compatibility */
+
+  /* ---------- avatar catalog ---------- */
+  var AVATARS = [
+    { id: 'madison', name: 'Madison', type: 'video', faceId: '5fc23ea5-8175-4a82-aaaf-cdd8c88543dc', voiceId: 'cgSgspJ2msm6clMCkdW9' }
+  ];
+  (window.OUTLOUD_STOCK_FACES || []).forEach(function (f) {
+    if (!AVATARS.some(function (a) { return a.faceId === f.faceId; })) { AVATARS.push(f); }
+  });
+
+  /* ---------- client profiles (page-side: greeting + defaults) ---------- */
+  var CLIENTS = {
+    scubajunkie: {
+      name: 'Scuba Junkie',
+      avatar: 'madison',
+      voiceId: 'cgSgspJ2msm6clMCkdW9',
+      language: 'en-US',
+      useCatalog: true,
+      chips: ['Where do you dive?', 'What Sipadan packages do you offer?', 'What PADI courses can I take?', 'How do I book and get there?'],
+      greeting: "Hi, welcome to Scuba Junkie on Mabul Island. Ask me about diving Sipadan, our PADI courses, the Mabul Beach Resort, or how to book your dive holiday."
+    }
+  };
+
+  var OUTLOUD_FN = 'https://xkjkwqbfvkswwdmbtndo.supabase.co/functions/v1/outloud';
+  var clientId = (qs.get('client') || 'scubajunkie').toLowerCase().replace(/[^a-z0-9-]/g, '');
+  var fetchSlug = clientId;
+
+  /* Load a signed-up client's public profile if one exists; otherwise
+     the built-in profile above drives the page. */
+  if (fetchSlug) {
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', OUTLOUD_FN, false);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({ action: 'client-config', client: fetchSlug }));
+      var d = xhr.status === 200 ? JSON.parse(xhr.responseText) : null;
+      if (d && d.found) {
+        if (d.customImage) { AVATARS.push({ id: 'custom', name: d.name, type: 'animated', image: d.customImage, voiceId: 'TX3LPaxmHKxFdv7VOQHJ' }); }
+        if (d.ownFaceId) { AVATARS.push({ id: 'ownface', name: d.name, type: 'video', faceId: d.ownFaceId, voiceId: d.voiceId || 'EXAVITQu4vr4xnSDxMaL' }); }
+        var prof = { name: d.name, avatar: d.avatar || 'madison', voiceId: d.voiceId || null,
+          useCatalog: false,
+          chips: (d.chips || []).slice(0, 4),
+          greeting: d.greeting || ('Hi, welcome to ' + d.name + '! How can I help?'),
+          paused: d.active === false };
+        CLIENTS[clientId] = prof;
+      }
+    } catch (e) { /* fall back to default */ }
+  }
+  if (!CLIENTS[clientId]) { clientId = 'scubajunkie'; }
+  var client = CLIENTS[clientId];
+  var savedAvatar = null;
+  try { savedAvatar = localStorage.getItem('outloud-avatar:' + clientId); } catch (e) {}
+  var avatarId = qs.get('avatar') || savedAvatar || client.avatar;
+  var avatar = AVATARS.filter(function (a) { return a.id === avatarId; })[0] || AVATARS[0];
+
+  var CONFIG = {
+    protocolVersion: '2.0',
+    clientId: clientId,
+    client: client,
+    avatars: AVATARS,
+    selectedAvatar: avatar,
+
+    endpoints: {
+      /* Secure backend function: tts | simli-session | agent | lead */
+      outloud: OUTLOUD_FN,
+      publishableKey: ''
+    },
+
+    /* --- Voice stack (Speech Director) --- */
+    voice: {
+      provider: 'elevenlabs',
+      model: 'eleven_flash_v2_5',
+      voiceId: avatarId === client.avatar && client.voiceId ? client.voiceId : (avatar.voiceId || client.voiceId),
+      outputFormat: 'mp3_44100_128',
+      streamChunks: true
+    },
+
+    /* --- Live brain (backend agent; catalog is the instant fallback) --- */
+    rag: {
+      timeoutMs: 20000,
+      minAnswerChars: 8,
+      notInContext: /not in available context/i
+    },
+
+    /* --- Business identity (Context 1 prefix for RAG) --- */
+    business: {
+      name: 'Scuba Junkie',
+      ragPrefix: 'Scuba Junkie question: '
+    },
+
+    /* --- Simli video avatar --- */
+    simli: {
+      faceId: avatar.faceId || null,
+      maxSessionLength: 600,
+      maxIdleTime: 180
+    },
+
+    avatar: {
+      faceCatalog: 'avatar-catalog.js',
+      sprite: 'mascot-sprites.png',
+      image: avatar.image || null,
+      cols: 4,
+      rows: 3,
+      baseline: { emotion: 'friendly', energy: 0.55, posture: 'idle', initialGaze: 'user' },
+      constraints: {
+        allowGestures: ['present_right', 'present_left', 'present_center', 'nod', 'lean_in'],
+        maxGestureIntensity: 0.8,
+        avoidPointing: true,
+        keepEyeContact: true
+      },
+      providers: {
+        anam: { enabled: false, selected: false, tokenEndpoint: '', connectTimeoutMs: 12000 },
+        beyond: { enabled: false, tokenEndpoint: '', avatarId: '' },
+        liveavatar: { enabled: false, tokenEndpoint: '', avatarId: '', connectTimeoutMs: 12000 },
+        did: { enabled: false, agentId: '', speakMode: 'text', connectTimeoutMs: 12000 }
+      }
+    },
+
+    /* --- Content Director --- */
+    content: {
+      host: '#outloud-content-panel',
+      allowTakeover: true
+    },
+
+    /* --- Realtime input --- */
+    vad: { rmsThreshold: 0.035, hangoverMs: 700 },
+
+    /* --- Conversation controller --- */
+    controller: {
+      enabled: true,
+      maxAnswerWords: 90,
+      historyLimit: 8
+    },
+
+    /* --- Session --- */
+    session: { storageKey: 'outloud20-session:' + clientId }
+  };
+
+  window.OUTLOUD = window.OUTLOUD || {};
+  window.OUTLOUD.CONFIG = CONFIG;
+  window.OUTLOUD.SECRETS = SECRETS;
+
+  if (client.paused) {
+    document.addEventListener('DOMContentLoaded', function () {
+      var o = document.createElement('div');
+      o.setAttribute('role', 'status');
+      o.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#822104;color:#fdf3ed;font:16px/1.5 system-ui,sans-serif;text-align:center;padding:24px';
+      o.innerHTML = '<div><div style="font-size:22px;font-weight:600;margin-bottom:8px">' + String(client.name).replace(/[<>&"]/g, '') + '</div>This assistant is paused right now.<br/>Please contact the business directly.</div>';
+      document.body.appendChild(o);
+    });
+  }
+})();

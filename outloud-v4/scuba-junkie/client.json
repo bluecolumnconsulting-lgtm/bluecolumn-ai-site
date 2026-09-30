@@ -1,0 +1,10 @@
+{
+  "clientId": "scubajunkie",
+  "name": "Scuba Junkie",
+  "avatar": "madison",
+  "voiceId": "cgSgspJ2msm6clMCkdW9",
+  "language": "en-US",
+  "useCatalog": true,
+  "chips": ["Where do you dive?", "What Sipadan packages do you offer?", "What PADI courses can I take?", "How do I book and get there?"],
+  "greeting": "Hi, welcome to Scuba Junkie on Mabul Island. Ask me about diving Sipadan, our PADI courses, the Mabul Beach Resort, or how to book your dive holiday."
+}

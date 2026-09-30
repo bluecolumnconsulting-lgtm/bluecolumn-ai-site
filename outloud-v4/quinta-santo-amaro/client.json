@@ -1,0 +1,10 @@
+{
+  "clientId": "quintasantoamaro",
+  "name": "Quinta de Santo Amaro",
+  "avatar": "charlotte",
+  "voiceId": "nJ5NFqyKb8kn9JBPmo6i",
+  "language": "pt-PT",
+  "useCatalog": true,
+  "chips": ["O que é a Quinta?", "Quero organizar um evento", "Fale-me dos vinhos", "Como faço uma visita?"],
+  "greeting": "Bem-vindo à Quinta de Santo Amaro, uma casa com história desde 1544, no coração da Bairrada. Pergunte-me pelos eventos, os vinhos, os jardins ou como planear a sua celebração."
+}

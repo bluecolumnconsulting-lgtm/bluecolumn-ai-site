@@ -1,0 +1,97 @@
+/* ===============================================================
+   Quinta de Santo Amaro — brand skin + PT/EN language switch
+   Loaded after the shared OutLoud stylesheets. Re-themes the page to
+   the estate palette (deep green + warm cream) and styles the
+   language control to mirror the PT|EN switch on quintasantoamaro.pt.
+   =============================================================== */
+
+:root {
+  /* estate palette — green & cream, replaces the default blue */
+  --bg-top: #FBF8EF;
+  --bg-hi: #F4EFE0;
+  --bg-mid: #E8E1CB;
+  --bg-deep: #C7BE9C;
+
+  --ink: #1F2A1B;
+  --body-ink: #33402C;
+  --muted: #6C6A54;
+  --visitor-ink: #3C4A34;
+
+  --blue: #2F5130;
+  --blue-bright: #45703F;
+
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.75);
+  --edge: rgba(255, 255, 255, 0.72);
+  --edge-soft: rgba(31, 42, 27, 0.08);
+}
+
+/* serif display for the estate voice */
+h1, .headline-mark + em, #headline, .ol-screen-body h2,
+.site-header .wordmark {
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+}
+#headline { font-weight: 500; letter-spacing: 0.005em; }
+#headline em { font-style: italic; color: var(--blue); }
+
+/* ---------- header: language switch ---------- */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--glass-faint, rgba(255,255,255,0.4));
+  border: 1px solid var(--edge);
+  box-shadow: inset 0 1px 0 var(--inner-hi, rgba(255,255,255,0.85));
+}
+.lang-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: 600 12px/1 var(--sans);
+  letter-spacing: 0.08em;
+  padding: 5px 9px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease;
+}
+.lang-btn:hover { color: var(--ink); }
+.lang-btn.active {
+  background: var(--blue);
+  color: #FBF8EF;
+  box-shadow: 0 4px 12px rgba(47, 81, 48, 0.28);
+}
+.lang-btn:focus-visible { outline: 2px solid var(--blue-bright); outline-offset: 2px; }
+.lang-sep { color: var(--edge-soft); font-size: 12px; }
+
+@media (max-width: 640px) {
+  .header-right { gap: 8px; }
+  .header-note { display: none; }
+}
+
+/* ---------- hero backdrop: the estate itself ---------- */
+.intro {
+  position: relative;
+  overflow: hidden;
+}
+.intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(251,248,239,0.86) 0%, rgba(251,248,239,0.74) 45%, rgba(244,239,224,0.60) 100%),
+              url("hero-quinta.jpg") center 42% / cover no-repeat;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.intro > * { position: relative; z-index: 1; }
+.intro p { color: var(--ink); font-weight: 500; text-shadow: 0 1px 0 rgba(255,255,255,0.55); }
+.intro h1, #headline { text-shadow: 0 1px 0 rgba(255,255,255,0.5); }

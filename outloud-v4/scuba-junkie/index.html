@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b5f86">
+  <title>Scuba Junkie | Dive Sipadan from Mabul Island</title>
+  <meta name="description" content="Scuba Junkie is a PADI 5 star dive resort on Mabul Island, Sabah — daily diving and snorkelling around Sipadan, Mabul, Kapalai and Si Amil. Ask our AI about dive packages, PADI courses, rooms and how to book.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Scuba Junkie">
+  <meta property="og:description" content="Dive Sipadan from our eco resort on Mabul Island. A website you can talk to — ask our AI anything about Scuba Junkie.">
+  <meta property="og:image" content="og-scuba-junkie.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aleo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="runtime.css">
+  <link rel="stylesheet" href="presentation.css">
+  <link rel="stylesheet" href="redesign.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to demo</a>
+  <header class="site-header">
+    <a class="brand-lockup" href="./" aria-label="Scuba Junkie home">
+      <img class="brand-logo" src="scuba-logo.png" alt="Scuba Junkie Sipadan logo" width="150" height="34">
+      <span class="wordmark">Scuba <em class="wordmark-outloud">Junkie</em></span>
+    </a>
+    <span class="header-note"><span class="live-dot" aria-hidden="true"></span> Dive Sipadan from Mabul Island</span>
+  </header>
+
+  <main id="main">
+    <section class="intro" aria-labelledby="headline">
+      <h1 id="headline"><img class="headline-mark" src="scuba-logo.png" alt="Scuba Junkie Sipadan logo">Scuba <em>Junkie</em></h1>
+      <p>Dive Sipadan, Mabul, Kapalai and Si Amil from our eco resort on Mabul Island. Ask a question — our AI answers in its own voice.</p>
+    </section>
+
+    <section class="experience" aria-label="Talk to Scuba Junkie">
+      <div class="avatar-area">
+        <div id="ol-avatar-stage" class="ol-avatar-stage" aria-label="Scuba Junkie AI avatar"></div>
+        <div class="state-line"><span id="ol-state" class="ol-state" data-state="IDLE">Ready when you are</span></div>
+      </div>
+
+      <div class="conversation-area">
+        <div class="ol-chips" aria-label="Suggested questions">
+          <button type="button" class="ol-chip">Where do you dive?</button>
+          <button type="button" class="ol-chip">What Sipadan packages do you offer?</button>
+          <button type="button" class="ol-chip">What PADI courses can I take?</button>
+          <button type="button" class="ol-chip">How do I book and get there?</button>
+        </div>
+        <div class="ask-row">
+          <button type="button" id="ol-mic" class="ol-mic" aria-pressed="false" aria-label="Turn microphone on"><span class="mic-symbol" aria-hidden="true">●</span><span class="ol-btn-label">Talk</span></button>
+          <label class="sr-only" for="ol-text-in">Ask Scuba Junkie</label>
+          <input id="ol-text-in" class="ol-text" type="text" autocomplete="off" placeholder="Or type a question…">
+          <button type="button" id="ol-send" class="ol-send" aria-label="Send question">↑</button>
+        </div>
+        <div class="utility-row">
+          <button type="button" id="ol-stop" class="stop-button" hidden>Stop answer</button>
+          <button type="button" id="ol-sound" class="ol-sound" aria-pressed="true"><span class="ol-btn-label">Sound: on</span></button>
+          <span class="hint">Microphone access is requested only when you tap Talk.</span>
+        </div>
+        <div class="response-space" id="ol-response-space" aria-live="polite" aria-atomic="true"></div>
+        <div class="ol-screen" id="ol-screen" aria-label="Supporting information">
+          <div class="ol-screen-body">
+            <div id="ol-screen-standby" class="ol-screen-standby" hidden></div>
+            <div id="outloud-content-panel" class="ol-host ol-host-screen"></div>
+          </div>
+        </div>
+        <section class="ol-console" aria-label="Conversation transcript"><ol id="ol-log" class="ol-log" aria-live="polite"></ol></section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>Scuba Junkie · Mabul Island, Sabah, Malaysia</span><span>Talk to our AI</span></footer>
+  <p class="sr-only" id="ol-sr-status" role="status" aria-live="polite"></p>
+
+  <script src="stock-faces.js"></script>
+  <script src="outloud.config.js"></script>
+  <script src="event-bus.js"></script>
+  <script src="avatar-catalog.js"></script>
+  <script src="business-knowledge.js"></script>
+  <script src="customer-memory.js"></script>
+  <script src="plan-validator.js"></script>
+  <script src="response-planner.js"></script>
+  <script src="realtime-input.js"></script>
+  <script src="speech-director.js"></script>
+  <script src="vendor/simli-client.js"></script>
+  <script src="simli-director.js"></script>
+  <script src="anam-director.js"></script>
+  <script src="avatar-director.js"></script>
+  <script src="content-director.js"></script>
+  <script src="presentation-deck.js"></script>
+  <script src="presentation-screen.js"></script>
+  <script src="conversation-controller.js"></script>
+  <script src="session-orchestrator.js"></script>
+  <script src="runtime.js"></script>
+  <script src="redesign.js"></script>
+</body>
+</html>
