@@ -1,0 +1,9 @@
+{
+  "clientId": "fincacortesin",
+  "name": "Finca Cortesín",
+  "avatar": "mascot",
+  "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+  "useCatalog": true,
+  "chips": ["What is Finca Cortesín?", "Tell me about the golf", "What is the spa like?", "How can I book a stay?"],
+  "greeting": "Welcome to Finca Cortesín, a five star resort in Casares on the Costa del Sol. Ask me about the golf course, the spa, our suites, dining, or how to book."
+}
