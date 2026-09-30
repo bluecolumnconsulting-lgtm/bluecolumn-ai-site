@@ -1,8 +1,9 @@
 {
   "clientId": "esplora",
   "name": "Esplora Travel",
-  "avatar": "mascot",
-  "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+  "avatar": "charlotte",
+  "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+  "language": "en-GB",
   "useCatalog": true,
   "chips": ["Where do your tours go?", "How do small-group tours work?", "How do I book a tour?", "How can I contact you?"],
   "greeting": "Hi, welcome to Esplora Travel — small-group cultural and walking tours. Ask me about our destinations, how our tours work, or how to book."

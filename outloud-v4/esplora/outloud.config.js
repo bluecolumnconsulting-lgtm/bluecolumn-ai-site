@@ -20,8 +20,7 @@
 
   /* ---------- avatar catalog ---------- */
   var AVATARS = [
-    { id: 'mascot', name: 'Animated host', type: 'animated', voiceId: 'TX3LPaxmHKxFdv7VOQHJ' },
-    { id: 'kate', name: 'Kate', type: 'video', faceId: 'd2a5c7c6-fed9-4f55-bcb3-062f7cd20103', voiceId: 'EXAVITQu4vr4xnSDxMaL' }
+    { id: 'charlotte', name: 'Charlotte', type: 'video', faceId: 'b1f6ad8f-ed78-430b-85ef-2ec672728104', voiceId: 'Xb7hH8MSUJpSbSDYk0k2' }
   ];
   (window.OUTLOUD_STOCK_FACES || []).forEach(function (f) {
     if (!AVATARS.some(function (a) { return a.faceId === f.faceId; })) { AVATARS.push(f); }
@@ -31,8 +30,9 @@
   var CLIENTS = {
     esplora: {
       name: 'Esplora Travel',
-      avatar: 'mascot',
-      voiceId: 'TX3LPaxmHKxFdv7VOQHJ',
+      avatar: 'charlotte',
+      voiceId: 'Xb7hH8MSUJpSbSDYk0k2',
+      language: 'en-GB',
       useCatalog: true,
       chips: ['Where do your tours go?', 'How do small-group tours work?', 'How do I book a tour?', 'How can I contact you?'],
       greeting: "Hi, welcome to Esplora Travel — small-group cultural and walking tours. Ask me about our destinations, how our tours work, or how to book."
@@ -55,7 +55,7 @@
       if (d && d.found) {
         if (d.customImage) { AVATARS.push({ id: 'custom', name: d.name, type: 'animated', image: d.customImage, voiceId: 'TX3LPaxmHKxFdv7VOQHJ' }); }
         if (d.ownFaceId) { AVATARS.push({ id: 'ownface', name: d.name, type: 'video', faceId: d.ownFaceId, voiceId: d.voiceId || 'EXAVITQu4vr4xnSDxMaL' }); }
-        var prof = { name: d.name, avatar: d.avatar || 'mascot', voiceId: d.voiceId || null,
+        var prof = { name: d.name, avatar: d.avatar || 'charlotte', voiceId: d.voiceId || null,
           useCatalog: false,
           chips: (d.chips || []).slice(0, 4),
           greeting: d.greeting || ('Hi, welcome to ' + d.name + '! How can I help?'),
