@@ -1,0 +1,9 @@
+{
+  "clientId": "knight",
+  "name": "Knight Transportation",
+  "avatar": "mascot",
+  "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+  "useCatalog": true,
+  "chips": ["What services do you offer?", "How do I get a freight quote?", "How do I become a driver?", "How can I contact you?"],
+  "greeting": "Hey, welcome to Knight Transportation — Delivering More. Ask me about our services, getting a freight quote, driving careers, or how to reach us."
+}
