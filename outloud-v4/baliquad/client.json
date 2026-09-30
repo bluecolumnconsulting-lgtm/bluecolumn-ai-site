@@ -1,0 +1,9 @@
+{
+  "clientId": "baliquad",
+  "name": "Bali Quad Discovery Tours",
+  "avatar": "mascot",
+  "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+  "useCatalog": true,
+  "chips": ["What tours do you run?", "What vehicles do you use?", "How do I book a tour?", "Any special offers?"],
+  "greeting": "Hi, welcome to Bali Quad Discovery Tours — full-size ATV quad and buggy adventures in Bali since 1999. Ask me about our tours, our vehicles, or how to book."
+}
