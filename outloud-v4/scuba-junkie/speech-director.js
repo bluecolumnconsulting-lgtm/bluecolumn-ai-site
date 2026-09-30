@@ -37,7 +37,7 @@
     return fetch(CONFIG.endpoints.outloud, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'apikey': CONFIG.endpoints.publishableKey },
-      body: JSON.stringify({ action: 'tts', text: text, voiceId: CONFIG.voice.voiceId }),
+      body: JSON.stringify({ action: 'tts', text: text, voiceId: CONFIG.voice.voiceId, model: CONFIG.voice.model }),
       signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) {
       clearTimeout(timer);

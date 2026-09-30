@@ -146,7 +146,7 @@
     return fetch(CONFIG.endpoints.outloud, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'apikey': CONFIG.endpoints.publishableKey || '' },
-      body: JSON.stringify({ action: 'agent', client: CONFIG.clientId, q: query }),
+      body: JSON.stringify({ action: 'agent', client: CONFIG.clientId, message: query }),
       signal: ctrl ? ctrl.signal : undefined
     }).then(function (res) {
       clearTimeout(timer);
