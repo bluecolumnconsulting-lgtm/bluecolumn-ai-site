@@ -37,9 +37,18 @@
     </section>
 
     <section class="experience" aria-label="Talk to Scuba Junkie">
+      <div class="ol-stage-row">
       <div class="avatar-area">
         <div id="ol-avatar-stage" class="ol-avatar-stage" aria-label="Scuba Junkie AI avatar"></div>
         <div class="state-line"><span id="ol-state" class="ol-state" data-state="IDLE">Ready when you are</span></div>
+      </div>
+
+      <div class="ol-screen" id="ol-screen" aria-label="Supporting information">
+        <div class="ol-screen-body">
+          <div id="ol-screen-standby" class="ol-screen-standby" hidden></div>
+          <div id="outloud-content-panel" class="ol-host ol-host-screen"></div>
+        </div>
+      </div>
       </div>
 
       <div class="conversation-area">
@@ -61,12 +70,6 @@
           <span class="hint">Microphone access is requested only when you tap Talk.</span>
         </div>
         <div class="response-space" id="ol-response-space" aria-live="polite" aria-atomic="true"></div>
-        <div class="ol-screen" id="ol-screen" aria-label="Supporting information">
-          <div class="ol-screen-body">
-            <div id="ol-screen-standby" class="ol-screen-standby" hidden></div>
-            <div id="outloud-content-panel" class="ol-host ol-host-screen"></div>
-          </div>
-        </div>
         <section class="ol-console" aria-label="Conversation transcript"><ol id="ol-log" class="ol-log" aria-live="polite"></ol></section>
       </div>
     </section>

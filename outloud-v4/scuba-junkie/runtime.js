@@ -129,16 +129,9 @@
       if (O.CONFIG.client.chips[i]) { c.textContent = O.CONFIG.client.chips[i]; } else { c.remove(); }
     });
   }
-  /* Ambient screen deck starts once the gate interaction lands the
-     visitor (tap/typed) — the screen then never sits empty. */
-  bus.on('transcript.final', function onceScreenStart() {
-    screen.start();
-    bus.off('transcript.final', onceScreenStart);
-  });
-  var gateEl0 = document.querySelector('.ol-tap-gate');
-  if (gateEl0) {
-    gateEl0.addEventListener('click', function () { setTimeout(function () { screen.start(); }, 1200); }, { once: true });
-  }
+  /* Ambient screen deck starts on page load so the screen sits live
+     beside the avatar above the fold — it never sits empty. */
+  screen.start();
   /* Persistent Book a Demo CTA — every path into lead capture. */
   var bookCta = document.getElementById('ol-book-cta');
   if (bookCta) {

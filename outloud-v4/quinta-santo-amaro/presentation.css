@@ -82,24 +82,24 @@
   background: #edf2ed;
   border-bottom: 1px solid #dfe5df;
 }
-.experience .ol-screen .ol-screen-brand { color: #176f68; }
+.experience .ol-screen .ol-screen-brand { color: #ce3a0d; }
 .experience .ol-screen .ol-screen-navbtn {
   border-color: #c9d6cc;
   background: #fff;
-  color: #176f68;
+  color: #ce3a0d;
 }
 .experience .ol-screen .ol-screen-navbtn:hover { background: #e9f3ed; }
 .experience .ol-screen .ol-screen-dot { background: #d6dfd8; }
 .experience .ol-screen .ol-screen-dot:hover { background: #b9c8bd; }
-.experience .ol-screen .ol-screen-dot.active { background: #176f68; }
+.experience .ol-screen .ol-screen-dot.active { background: #ce3a0d; }
 
-.experience .ol-screen .ol-card-kicker { color: #176f68; }
+.experience .ol-screen .ol-card-kicker { color: #ce3a0d; }
 .experience .ol-screen .ol-card-title { color: #172d32; }
 .experience .ol-screen .ol-card-body { color: #4a5c5f; }
 .experience .ol-screen .ol-card-ask {
   border: 1px solid #c9d6cc;
   background: #fff;
-  color: #176f68;
+  color: #ce3a0d;
 }
 .experience .ol-screen .ol-card-ask:hover { background: #e9f3ed; }
 
