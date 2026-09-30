@@ -1,0 +1,9 @@
+{
+  "clientId": "printit",
+  "name": "Print It Prints",
+  "avatar": "kate",
+  "voiceId": "EXAVITQu4vr4xnSDxMaL",
+  "useCatalog": true,
+  "chips": ["What do you print?", "How fast is turnaround?", "How much are business cards?", "Get a free quote"],
+  "greeting": "Hey, welcome to Print It — we print everything under the sun. What are you looking to get printed today?"
+}
