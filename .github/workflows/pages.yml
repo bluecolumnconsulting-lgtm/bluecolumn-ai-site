@@ -79,6 +79,23 @@ jobs:
           test -f /tmp/site/CNAME
           test -f /tmp/site/.nojekyll
 
+      # Publish each OutLoud v4 client page at a clean client-branded path,
+      # so links read bluecolumn.ai/<client>/outloud (plus an /outloud/<client>
+      # alias). Source of truth stays outloud-v4/<client>/ in the repo — these
+      # are build-time copies only, so there is no duplicate to maintain.
+      - name: Publish OutLoud client paths
+        run: |
+          set -euo pipefail
+          clients="quinta-santo-amaro scuba-junkie"
+          for c in $clients; do
+            test -d "outloud-v4/$c"
+            mkdir -p "/tmp/site/$c/outloud"
+            rsync -a "outloud-v4/$c/" "/tmp/site/$c/outloud/"
+            mkdir -p "/tmp/site/outloud/$c"
+            rsync -a "outloud-v4/$c/" "/tmp/site/outloud/$c/"
+          done
+          ls -la /tmp/site/quinta-santo-amaro/outloud | head
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
