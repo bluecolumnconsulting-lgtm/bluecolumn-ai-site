@@ -1,0 +1,9 @@
+{
+  "clientId": "reicksview",
+  "name": "Reicks View Farms",
+  "avatar": "mascot",
+  "voiceId": "TX3LPaxmHKxFdv7VOQHJ",
+  "useCatalog": true,
+  "chips": ["What do you do?", "How many pigs do you raise?", "How do I apply for a job?", "How can I contact you?"],
+  "greeting": "Hey, welcome to Reicks View Farms — Families Feeding Families. Ask me about our pork, our farms, careers, or how we give back to the community."
+}
